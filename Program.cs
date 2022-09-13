@@ -10,6 +10,8 @@ namespace RpgGame
     {
         static void Main(string[] args)
         {
+
+            Console.ReadKey();  // endl
         }
     }
 }
