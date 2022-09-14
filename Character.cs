@@ -12,7 +12,6 @@ namespace RpgGame
 
 
         // Membervariablen
-        private short[] _Health = new short[2];
         private byte _Lvl = 0;
         private uint[] _Exp = new uint[] { };
 
@@ -20,13 +19,16 @@ namespace RpgGame
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="name">playername</param>
         /// <param name="cl">class of player</param>
         public Character(string name, byte cl) {
             Name = name;
+            Class = cl;
+            Exp = new uint[] { 0, 500 };
+            Lvl = 1;
 
             switch (cl) {
                 case 1: // warrior
-                    Class = 1;
                     Strength = 3;
                     Intelligents = 1;
                     Dexterity = 2;
@@ -36,7 +38,6 @@ namespace RpgGame
                     Gold = 52;
                     break;
                 case 2: // mage
-                    Class = 2;
                     Strength = 1;
                     Intelligents = 3;
                     Dexterity = 2;
@@ -46,7 +47,6 @@ namespace RpgGame
                     Gold = 21;
                     break;
                 case 3: // thief
-                    Class = 3;
                     Strength = 2;
                     Intelligents = 2;
                     Dexterity = 2;
@@ -56,12 +56,9 @@ namespace RpgGame
                     Gold = 72;
                     break;
                 default:
-                    Console.WriteLine("Keine gültige Eingabe.");
+                    Environment.Exit(1);
                     break;
             }
-            Exp = new uint[] { 1, 500 };
-            Lvl = 1;
-            
         }
 
         // Methoden 
@@ -80,18 +77,7 @@ namespace RpgGame
 
         public float CritDmg { get; set; }
 
-        public short[] Health { 
-            get {
-                return _Health;
-            }
-            set {
-                if (value[0] >= _Health[1]) {   // if hp now is higher than max hp
-                    _Health[0] = _Health[1];    // hp now = max hp (full heal)
-                } else {
-                    _Health = value;    // heal (and overwrites max hp on lvl up)
-                }
-            }
-        }
+        public short[] Health { get; set; }
 
         public uint Gold { get; set; }
 
