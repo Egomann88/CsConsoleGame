@@ -12,8 +12,6 @@ namespace RpgGame
 
 
         // Membervariablen
-        private byte _Lvl = 0;
-        private uint[] _Exp = new uint[] { };
 
         // Konstruktoren
         /// <summary>
@@ -55,9 +53,7 @@ namespace RpgGame
                     Health = new short[] { 20, 20 };
                     Gold = 72;
                     break;
-                default:
-                    Environment.Exit(1);
-                    break;
+                default: Environment.Exit(1); break;
             }
         }
 
@@ -79,25 +75,77 @@ namespace RpgGame
 
         public short[] Health { get; set; }
 
-        public uint Gold { get; set; }
+        public int Gold { get; set; }
 
-        public uint[] Exp {
-            get {
-                return _Exp;
-            } set {
-                if(Lvl > 100) _Exp = new uint[] { 0, 0 };
+        public uint[] Exp { get; set; }
 
-                _Exp = value;
+        public byte Lvl { get; set; }
+
+        public void ShowCharacter() {
+            string cl = "";
+            if (Class == 1) cl = "Krieger";
+            else if (Class == 2) cl = "Magier";
+            else cl = "Schurke";
+
+            do {
+                Console.Clear();
+                Console.WriteLine("Name:\t\t\t{0}", Name);
+                Console.WriteLine("Klasse:\t\t\t{0}", cl);
+                Console.WriteLine("Level:\t\t\t{0}", Lvl);
+                Console.WriteLine("Exp:\t\t\t{0} / {1}", Exp[0], Exp[1]);
+                Console.WriteLine("Leben:\t\t\t{0} / {1}", Health[0], Health[1]);
+                Console.WriteLine("Gold:\t\t\t{0}", Gold);
+                Console.WriteLine("Stärke:\t\t\t{0}", Strength);
+                Console.WriteLine("Inteligents:\t\t{0}", Intelligents);
+                Console.WriteLine("Geschwindigkeit:\t{0}", Dexterity);
+                Console.WriteLine("Krit. Chance:\t\t{0} %", CritChance);
+                Console.WriteLine("Krit. Schaden:\t\t{0} %", (CritDmg - 1.0F) * 100);
+                Console.WriteLine("\nDrücken Sie <Enter> um zurückzukehren...");
+            } while (Console.ReadKey(false).Key != ConsoleKey.Enter);
+        }
+
+        public void ChangeMaximumHealth(short health) {
+            Health[1] += health;
+            ChangeCurrentHealth(health, false);
+        }
+
+        public bool ChangeCurrentHealth(short health, bool overheal = false) {
+            Health[0] += health;
+            if (Health[0] > Health[1] && !overheal) Health[0] = Health[1];
+
+            if (Health[0] <= 0) return false;
+            else return true;
+        }
+        
+        public void IncreaseLvl() {
+            if(Lvl >= 100) {    // if lvl 100 is reached, no more leveling
+                Exp[1] = 0;
+                return;
+            } else if (Exp[0] >= Exp[1]) {
+                Lvl++;
+                Exp[0] = 0;
+                Exp[1] += 500;
+
+                IncreaseStats();
+
+                if (Lvl % 10 == 0) Exp[1] += 500;    // increases exp need all 10 lvls by 1000
             }
         }
 
-        public byte Lvl {
-            get {
-                return _Lvl;
+        private void IncreaseStats() {
+            Strength++;
+            Intelligents++;
+            Dexterity++;
+            ChangeMaximumHealth(2);
+            if (Lvl % 10 == 0) {
+                CritChance += 0.2F;
+                CritDmg += 0.5F;
             }
-            set {
-                if (_Lvl > 100) return;
-                _Lvl = value;
+
+            switch (Class) {
+                case 1: Strength++; break;
+                case 2: Intelligents++; break;
+                case 3: Dexterity++; break;
             }
         }
     }
