@@ -59,8 +59,44 @@ namespace RpgGame
             } while (Console.ReadKey(false).Key != ConsoleKey.Enter);
         }
 
-        static void Main(string[] args)
-        {
+        private static void Dungeon(Character c) {
+            Random r = new Random();
+            byte rnd = 0;
+
+            if (c.Lvl < 10) rnd = Convert.ToByte(r.Next(1, 5));
+            else {
+                double rndDouble = r.NextDouble();
+
+                if (rndDouble >= 0.26) rnd = 1;
+                else if (rndDouble >= 0.2) rnd = 2;
+                else if (rndDouble >= 0.16) rnd = 3;
+                else if (rndDouble >= 0.12) rnd = 4;
+                else if (rndDouble >= 0.10) rnd = 5;
+                else if (rndDouble >= 0.075) rnd = 6;
+                else if (rndDouble >= 0.06) rnd = 7;
+                else if (rndDouble >= 0.015) rnd = 8;
+                else if (rndDouble >= 0.006) rnd = 9;
+                else if (rndDouble >= 0.004) rnd = 10;
+            }
+
+            Enemy e = new Enemy(c.Lvl, rnd, false);
+
+            Fight();
+        }
+
+        private static void Fight() {
+            // whos first?
+
+            // player move
+
+
+            // enemy move
+
+            // check if one if dead
+
+        }
+
+        static void Main(string[] args) {
             char input = '0';
             bool chAlive = false;
             Character character;
@@ -77,7 +113,7 @@ namespace RpgGame
                     input = Console.ReadKey(true).KeyChar;
 
                     switch(input) {
-                        case '1': break;
+                        case '1': Dungeon(character); break;
                         case '2': ShowCharacter(character); break;
                         case '8': chAlive = false; break;
                         case '9': Environment.Exit(0); break;   // stops appligation

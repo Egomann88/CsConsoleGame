@@ -12,13 +12,12 @@ namespace RpgGame
         private byte MAXENEMYID = 10;
 
         // Membervariablen
-        private short[] _Health = new short[2];
 
         // Konstruktoren
-        public Enemy(byte pLvl, byte? eId, bool ishard = false) {
+        public Enemy(byte pLvl, byte? eId = null, bool ishard = false) {
             if(eId == null) {
                 Random r = new Random();
-                eId = Convert.ToByte(r.Next(1, MAXENEMYID));
+                eId = Convert.ToByte(r.Next(1, MAXENEMYID + 1));
                 // throw new ArgumentNullException(nameof(eId));
             }
 
@@ -41,14 +40,7 @@ namespace RpgGame
 
         public float CritDmg { get; set; }
 
-        public short[] Health {
-            get { return _Health; }
-            set {
-                // if hp now is higher than max hp
-                if (value[0] >= _Health[1]) _Health[0] = _Health[1]; // hp now = max hp (full heal)
-                else _Health = value; // heal (and overwrites max hp on lvl up)
-            }
-        }
+        public short[] Health { get; set; }
 
         public uint Gold { get; set; }
 
