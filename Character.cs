@@ -12,7 +12,7 @@ namespace RpgGame
 
 
         // Membervariablen
-        private int[] _Health = new int[2];
+        private short[] _Health = new short[2];
         private byte _Lvl = 0;
         private uint[] _Exp = new uint[] { };
 
@@ -24,8 +24,7 @@ namespace RpgGame
         public Character(string name, byte cl) {
             Name = name;
 
-            switch (cl)
-            {
+            switch (cl) {
                 case 1: // warrior
                     Class = 1;
                     Strength = 3;
@@ -33,7 +32,7 @@ namespace RpgGame
                     Dexterity = 2;
                     CritChance = 2.4F;
                     CritDmg = 1.25F;
-                    Health = new Int32[] { 30, 30 };
+                    Health = new short[] { 30, 30 };
                     Gold = 52;
                     break;
                 case 2: // mage
@@ -43,7 +42,7 @@ namespace RpgGame
                     Dexterity = 2;
                     CritChance = 4.8F;
                     CritDmg = 1.5F;
-                    Health = new Int32[] { 16, 16 };
+                    Health = new short[] { 16, 16 };
                     Gold = 21;
                     break;
                 case 3: // thief
@@ -53,11 +52,11 @@ namespace RpgGame
                     Dexterity = 2;
                     CritChance = 3.2F;
                     CritDmg = 1.75F;
-                    Health = new Int32[] { 20, 20 };
+                    Health = new short[] { 20, 20 };
                     Gold = 72;
                     break;
                 default:
-                    if(cl > 3 || cl < 1) Console.WriteLine("Keine gültige Eingabe.");
+                    Console.WriteLine("Keine gültige Eingabe.");
                     break;
             }
             Exp = new uint[] { 1, 500 };
@@ -71,17 +70,17 @@ namespace RpgGame
 
         public byte Class { get; set; }
 
-        public uint Strength { get; set; }
+        public ushort Strength { get; set; }
 
-        public uint Intelligents { get; set; }
+        public ushort Intelligents { get; set; }
 
-        public uint Dexterity { get; set; }
+        public ushort Dexterity { get; set; }
 
         public float CritChance { get; set; }
 
         public float CritDmg { get; set; }
 
-        public int[] Health { 
+        public short[] Health { 
             get {
                 return _Health;
             }
