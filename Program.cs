@@ -47,6 +47,7 @@ namespace RpgGame
 
         private static void Dungeon(Character c) {
             Random r = new Random();
+            Fight f = new Fight();
             byte rnd = 0;
 
             if (c.Lvl < 10) rnd = Convert.ToByte(r.Next(1, 5));
@@ -67,19 +68,8 @@ namespace RpgGame
 
             Enemy e = new Enemy(c.Lvl, rnd, false);
 
-            Fight();
-        }
-
-        private static void Fight() {
-            // whos first?
-
-            // player move
-
-
-            // enemy move
-
-            // check if one if dead
-
+            f.Fightin(c, rnd, false);
+            
         }
 
         static void Main(string[] args) {
