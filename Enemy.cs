@@ -46,6 +46,16 @@ namespace RpgGame
 
         public uint Exp { get; set; }
 
+        public bool IsDmgUlt { get; set; }
+
+        public bool ChangeCurrentHealth(short health, bool overheal = false) {
+            Health[0] += health;
+            if (Health[0] > Health[1] && !overheal) Health[0] = Health[1];
+
+            if (Health[0] <= 0) return false;
+            else return true;
+        }
+
         private void SetEnemyStats(byte pLvl, byte eId, bool ishard) {
             float multiplier = 1.0F;
 
@@ -71,6 +81,7 @@ namespace RpgGame
                     };
                     Gold = Convert.ToUInt16(Math.Round(10 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(5 * multiplier));
+                    IsDmgUlt = true;
                     break;
                 // assasin
                 case 2:
@@ -86,6 +97,7 @@ namespace RpgGame
                     };
                     Gold = Convert.ToUInt16(Math.Round(19 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(9 * multiplier));
+                    IsDmgUlt = true;
                     break;
                 // paladin
                 case 3:
@@ -101,6 +113,7 @@ namespace RpgGame
                     };
                     Gold = Convert.ToUInt16(Math.Round(38 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(19 * multiplier));
+                    IsDmgUlt = false;
                     break;
                 // plantara
                 case 4:
@@ -116,6 +129,7 @@ namespace RpgGame
                     };
                     Gold = Convert.ToUInt16(Math.Round(12 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(30 * multiplier));
+                    IsDmgUlt = false;
                     break;
                 // beserker
                 case 5:
@@ -131,6 +145,7 @@ namespace RpgGame
                     };
                     Gold = Convert.ToUInt16(Math.Round(68 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(56 * multiplier));
+                    IsDmgUlt = true;
                     break;
                 // wizard
                 case 6:
@@ -146,6 +161,7 @@ namespace RpgGame
                     };
                     Gold = Convert.ToUInt16(Math.Round(70 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(56 * multiplier));
+                    IsDmgUlt = false;
                     break;
                 // grifin
                 case 7:
@@ -161,6 +177,7 @@ namespace RpgGame
                     };
                     Gold = Convert.ToUInt16(Math.Round(36 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(160 * multiplier));
+                    IsDmgUlt = false;
                     break;
                 // dragon
                 case 8:
@@ -176,6 +193,7 @@ namespace RpgGame
                     };
                     Gold = Convert.ToUInt16(Math.Round(160 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(120 * multiplier));
+                    IsDmgUlt = true;
                     break;
                 // demon
                 case 9:
@@ -191,6 +209,7 @@ namespace RpgGame
                     };
                     Gold = Convert.ToUInt16(Math.Round(140 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(125 * multiplier));
+                    IsDmgUlt = true;
                     break;
                 // ashura
                 case 10:
@@ -206,6 +225,7 @@ namespace RpgGame
                     };
                     Gold = Convert.ToUInt16(Math.Round(150 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(240 * multiplier));
+                    IsDmgUlt = true;
                     break;
             }
         }
