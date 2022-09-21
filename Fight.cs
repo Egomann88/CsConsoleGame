@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace RpgGame
 {
@@ -11,12 +12,17 @@ namespace RpgGame
         // Klassenvariablen
         private short[] CHARACTERCOOLDOWN = new short[] { 0, 0 };    // Heal, Ult
         private short[] ENEMYCOOLDOWN = new short[] { 0, 0 }; // Heal, Ult
-        private const byte HEALCOOLDOWN = 3;
-        private const byte ULTIMATECOOLDOWN = 4;
+        private const byte HEALCOOLDOWN = 3;    // Default cooldown of both sides for the healpotion
+        private const byte ULTIMATECOOLDOWN = 4; // Default cooldown for both sides on the ultimate
 
         // Membervariablen
 
         // Konstruktor
+        /// <summary>
+        /// Need an Character and Enemy to fight.
+        /// </summary>
+        /// <param name="c">Character Object</param>
+        /// <param name="e">Enemy Object</param>
         public Fight(Character c, Enemy e) {
             Character = c;
             Enemy = e;
@@ -27,37 +33,73 @@ namespace RpgGame
 
         public Enemy Enemy { get; set; }
 
+        public byte RoundCount { get; set; }
+
 
         public Character Fightin() {
 
             EnemyTurn();
 
+            RoundCount++;
             return Character;
         }
 
         private void PlayerTurn() {
             short[] coolDown = GetCoolDown(true);
             string ultimateName = UltimateName();
+            string attackText = "";
+            ushort damage = 0;
             char input = '0';
 
             do {
+                Console.Clear();
                 Console.WriteLine("{0}, was wollt ihr machen?", Character.Name);
-                Console.WriteLine("1) Angreifen\n2) Heilen (Abklingzeit: {0} Runden)\n3) {1} (Abklingzeit: {2} Runden)\n4) Fliehen"
+                Console.Write("1) Angreifen\n2) Heilen (Abklingzeit: {0} Runden)\n3) {1} (Abklingzeit: {2} Runden)\n4) Fliehen"
                     , coolDown[0], ultimateName, coolDown[1]);
-                input = Console.ReadKey().KeyChar;
-            } while (false);
-        }
+                input = Console.ReadKey(false).KeyChar; // do not show input in console
+                switch (input) {
+                    case '1':
+                        damage = Character.Strength;
 
-        private string UltimateName() {
-            string name = "";
+                        attackText = $"{Character.Name} greift an.\n";
 
-            switch (Character.Class) {
-                case 1: name = "Bodenspalter";  break;
-                case 2: name = "Meteorschauer"; break;
-                case 3: name = "Exitus"; break;
-            }
+                        if (IsCrit(Character.CritChance)) { 
+                            damage = Convert.ToUInt16(Math.Round(damage * Character.CritDmg));
+                            attackText += "Kritischer Treffer!";
+                        }
 
-            return name;
+                        attackText += $"{damage} Schaden!";
+
+                        Console.WriteLine(attackText);
+
+                        Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
+
+                        Thread.Sleep(1200);
+                        return;
+                    case '2':
+                        if (IsCharacterOnCoolDown(coolDown[0])) continue;
+
+                        damage = Character.Intelligents;
+
+                        attackText = $"{Character.Name} heilt sich.\n{damage} Leben wiederhergestellt";
+                        Console.WriteLine(attackText);
+
+                        Character.ChangeCurrentHealth(Convert.ToInt16(damage));
+
+                        coolDown[0] = HEALCOOLDOWN;    // set heal cooldown
+
+                        Thread.Sleep(1200);
+                        return;
+                    case '3':
+                        if (IsCharacterOnCoolDown(coolDown[1])) continue;
+
+                        damage = 0;
+                        break;
+                    case '4':
+                        break;
+                    default: continue;  // new input
+                }
+            } while (true);
         }
 
         private void EnemyTurn() {
@@ -117,14 +159,26 @@ namespace RpgGame
         /// If cooldown ist under 0, it will be overwritten with it.
         /// </summary>
         /// <param name="isCharacter">true if its the Characters cooldown. If not -> false</param>
-        /// <returns>coolodown</returns>
+        /// <returns>coolodown -> short[]</returns>
         private short[] GetCoolDown(bool isCharacter) {
             short[] coolDown = isCharacter ? CHARACTERCOOLDOWN : ENEMYCOOLDOWN;
 
-            if (coolDown[0] <= 0) coolDown[0] = 0;
+            if (coolDown[0] <= 0) coolDown[0] = 0;  // does not allow the counter to go under 0
             if (coolDown[1] <= 0) coolDown[1] = 0;
 
             return coolDown;
+        }
+
+        /// <summary>
+        /// Player method only.<br />
+        /// Checks if abilty is on cooldown
+        /// </summary>
+        /// <param name="coolDown">cooldown of current abilty</param>
+        /// <returns>bool -> true - Cooldown / false - no Cooldown</returns>
+        private bool IsCharacterOnCoolDown(short coolDown) {
+            if(coolDown > 0) return true;
+
+            return false;
         }
 
         /// <summary>
