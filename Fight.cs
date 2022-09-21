@@ -40,62 +40,70 @@ namespace RpgGame
 
         private byte RoundCount { get; set; }
 
-
+        /// <summary>
+        /// Simulates the entire fight, with exp + gold if won<br />
+        /// ! Outside must be checked whether the Character is still alive !
+        /// </summary>
+        /// <returns>Character with new stats</returns>
         public Character FightIn() {
-            bool fightOngoing = true;
+            bool fightOver = false;
+            bool fled = false;
             bool isPlayerFirst = GetFirstMove();
-            const byte playerTurns = GetNumOfTurns(true);
-            const byte enemyTurns = GetNumOfTurns(false);
+            byte playerTurns = GetNumOfTurns(true);
+            byte enemyTurns = GetNumOfTurns(false);
 
             do {
                 if (isPlayerFirst) {
-                    for (byte i = 0; i < playerTurns; i++) {
-                        fightOngoing = PlayerTurn();
-                        if (!fightOngoing) continue;
+                    for (byte i = 0; i < playerTurns; i++) {    // repeat as long as Player still has turns
+                        fightOver = fled = PlayerTurn(); // if player fled, jump direct to end
+                        if (Enemy.Health[0] <= 0) fightOver = true;
+                        if (fightOver) continue;
                     }
                 }
 
-                for (byte i = 0; i < enemyTurns; i++) {
+                for (byte i = 0; i < enemyTurns; i++) { // repeat as long as Enemy still has turns
                     EnemyTurn();
-                    if (Character.Health[0] >= 0) {
-                        fightOngoing = false;
+                    if (Character.Health[0] <= 0) {
+                        fightOver = true;
                         continue;
                     }
                 }
 
                 if (!isPlayerFirst) {
-                    for (byte i = 0; i < playerTurns; i++) {
-                        fightOngoing = PlayerTurn();
-                        if (!fightOngoing) continue;
+                    for (byte i = 0; i < playerTurns; i++) {    // repeat as long as Player still has turns
+                        fightOver = fled = PlayerTurn(); // if player fled, jump direct to end
+                        if(Enemy.Health[0] <= 0) fightOver = true;
+                        if (fightOver) continue;
                     }
                 }
 
                 RoundCount++;
 
-            } while (fightOngoing);
-            
+            } while (!fightOver);
+
+            // exp berechnen - falls gegner tot
+            if (fled) Console.WriteLine("{0} ist geflohen!", Character.Name);
+            else if (Character.Health[0] <= 0) Console.WriteLine("{0} ist gestorben", Character.Name);
+            else {  // defeated enemy
+                Console.WriteLine("{0} war siegreich!", Character.Name);
+                // get enemy gold and exp
+                Character.Exp[0] += Enemy.Exp;
+                Character.Gold += Enemy.Gold;
+
+                // player lvl up
+                while (Character.Exp[0] >= Character.Exp[1]) {
+                    Character.IncreaseLvl();
+                }
+            }
+
+            Thread.Sleep(TIMEOUT);
             return Character;
         }
 
-        private byte GetNumOfTurns(bool isPlayer) {
-            byte pTurns = 1, eTurns = 1;
-            ushort pDex = Character.Dexterity;
-            ushort eDex = Enemy.Dexterity;
-
-            // starts with turn 2, cuz turn 1 is already definded
-            while (pDex - (eDex + 5) >= 5) {
-                pTurns++;
-                eDex += 5;
-            }
-
-            while (eDex - (pDex + 5) >= 5) {
-                eTurns++;
-                pDex += 5;
-            }
-
-            return isPlayer ? pTurns : eTurns;
-        }
-
+        /// <summary>
+        /// Simulates Players turn
+        /// </summary>
+        /// <returns>true if player fled - false, if not</returns>
         private bool PlayerTurn() {
             short[] coolDown = GetCoolDown(true);   // cooldown of abilitys
             string ultimateName = UltimateName();
@@ -169,10 +177,8 @@ namespace RpgGame
                     case '4':
                         actionText = $"{Character.Name} versucht zu fliehen.\n";
 
-                        if (IsFled()) {
-                            actionText += $"{Character.Name} ist geflohen!";
-                            flee = true;
-                        } else actionText += "Fehlgeschalgen!";
+                        if (IsFled()) flee = true;
+                        else actionText += "Fehlgeschalgen!";
 
                         Console.WriteLine(actionText);
                         
@@ -206,6 +212,9 @@ namespace RpgGame
             return name;
         }
 
+        /// <summary>
+        /// Simulates the round of the enemy
+        /// </summary>
         private void EnemyTurn() {
             Random r = new Random();
             byte numberPool = 3;    // Attack, Heal, Ultimate
@@ -254,16 +263,43 @@ namespace RpgGame
             }
 
             ENEMYCOOLDOWN = enemyCoolDown;  // save Enemycooldown for next round
-
-
         }
 
+        /// <summary>
+        /// Checks how dex is higher, the one with the higher one, is first on turn
+        /// </summary>
+        /// <returns>true, if players first - false, if not</returns>
         private bool GetFirstMove() {
             Random r = new Random();
 
+            // both are equal -> rnd shall decide
             if (Character.Dexterity == Enemy.Dexterity) return r.Next(1, 3) == 1 ? true : false;
             else if (Character.Dexterity > Enemy.Dexterity) return true;
             else return false;
+        }
+
+        /// <summary>
+        /// Declairs how often the player / enemy is able to attack
+        /// </summary>
+        /// <param name="isPlayer">true if is player - false if enemy</param>
+        /// <returns>num of turns</returns>
+        private byte GetNumOfTurns(bool isPlayer) {
+            byte pTurns = 1, eTurns = 1;
+            ushort pDex = Character.Dexterity;
+            ushort eDex = Enemy.Dexterity;
+
+            // starts with turn 2, cuz turn 1 is already definded
+            while (pDex - (eDex + 5) >= 5) {
+                pTurns++;
+                eDex += 5;
+            }
+
+            while (eDex - (pDex + 5) >= 5) {
+                eTurns++;
+                pDex += 5;
+            }
+
+            return isPlayer ? pTurns : eTurns;
         }
 
         /// <summary>
