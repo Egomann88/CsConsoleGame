@@ -30,6 +30,7 @@ namespace RpgGame
         public Fight(Character c, Enemy e) {
             Character = c;
             Enemy = e;
+            RoundCount = 0;
         }
 
         // Methoden (Funktionen)
@@ -37,23 +38,30 @@ namespace RpgGame
 
         public Enemy Enemy { get; set; }
 
-        public byte RoundCount { get; set; }
+        private byte RoundCount { get; set; }
 
 
-        public Character Fightin() {
+        public Character FightIn() {
+
+            bool isPlayerFirst = GetFirstMove();
+
+            if(isPlayerFirst) PlayerTurn();
 
             EnemyTurn();
 
+            if(!isPlayerFirst) PlayerTurn();
+            
             RoundCount++;
+            
             return Character;
         }
 
         private bool PlayerTurn() {
-            short[] coolDown = GetCoolDown(true);
+            short[] coolDown = GetCoolDown(true);   // cooldown of abilitys
             string ultimateName = UltimateName();
-            string attackText = "";
-            ushort damage = 0;
-            char input = '0';
+            string actionText = ""; // what player will do
+            ushort damage = 0;  // players dmg
+            char input = '0';   // player input
             bool flee = false;
 
             do {
@@ -66,16 +74,16 @@ namespace RpgGame
                     case '1':
                         damage = Character.Strength;
 
-                        attackText = $"{Character.Name} greift an.\n";
+                        actionText = $"{Character.Name} greift an.\n";
 
                         if (IsCrit(Character.CritChance)) { 
                             damage = Convert.ToUInt16(Math.Round(damage * Character.CritDmg));
-                            attackText += "Kritischer Treffer!";
+                            actionText += "Kritischer Treffer!";
                         }
 
-                        attackText += $"{damage} Schaden!";
+                        actionText += $"{damage} Schaden!";
 
-                        Console.WriteLine(attackText);
+                        Console.WriteLine(actionText);
 
                         Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
 
@@ -87,8 +95,8 @@ namespace RpgGame
 
                         damage = Character.Intelligents;
 
-                        attackText = $"{Character.Name} heilt sich.\n{damage} Leben wiederhergestellt";
-                        Console.WriteLine(attackText);
+                        actionText = $"{Character.Name} heilt sich.\n{damage} Leben wiederhergestellt";
+                        Console.WriteLine(actionText);
 
                         Character.ChangeCurrentHealth(Convert.ToInt16(damage));
 
@@ -102,16 +110,16 @@ namespace RpgGame
 
                         damage = GetCharacterUltimate();
 
-                        attackText = $"{Character.Name} nutzt seine Ultimatie Fähigkeit \"{UltimateName()}\".\n";
+                        actionText = $"{Character.Name} nutzt seine Ultimatie Fähigkeit \"{UltimateName()}\".\n";
                         
                         if (IsCrit(Character.CritChance)) {
                             damage = Convert.ToUInt16(Math.Round(damage * Character.CritDmg));
-                            attackText += "Kritischer Treffer!";
+                            actionText += "Kritischer Treffer!";
                         }
 
-                        attackText += $"{damage} Schaden";
+                        actionText += $"{damage} Schaden";
 
-                        Console.WriteLine(attackText);
+                        Console.WriteLine(actionText);
 
                         Enemy.ChangeCurrentHealth(Convert.ToInt16(-damage));
                         coolDown[1] = ULTIMATECOOLDOWN;    // set ulti cooldown
@@ -119,21 +127,27 @@ namespace RpgGame
                         Thread.Sleep(TIMEOUT);
                         break;
                     case '4':
-                        attackText = $"{Character.Name} versucht zu fliehen.\n";
+                        actionText = $"{Character.Name} versucht zu fliehen.\n";
 
                         if (IsFled()) {
-                            attackText += $"{Character.Name} ist geflohen!";
+                            actionText += $"{Character.Name} ist geflohen!";
                             flee = true;
-                        } else attackText += "Fehlgeschalgen!";
+                        } else actionText += "Fehlgeschalgen!";
 
-                        Console.WriteLine(attackText);
+                        Console.WriteLine(actionText);
                         
                         Thread.Sleep(TIMEOUT);
                         break;
-                    default: continue;  // new input
+                    default: continue;  // must give new input
                 }
-                return flee;
+                break;  // break out of loop
             } while (true);
+
+            coolDown = coolDown.Select(x => --x).ToArray();   // decrease cooldowns by one
+
+            CHARACTERCOOLDOWN = coolDown;  // save cooldowns for next round
+
+            return flee;
         }
 
         /// <summary>
@@ -150,34 +164,6 @@ namespace RpgGame
             }
 
             return name;
-        }
-
-        /// <summary>
-        /// Every Class has a diffrent Ult, damage wil also be diffrenty calculated.
-        /// </summary>
-        /// <returns>damage -> uhsort</returns>
-        private ushort GetCharacterUltimate() {
-            ushort damage = 0;
-            switch (Character.Class) {
-                case 1: // warrior
-                    damage = Convert.ToUInt16(Character.Strength * 2 + (Character.Intelligents / 2) - Math.Round(RoundCount * 1.2));
-                    break;
-                case 2: // mage
-                    // if number of shot metors is lesser than 1, just use 1
-                    int countMetores = Character.Intelligents * 0.2 < 1 ? 1 : Convert.ToInt32(Character.Intelligents * 0.2);
-                    damage = Convert.ToUInt16(Math.Round(Character.Intelligents * 0.6 * countMetores));
-                    break;
-                case 3: // thief
-                    // if hp is overheal, zero dmg, instead of -dmg
-                    int hpDmg = Character.Health[1] - Character.Health[0] < 0 ? 0 : Character.Health[1] - Character.Health[0];
-                    damage = Convert.ToUInt16(hpDmg + Character.Dexterity + RoundCount);
-
-                    // heals character with a quater of dealt dmg (no decimal number + no round + overheal allowed)
-                    Character.ChangeCurrentHealth((short)(damage / 4), true); // send copy of dmg, cuz its needed for return
-                    break;
-            }
-
-            return damage;
         }
 
         private void EnemyTurn() {
@@ -230,6 +216,43 @@ namespace RpgGame
             ENEMYCOOLDOWN = enemyCoolDown;  // save Enemycooldown for next round
 
 
+        }
+
+        private bool GetFirstMove() {
+            Random r = new Random();
+
+            if (Character.Dexterity == Enemy.Dexterity) return r.Next(1, 3) == 1 ? true : false;
+            else if (Character.Dexterity > Enemy.Dexterity) return true;
+            else return false;
+        }
+
+        /// <summary>
+        /// Every Class has a diffrent Ult, damage wil also be diffrenty calculated.
+        /// </summary>
+        /// <returns>damage -> uhsort</returns>
+        private ushort GetCharacterUltimate() {
+            ushort damage = 0;
+            switch (Character.Class)
+            {
+                case 1: // warrior
+                    damage = Convert.ToUInt16(Character.Strength * 2 + (Character.Intelligents / 2) - Math.Round(RoundCount * 1.2));
+                    break;
+                case 2: // mage
+                    // if number of shot metors is lesser than 1, just use 1
+                    int countMetores = Character.Intelligents * 0.2 < 1 ? 1 : Convert.ToInt32(Character.Intelligents * 0.2);
+                    damage = Convert.ToUInt16(Math.Round(Character.Intelligents * 0.6 * countMetores));
+                    break;
+                case 3: // thief
+                    // if hp is overheal, zero dmg, instead of -dmg
+                    int hpDmg = Character.Health[1] - Character.Health[0] < 0 ? 0 : Character.Health[1] - Character.Health[0];
+                    damage = Convert.ToUInt16(hpDmg + Character.Dexterity + RoundCount);
+
+                    // heals character with a quater of dealt dmg (no decimal number + no round + overheal allowed)
+                    Character.ChangeCurrentHealth((short)(damage / 4), true); // send copy of dmg, cuz its needed for return
+                    break;
+            }
+
+            return damage;
         }
 
         /// <summary>
