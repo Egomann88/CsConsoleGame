@@ -93,13 +93,57 @@ namespace RpgGame
                     case '3':
                         if (IsCharacterOnCoolDown(coolDown[1])) continue;
 
-                        damage = 0;
+                        damage = GetCharacterUltimate();
                         break;
                     case '4':
                         break;
                     default: continue;  // new input
                 }
             } while (true);
+        }
+
+        /// <summary>
+        /// Gives Ultimate diffrent name per class
+        /// </summary>
+        /// <returns>name -> string</returns>
+        private string UltimateName() {
+            string name = "";
+
+            switch (Character.Class) {
+                case 1: name = "Bodenspalter";  break;
+                case 2: name = "Meteorschauer"; break;
+                case 3: name = "Exitus"; break;
+            }
+
+            return name;
+        }
+
+        /// <summary>
+        /// Every Class has a diffrent Ult, damage wil also be diffrenty calculated.
+        /// </summary>
+        /// <returns>damage -> uhsort</returns>
+        private ushort GetCharacterUltimate() {
+            ushort damage = 0;
+            switch (Character.Class) {
+                case 1: // warrior
+                    damage = Convert.ToUInt16(Character.Strength * 2 + (Character.Intelligents / 2) - Math.Round(RoundCount * 1.2));
+                    break;
+                case 2: // mage
+                    // if number of shot metors is lesser than 1, just use 1
+                    int countMetores = Character.Intelligents * 0.2 < 1 ? 1 : Convert.ToInt32(Character.Intelligents * 0.2);
+                    damage = Convert.ToUInt16(Math.Round(Character.Intelligents * 0.6 * countMetores));
+                    break;
+                case 3: // thief
+                    // if hp is overheal, zero dmg, instead of -dmg
+                    int hpDmg = Character.Health[1] - Character.Health[0] < 0 ? 0 : Character.Health[1] - Character.Health[0];
+                    damage = Convert.ToUInt16(hpDmg + Character.Dexterity + RoundCount);
+
+                    // heals character with a quater of dealt dmg (no decimal number + no round + overheal allowed)
+                    Character.ChangeCurrentHealth((short)(damage / 4), true); // send copy of dmg, cuz its needed for return
+                    break;
+            }
+
+            return damage;
         }
 
         private void EnemyTurn() {
