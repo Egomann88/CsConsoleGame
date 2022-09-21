@@ -42,7 +42,7 @@ namespace RpgGame
 
         public short[] Health { get; set; }
 
-        public uint Gold { get; set; }
+        public int Gold { get; set; }
 
         public uint Exp { get; set; }
 
@@ -79,7 +79,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(10 * multiplier)),
                         Convert.ToInt16(Math.Round(10 * multiplier))
                     };
-                    Gold = Convert.ToUInt16(Math.Round(10 * multiplier));
+                    Gold = Convert.ToInt32(Math.Round(10 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(5 * multiplier));
                     IsDmgUlt = true;
                     break;
@@ -95,7 +95,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(23 * multiplier)),
                         Convert.ToInt16(Math.Round(23 * multiplier))
                     };
-                    Gold = Convert.ToUInt16(Math.Round(19 * multiplier));
+                    Gold = Convert.ToInt32(Math.Round(19 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(9 * multiplier));
                     IsDmgUlt = true;
                     break;
@@ -111,7 +111,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(37 * multiplier)),
                         Convert.ToInt16(Math.Round(37 * multiplier))
                     };
-                    Gold = Convert.ToUInt16(Math.Round(38 * multiplier));
+                    Gold = Convert.ToInt32(Math.Round(38 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(19 * multiplier));
                     IsDmgUlt = false;
                     break;
@@ -127,7 +127,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(37 * multiplier)),
                         Convert.ToInt16(Math.Round(37 * multiplier))
                     };
-                    Gold = Convert.ToUInt16(Math.Round(12 * multiplier));
+                    Gold = Convert.ToInt32(Math.Round(12 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(30 * multiplier));
                     IsDmgUlt = false;
                     break;
@@ -143,7 +143,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(52 * multiplier)),
                         Convert.ToInt16(Math.Round(52 * multiplier))
                     };
-                    Gold = Convert.ToUInt16(Math.Round(68 * multiplier));
+                    Gold = Convert.ToInt32(Math.Round(68 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(56 * multiplier));
                     IsDmgUlt = true;
                     break;
@@ -159,7 +159,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(42 * multiplier)),
                         Convert.ToInt16(Math.Round(42 * multiplier))
                     };
-                    Gold = Convert.ToUInt16(Math.Round(70 * multiplier));
+                    Gold = Convert.ToInt32(Math.Round(70 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(56 * multiplier));
                     IsDmgUlt = false;
                     break;
@@ -175,7 +175,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(102 * multiplier)),
                         Convert.ToInt16(Math.Round(102 * multiplier))
                     };
-                    Gold = Convert.ToUInt16(Math.Round(36 * multiplier));
+                    Gold = Convert.ToInt32(Math.Round(36 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(160 * multiplier));
                     IsDmgUlt = false;
                     break;
@@ -191,7 +191,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(80 * multiplier)),
                         Convert.ToInt16(Math.Round(80 * multiplier))
                     };
-                    Gold = Convert.ToUInt16(Math.Round(160 * multiplier));
+                    Gold = Convert.ToInt32(Math.Round(160 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(120 * multiplier));
                     IsDmgUlt = true;
                     break;
@@ -207,7 +207,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(96 * multiplier)),
                         Convert.ToInt16(Math.Round(96 * multiplier))
                     };
-                    Gold = Convert.ToUInt16(Math.Round(140 * multiplier));
+                    Gold = Convert.ToInt32(Math.Round(140 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(125 * multiplier));
                     IsDmgUlt = true;
                     break;
@@ -223,7 +223,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(100 * multiplier)),
                         Convert.ToInt16(Math.Round(100 * multiplier))
                     };
-                    Gold = Convert.ToUInt16(Math.Round(150 * multiplier));
+                    Gold = Convert.ToInt32(Math.Round(150 * multiplier));
                     Exp = Convert.ToUInt16(Math.Round(240 * multiplier));
                     IsDmgUlt = true;
                     break;
