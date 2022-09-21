@@ -42,18 +42,58 @@ namespace RpgGame
 
 
         public Character FightIn() {
-
+            bool fightOngoing = true;
             bool isPlayerFirst = GetFirstMove();
+            const byte playerTurns = GetNumOfTurns(true);
+            const byte enemyTurns = GetNumOfTurns(false);
 
-            if(isPlayerFirst) PlayerTurn();
+            do {
+                if (isPlayerFirst) {
+                    for (byte i = 0; i < playerTurns; i++) {
+                        fightOngoing = PlayerTurn();
+                        if (!fightOngoing) continue;
+                    }
+                }
 
-            EnemyTurn();
+                for (byte i = 0; i < enemyTurns; i++) {
+                    EnemyTurn();
+                    if (Character.Health[0] >= 0) {
+                        fightOngoing = false;
+                        continue;
+                    }
+                }
 
-            if(!isPlayerFirst) PlayerTurn();
-            
-            RoundCount++;
+                if (!isPlayerFirst) {
+                    for (byte i = 0; i < playerTurns; i++) {
+                        fightOngoing = PlayerTurn();
+                        if (!fightOngoing) continue;
+                    }
+                }
+
+                RoundCount++;
+
+            } while (fightOngoing);
             
             return Character;
+        }
+
+        private byte GetNumOfTurns(bool isPlayer) {
+            byte pTurns = 1, eTurns = 1;
+            ushort pDex = Character.Dexterity;
+            ushort eDex = Enemy.Dexterity;
+
+            // starts with turn 2, cuz turn 1 is already definded
+            while (pDex - (eDex + 5) >= 5) {
+                pTurns++;
+                eDex += 5;
+            }
+
+            while (eDex - (pDex + 5) >= 5) {
+                eTurns++;
+                pDex += 5;
+            }
+
+            return isPlayer ? pTurns : eTurns;
         }
 
         private bool PlayerTurn() {
