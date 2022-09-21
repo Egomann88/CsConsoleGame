@@ -14,6 +14,10 @@ namespace RpgGame
         private short[] ENEMYCOOLDOWN = new short[] { 0, 0 }; // Heal, Ult
         private const byte HEALCOOLDOWN = 3;    // Default cooldown of both sides for the healpotion
         private const byte ULTIMATECOOLDOWN = 4; // Default cooldown for both sides on the ultimate
+        private const int SHORTTIMEOUT = 700;
+        private const int TIMEOUT = 1200;
+        private const int LONGTIMEOUT = 2000;
+
 
         // Membervariablen
 
@@ -44,12 +48,13 @@ namespace RpgGame
             return Character;
         }
 
-        private void PlayerTurn() {
+        private bool PlayerTurn() {
             short[] coolDown = GetCoolDown(true);
             string ultimateName = UltimateName();
             string attackText = "";
             ushort damage = 0;
             char input = '0';
+            bool flee = false;
 
             do {
                 Console.Clear();
@@ -74,9 +79,10 @@ namespace RpgGame
 
                         Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
 
-                        Thread.Sleep(1200);
-                        return;
+                        Thread.Sleep(TIMEOUT);
+                        break;
                     case '2':
+                        // if abilty is still on cooldown, go back to start
                         if (IsCharacterOnCoolDown(coolDown[0])) continue;
 
                         damage = Character.Intelligents;
@@ -88,17 +94,45 @@ namespace RpgGame
 
                         coolDown[0] = HEALCOOLDOWN;    // set heal cooldown
 
-                        Thread.Sleep(1200);
-                        return;
+                        Thread.Sleep(TIMEOUT);
+                        break;
                     case '3':
+                        // if abilty is still on cooldown, go back to start
                         if (IsCharacterOnCoolDown(coolDown[1])) continue;
 
                         damage = GetCharacterUltimate();
+
+                        attackText = $"{Character.Name} nutzt seine Ultimatie Fähigkeit \"{UltimateName()}\".\n";
+                        
+                        if (IsCrit(Character.CritChance)) {
+                            damage = Convert.ToUInt16(Math.Round(damage * Character.CritDmg));
+                            attackText += "Kritischer Treffer!";
+                        }
+
+                        attackText += $"{damage} Schaden";
+
+                        Console.WriteLine(attackText);
+
+                        Enemy.ChangeCurrentHealth(Convert.ToInt16(-damage));
+                        coolDown[1] = ULTIMATECOOLDOWN;    // set ulti cooldown
+
+                        Thread.Sleep(TIMEOUT);
                         break;
                     case '4':
+                        attackText = $"{Character.Name} versucht zu fliehen.\n";
+
+                        if (IsFled()) {
+                            attackText += $"{Character.Name} ist geflohen!";
+                            flee = true;
+                        } else attackText += "Fehlgeschalgen!";
+
+                        Console.WriteLine(attackText);
+                        
+                        Thread.Sleep(TIMEOUT);
                         break;
                     default: continue;  // new input
                 }
+                return flee;
             } while (true);
         }
 
@@ -211,6 +245,19 @@ namespace RpgGame
             if (coolDown[1] <= 0) coolDown[1] = 0;
 
             return coolDown;
+        }
+
+        /// <summary>
+        /// Checks if was able to flee
+        /// </summary>
+        /// <returns>true - succeeded / false - failed</returns>
+        private bool IsFled() {
+            Random r = new Random();
+            int rnd = r.Next(1, 5); // 25 %
+
+            if (rnd > 1) return false;
+
+            return true;
         }
 
         /// <summary>
