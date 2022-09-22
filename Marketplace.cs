@@ -247,11 +247,42 @@ namespace RpgGame
 
         // arena
         private void ArenaOverView() {
-            
+            char input = '0';
+
+            while(true) {
+                Console.Clear();
+                Console.WriteLine("In der Arena werdet ihr ausschliesslich starke Gegner treffen und wie der Zufall es will, " +
+                    "habt ihr die Möglichkeit gegen besonders starke Gegner zu kämpfen, mit höheren Belohnungen natürlich\n" +
+                    "In der Arena gelten nicht dieselben Regeln wie in der Wildnis. Hier könnt ihr nicht sterben.");
+                Console.WriteLine("1) Normaler Arenakampf\n2) Kampf gegen starken Gegner\n3) Zurück zum Marktplatz.");
+                input = Console.ReadKey().KeyChar;
+
+                switch (input) {
+                    case '1': EvalEnemy(false); break;
+                    case '2': EvalEnemy(true); break;
+                    case '3': return;
+                    default: continue;
+                }
+            }
         }
 
-        
-        
+        private void EvalEnemy(bool isHard) {
+            Random r = new Random();
+            byte enemyId = Convert.ToByte(r.Next(1, 101));
+
+            if(enemyId <= 21) enemyId = 5; // 21 %
+            else if (enemyId <= 42) enemyId = 6; // 21 %
+            else if (enemyId <= 62) enemyId = 7; // 20 %
+            else if (enemyId <= 80) enemyId = 8; // 18 %
+            else if (enemyId <= 96) enemyId = 9; // 14 %
+            else enemyId = 10; // 6 %
+
+            Enemy e = new Enemy(Character.Lvl, enemyId, isHard);
+
+            // how to start new fight?
+            // new class, with inherits from fight?
+        }
+
         // increase stats
         private void StatPushOverView() {
 
