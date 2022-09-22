@@ -17,7 +17,7 @@ namespace RpgGame
             string name = "";
             byte cl = 0;
 
-            do {
+            while (name == "") {
                 Console.Clear();
                 Console.WriteLine("Geben Sie den Namen ihres Charakters ein:");
                 name = Console.ReadLine();
@@ -34,7 +34,7 @@ namespace RpgGame
                 letters[0] = char.ToUpper(letters[0]);
                 // put array back together
                 name = new string(letters);
-            } while (name == "");
+            }
 
             do {
                 Console.Clear();
@@ -66,9 +66,10 @@ namespace RpgGame
             Random r = new Random();
             byte rnd = 0;
 
-            if (c.Lvl < 5) rnd = Convert.ToByte(r.Next(1, 4)); // only picks the easy enemys
-            else if (c.Lvl < 8) rnd = Convert.ToByte(r.Next(1, 5)); // only picks the easy enemys
-            else if (c.Lvl < 12) rnd = Convert.ToByte(r.Next(1, 6)); // only picks the easy enemys
+            if (c.Lvl < 5) rnd = Convert.ToByte(r.Next(1, 3)); // only picks the easy enemies
+            else if (c.Lvl < 8) rnd = Convert.ToByte(r.Next(1, 4)); // only picks the easy enemies
+            else if (c.Lvl < 10) rnd = Convert.ToByte(r.Next(1, 5)); // only picks the easy enemies
+            else if (c.Lvl < 14) rnd = Convert.ToByte(r.Next(1, 6)); // only picks the easy enemies
             else {
                 double rndDouble = r.NextDouble();
 
