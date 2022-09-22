@@ -93,7 +93,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(19 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(19 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(13 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(14 * multiplier));
                     IsDmgUlt = true;
                     break;
                 // paladin
@@ -109,7 +109,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(29 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(38 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(24 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(26 * multiplier));
                     IsDmgUlt = false;
                     break;
                 // plantara
@@ -141,7 +141,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(48 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(68 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(56 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(72 * multiplier));
                     IsDmgUlt = true;
                     break;
                 // wizard
@@ -157,7 +157,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(39 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(70 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(56 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(80 * multiplier));
                     IsDmgUlt = false;
                     break;
                 // grifin
@@ -173,7 +173,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(98 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(36 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(160 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(190 * multiplier));
                     IsDmgUlt = false;
                     break;
                 // dragon
@@ -189,7 +189,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(78 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(160 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(120 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(150 * multiplier));
                     IsDmgUlt = true;
                     break;
                 // demon
@@ -205,7 +205,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(86 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(140 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(125 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(180 * multiplier));
                     IsDmgUlt = true;
                     break;
                 // ashura
