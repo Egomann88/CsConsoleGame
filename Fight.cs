@@ -52,10 +52,13 @@ namespace RpgGame
             byte playerTurns = GetNumOfTurns(true);
             byte enemyTurns = GetNumOfTurns(false);
 
+            Console.Clear();
             Console.WriteLine("Ein {0} seit auf der Hut", Enemy.Name);
             Thread.Sleep(TIMEOUT);
 
             do {
+                Console.Clear();    // clear all fighting texts
+
                 if (isPlayerFirst) {
                     for (byte i = 0; i < playerTurns; i++) {    // repeat as long as Player still has turns
                         fightOver = fled = PlayerTurn(); // if player fled, jump direct to end
@@ -68,9 +71,10 @@ namespace RpgGame
                     EnemyTurn();
                     if (Character.Health[0] <= 0) {
                         fightOver = true;
-                        continue;
+                        break;  // break out of for-loop
                     }
                 }
+                if (fightOver) continue;    // go to end of while-loop -> character died
 
                 if (!isPlayerFirst) {
                     for (byte i = 0; i < playerTurns; i++) {    // repeat as long as Player still has turns
@@ -86,7 +90,7 @@ namespace RpgGame
 
             // exp berechnen - falls gegner tot
             if (fled) Console.WriteLine("{0} ist geflohen!", Character.Name);
-            else if (Character.Health[0] <= 0) Console.WriteLine("{0} ist gestorben", Character.Name);
+            else if (Character.Health[0] <= 0) Console.WriteLine("{0} ist gestorben...", Character.Name);
             else {  // defeated enemy
                 Console.WriteLine("{0} war siegreich!", Character.Name);
                 // get enemy gold and exp
@@ -120,7 +124,8 @@ namespace RpgGame
                 Console.WriteLine("{0}, was wollt ihr machen?", Character.Name);
                 Console.Write("1) Angreifen\n2) Heilen (Abklingzeit: {0} Runden)\n3) {1} (Abklingzeit: {2} Runden)\n4) Fliehen"
                     , coolDown[0], ultimateName, coolDown[1]);
-                input = Console.ReadKey(false).KeyChar; // do not show input in console
+                input = Console.ReadKey(true).KeyChar; // do not show input in console
+                Console.Clear();
                 switch (input) {
                     case '1':
                         damage = Character.Strength;
@@ -134,11 +139,7 @@ namespace RpgGame
 
                         actionText += $"{damage} Schaden!";
 
-                        Console.WriteLine(actionText);
-
-                        Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
-
-                        Thread.Sleep(TIMEOUT);
+                        Enemy.ChangeCurrentHealth(Convert.ToInt16(-damage));
                         break;
                     case '2':
                         // if abilty is still on cooldown, go back to start
@@ -147,13 +148,10 @@ namespace RpgGame
                         damage = Character.Intelligents;
 
                         actionText = $"{Character.Name} heilt sich.\n{damage} Leben wiederhergestellt";
-                        Console.WriteLine(actionText);
 
                         Character.ChangeCurrentHealth(Convert.ToInt16(damage));
 
                         coolDown[0] = HEALCOOLDOWN;    // set heal cooldown
-
-                        Thread.Sleep(TIMEOUT);
                         break;
                     case '3':
                         // if abilty is still on cooldown, go back to start
@@ -170,25 +168,22 @@ namespace RpgGame
 
                         actionText += $"{damage} Schaden";
 
-                        Console.WriteLine(actionText);
-
                         Enemy.ChangeCurrentHealth(Convert.ToInt16(-damage));
                         coolDown[1] = ULTIMATECOOLDOWN;    // set ulti cooldown
-
-                        Thread.Sleep(TIMEOUT);
                         break;
                     case '4':
                         actionText = $"{Character.Name} versucht zu fliehen.\n";
 
                         if (IsFled()) flee = true;
                         else actionText += "Fehlgeschalgen!";
-
-                        Console.WriteLine(actionText);
-                        
-                        Thread.Sleep(TIMEOUT);
                         break;
                     default: continue;  // must give new input
                 }
+
+                Console.WriteLine(actionText);
+
+                Thread.Sleep(TIMEOUT);
+
                 break;  // break out of loop
             } while (true);
 
