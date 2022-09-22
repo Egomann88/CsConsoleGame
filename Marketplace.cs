@@ -13,6 +13,7 @@ namespace RpgGame
         private const byte WEAKHEALERPRICE = 25;
         private const byte NORMALHEALERPRICE = 45;
         private const byte STRONGHEALERPRICE = 80;
+        private const byte LVLFORHIGHUSES = 8;
         private const int SHORTTIMEOUT = 700;
         private const int TIMEOUT = 1200;
         private const int LONGTIMEOUT = 2000;
@@ -87,7 +88,7 @@ namespace RpgGame
 
                         break;
                     case '3':
-                        if(Character.Lvl < 8) {
+                        if(Character.Lvl < LVLFORHIGHUSES) {
                             Console.WriteLine("Die Heilerin lässt euch nicht hinein. Euer Level ist zu tief.");
                             Thread.Sleep(SHORTTIMEOUT);
                             continue;
@@ -106,7 +107,6 @@ namespace RpgGame
             }
         }
 
-        // glücksspiel (rot o. schwarz, höher o. tiefer)
         private void GamblingOverView() {
             char input = '0';
 
@@ -245,7 +245,6 @@ namespace RpgGame
             Thread.Sleep(TIMEOUT);
         }
 
-        // arena
         private void ArenaOverView() {
             char input = '0';
 
@@ -285,6 +284,12 @@ namespace RpgGame
 
         // increase stats
         private void StatPushOverView() {
+            if(Character.Lvl < LVLFORHIGHUSES) {
+                Console.WriteLine("Die Verstärkungsmagier lässt euch nicht hinein. Euer Level ist zu tief.");
+                Thread.Sleep(SHORTTIMEOUT);
+                return;
+            }
+
 
         }
 
