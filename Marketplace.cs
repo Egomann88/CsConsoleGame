@@ -181,13 +181,76 @@ namespace RpgGame
         }
 
         private void HighLess() {
-            
+            Random r = new Random();
+            char input = '0';
+            bool playerIsHigher = false, gameIsHigher = false;
+            int lastGameNumber = 0, gameNumber = 0, stake = 0;
+            const int stdPlyValue = 20; // standard Play Value
+
+            if(Character.Gold < stdPlyValue) {
+                Console.WriteLine("Ihr besitzt nicht genügend Geld, um zu spielen.");
+                Thread.Sleep(SHORTTIMEOUT);
+            }
+
+            Console.WriteLine("Eine Zahl zwischen 1 und 10 wird gewürfelt." +
+                "Ihr müsst sagen, ob die nächste Zahl höher oder tiefer, als die jetzige sein wird.\n" +
+                "Der erste Einsatz ist 20 Gold, dieser wird jede Runde verdoppelt. Das Spiel geht max. 5 Runden.");
+
+            while (true) {
+                int i = 1;
+                stake = stdPlyValue;
+                lastGameNumber = r.Next(1, 11);
+
+                Console.WriteLine("Die {0}. Zahl ist eine {1}", i, lastGameNumber);
+
+                while (true) {
+                    Console.WriteLine("1) Höher\n2) Tiefer\n3) Gewinn nehmen & gehen");
+                    input = Console.ReadKey().KeyChar;
+
+                    if (input == '1') { playerIsHigher = true; break; }
+                    else if (input == '2') { playerIsHigher = false; break; }
+                    else if (input == '3') { PayPlayer(true, stake); return; }    // end func with payout
+                    else continue;
+                }
+
+                stake += 20;
+                if (stake >= Character.Gold) {
+                    Console.WriteLine("Wenn Ihr verliert, könnt ihr nicht bezahlen.\nDie Runde wird beendet.");
+                    PayPlayer(true, stake - 20);
+                    Thread.Sleep(SHORTTIMEOUT);
+                    return;
+                }
+
+                gameNumber = r.Next(1, 11);
+
+                Console.WriteLine("Die {0}. Zahl ist eine {1}", i+1, gameNumber);
+                if (gameNumber > lastGameNumber) gameIsHigher = true;
+                else gameIsHigher = false;
+
+                if(playerIsHigher == gameIsHigher) {
+                    Console.WriteLine("Ihr hattet recht!");
+                    PayPlayer(true, stake);
+                } else {
+                    Console.WriteLine("Ihr lagt falsch...");
+                    PayPlayer(true, -stake);
+                }
+                break;
+            }
+        }
+
+        private void PayPlayer(bool pWon, int stake) {
+            string wonMsg = pWon ? "erhaltet" : "bezahlt";
+            Console.WriteLine("Ihr {0} {1} Gold.", wonMsg, stake);
+            Character.Gold += stake;
+            Thread.Sleep(TIMEOUT);
         }
 
         // arena
         private void ArenaOverView() {
-
+            
         }
+
+        
         
         // increase stats
         private void StatPushOverView() {
