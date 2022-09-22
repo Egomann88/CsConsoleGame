@@ -118,7 +118,7 @@ namespace RpgGame
         /// <returns>true if player fled - false, if not</returns>
         private bool PlayerTurn() {
             short[] coolDown = GetCoolDown(true);   // cooldown of abilitys
-            string ultimateName = UltimateName();
+            string ultimateName = GetUltimateName();
             string actionText = ""; // what player will do
             ushort damage = 0;  // players dmg
             char input = '0';   // player input
@@ -139,7 +139,7 @@ namespace RpgGame
 
                         if (IsCrit(Character.CritChance)) { 
                             damage = Convert.ToUInt16(Math.Round(damage * Character.CritDmg));
-                            actionText += "Kritischer Treffer!";
+                            actionText += "Kritischer Treffer!\n";
                         }
 
                         actionText += $"{damage} Schaden!";
@@ -164,11 +164,11 @@ namespace RpgGame
 
                         damage = GetCharacterUltimate();
 
-                        actionText = $"{Character.Name} nutzt seine Ultimatie Fähigkeit \"{UltimateName()}\".\n";
+                        actionText = $"{Character.Name} nutzt seine Ultimatie Fähigkeit \"{GetUltimateName()}\".\n";
                         
                         if (IsCrit(Character.CritChance)) {
                             damage = Convert.ToUInt16(Math.Round(damage * Character.CritDmg));
-                            actionText += "Kritischer Treffer!";
+                            actionText += "Kritischer Treffer!\n";
                         }
 
                         actionText += $"{damage} Schaden";
@@ -200,22 +200,6 @@ namespace RpgGame
         }
 
         /// <summary>
-        /// Gives Ultimate diffrent name per class
-        /// </summary>
-        /// <returns>name -> string</returns>
-        private string UltimateName() {
-            string name = "";
-
-            switch (Character.Class) {
-                case 1: name = "Bodenspalter";  break;
-                case 2: name = "Meteorschauer"; break;
-                case 3: name = "Exitus"; break;
-            }
-
-            return name;
-        }
-
-        /// <summary>
         /// Simulates the round of the enemy
         /// </summary>
         private void EnemyTurn() {
@@ -242,7 +226,7 @@ namespace RpgGame
 
                     if (IsCrit(Enemy.CritChance)) {
                         damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
-                        attackText += " Kritischer Treffer!";
+                        attackText += " Kritischer Treffer!\n";
                     }
 
                     attackText += $"\n{damage} Schaden!";
@@ -265,7 +249,7 @@ namespace RpgGame
 
                         if (IsCrit(Enemy.CritChance)) { 
                             damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
-                            attackText += "Kritischer Treffer!";
+                            attackText += "Kritischer Treffer!\n";
                         }
 
                         attackText += $"\n{damage} Schaden!";
@@ -284,6 +268,22 @@ namespace RpgGame
             Console.WriteLine(attackText);
             ENEMYCOOLDOWN = coolDown;  // save Enemycooldown for next round
             Thread.Sleep(TIMEOUT);
+        }
+
+        /// <summary>
+        /// Gives Ultimate diffrent name per class
+        /// </summary>
+        /// <returns>name -> string</returns>
+        private string GetUltimateName() {
+            string name = "";
+
+            switch (Character.Class) {
+                case 1: name = "Bodenspalter"; break;
+                case 2: name = "Meteorschauer"; break;
+                case 3: name = "Exitus"; break;
+            }
+
+            return name;
         }
 
         /// <summary>

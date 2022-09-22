@@ -122,7 +122,7 @@ namespace RpgGame
                 Exp[0] = 0;
                 Exp[1] += (byte)(50 + Lvl);
 
-                if (Lvl % 10 == 0) Exp[1] += 200;    // increases exp need every 10 lvls a bit more
+                if (Lvl % 10 == 0) Exp[1] += 100;    // increases exp need every 10 lvls a bit more
 
                 IncreaseStats();
             }
