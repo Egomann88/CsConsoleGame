@@ -107,7 +107,82 @@ namespace RpgGame
         }
 
         // glücksspiel (rot o. schwarz, höher o. tiefer)
+        private void GamblingOverView() {
+            char input = '0';
+
+            while (true) {
+                Console.Clear();
+                Console.WriteLine("Ihr könnt \"Rot oder Schwarz\" oder \"Höher oder Tiefer\" spielen.");
+                Console.WriteLine("1) Rot oder Schwarz\n2) Höher oder Tiefer\n3) Zurück zum Marktplatz");
+                input = Console.ReadKey().KeyChar;
+
+                switch (input) {
+                    case '1': RedBlack(); break;
+                    case '2': HighLess(); break;
+                    case '3': return;
+                    default: continue;
+                }
+            }
+        }
+
+        private void RedBlack() {
+            Random r = new Random();
+            string[] moods = { "grimmige", "gelangweilte", "fröhliche" };
+            string dealerMood = moods[r.Next(1, moods.Length)];
+            string dealer = "Der {0} Spielmeister ";
+            bool gameIsRed = false;
+            bool characterIsRed = false;
+            uint stake = 0;
+            char input = '0';
+
+            do {
+                Console.Clear();
+                Console.WriteLine(dealer + "fragt nach eurem Einsatz.", dealerMood);
+                Console.Write("Euer Einsatz: ");
+            } while (!uint.TryParse(Console.ReadLine(), out stake) && stake <= Character.Gold);
+
+            Console.WriteLine(dealer + "fragt, für das Ihr wettet.");
+            while(true) {
+                Console.WriteLine("1) Rot\n 2) Schwarz");
+                Console.Write("Eure Wahl: ");
+                input = Console.ReadKey().KeyChar;
+
+                if (input == '1') characterIsRed = true;
+                else if (input == '2') characterIsRed = false;
+                else continue;
+
+                break;
+            }
+
+            Console.Write("Das Ergebnis ist");
+            for(byte i = 0; i < 4; i++) {
+                Console.Write(".");
+                Thread.Sleep(SHORTTIMEOUT - 400);
+            }
+
+            if (r.Next(1, 3) == 1)
+            {
+                gameIsRed = true;
+                Console.WriteLine("\nRot!");
+            } else {
+                gameIsRed = false;
+                Console.WriteLine("\nSchwarz!");
+            }
         
+            if(characterIsRed == gameIsRed) {
+                Console.WriteLine("Ihr habt gewonnen!");
+                Character.Gold += Convert.ToInt32(stake);
+            } else {
+                Console.WriteLine("Ihr habt verloren...");
+                Character.Gold -= Convert.ToInt32(stake);
+            }
+
+            Thread.Sleep(TIMEOUT);
+        }
+
+        private void HighLess() {
+            
+        }
 
         // arena
         private void ArenaOverView() {
