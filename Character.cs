@@ -22,13 +22,13 @@ namespace RpgGame
         public Character(string name, byte cl) {
             Name = name;
             Class = cl;
-            Exp = new uint[] { 0, 50 };
+            Exp = new uint[] { 0, 40 };
             Lvl = 1;
 
             switch (cl) {
                 case 1: // warrior
                     Strength = 3;
-                    Intelligents = 1;
+                    Intelligents = 2;
                     Dexterity = 2;
                     CritChance = 2.4F;
                     CritDmg = 1.25F;
@@ -36,12 +36,12 @@ namespace RpgGame
                     Gold = 52;
                     break;
                 case 2: // mage
-                    Strength = 1;
+                    Strength = 2;
                     Intelligents = 3;
                     Dexterity = 2;
                     CritChance = 4.8F;
                     CritDmg = 1.5F;
-                    Health = new short[] { 16, 16 };
+                    Health = new short[] { 22, 22 };
                     Gold = 21;
                     break;
                 case 3: // thief
@@ -50,7 +50,7 @@ namespace RpgGame
                     Dexterity = 2;
                     CritChance = 3.2F;
                     CritDmg = 1.75F;
-                    Health = new short[] { 20, 20 };
+                    Health = new short[] { 26, 26 };
                     Gold = 72;
                     break;
                 default: Environment.Exit(1); break;
@@ -120,9 +120,9 @@ namespace RpgGame
             else if (Exp[0] >= Exp[1]) {
                 Lvl++;
                 Exp[0] = 0;
-                Exp[1] += (byte)(50 + Lvl);
+                Exp[1] += (byte)(40 + Lvl);
 
-                if (Lvl % 10 == 0) Exp[1] += 100;    // increases exp need every 10 lvls a bit more
+                if (Lvl % 10 == 0) Exp[1] += 80;    // increases exp need every 10 lvls a bit more
 
                 IncreaseStats();
             }
