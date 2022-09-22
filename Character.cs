@@ -22,7 +22,7 @@ namespace RpgGame
         public Character(string name, byte cl) {
             Name = name;
             Class = cl;
-            Exp = new uint[] { 0, 40 };
+            Exp = new uint[] { 0, 30 };
             Lvl = 1;
 
             switch (cl) {
@@ -140,9 +140,9 @@ namespace RpgGame
                 Console.WriteLine("{0} ist ein Level aufgestiegen.\n{0} ist nun Level {1}.", Name, ++Lvl);
                 Console.ReadKey(true);
                 Exp[0] = 0;
-                Exp[1] += (byte)(40 + Lvl);
+                Exp[1] += (byte)(20 + Lvl);
 
-                if (Lvl % 10 == 0) Exp[1] += 80;    // increases exp need every 10 lvls a bit more
+                if (Lvl % 10 == 0) Exp[1] += 50;    // increases exp need every 10 lvls a bit more
 
                 IncreaseStats();
             }
