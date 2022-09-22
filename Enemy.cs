@@ -227,7 +227,7 @@ namespace RpgGame
             }
         }
         private float MaxMultiplier(float mutliplicator, float multiplier, bool boss = false) {
-            float maxMultiplier = boss ? 3F : 2.5F;
+            float maxMultiplier = boss ? 3F : 2.5F; // if enemy is strong, use bigger multiplier for max crit
             float result = mutliplicator * multiplier;
 
             return result > maxMultiplier ? maxMultiplier : result;

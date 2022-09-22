@@ -53,8 +53,8 @@ namespace RpgGame
             byte enemyTurns = GetNumOfTurns(false);
 
             Console.Clear();
-            Console.WriteLine("Ein {0} seit auf der Hut", Enemy.Name);
-            Thread.Sleep(TIMEOUT);
+            Console.WriteLine("Ein {0} seit auf der Hut.", Enemy.Name);
+            Thread.Sleep(SHORTTIMEOUT);
 
             do {
                 Console.Clear();    // clear all fighting texts
@@ -62,9 +62,12 @@ namespace RpgGame
                 if (isPlayerFirst) {
                     for (byte i = 0; i < playerTurns; i++) {    // repeat as long as Player still has turns
                         fightOver = fled = PlayerTurn(); // if player fled, jump direct to end
-                        if (Enemy.Health[0] <= 0) fightOver = true;
-                        if (fightOver) continue;
+                        if (Enemy.Health[0] <= 0) {
+                            fightOver = true;
+                            break;
+                        }
                     }
+                    if (fightOver) continue;    // go to end of while-loop -> enemy died
                 }
 
                 for (byte i = 0; i < enemyTurns; i++) { // repeat as long as Enemy still has turns
@@ -79,9 +82,12 @@ namespace RpgGame
                 if (!isPlayerFirst) {
                     for (byte i = 0; i < playerTurns; i++) {    // repeat as long as Player still has turns
                         fightOver = fled = PlayerTurn(); // if player fled, jump direct to end
-                        if(Enemy.Health[0] <= 0) fightOver = true;
-                        if (fightOver) continue;
+                        if (Enemy.Health[0] <= 0) {
+                            fightOver = true;
+                            break;
+                        }
                     }
+                    if (fightOver) continue;    // go to end of while-loop -> enemy died
                 }
 
                 RoundCount++;
@@ -215,17 +221,19 @@ namespace RpgGame
         private void EnemyTurn() {
             Random r = new Random();
             byte numberPool = 3;    // Attack, Heal, Ultimate
-            short[] enemyCoolDown = GetCoolDown(false);  // apply current cooldowns
+            short[] coolDown = GetCoolDown(false);  // apply current cooldowns
             string attackText = "";
             ushort damage = 0;
             byte rnd = 0;
 
-            if (enemyCoolDown[0] > 0) numberPool--; // if move is on cooldown, dont try to use it
-            if (enemyCoolDown[1] > 0) numberPool--; // if move is on cooldown, dont try to use it
+            if (coolDown[0] > 0) numberPool--; // if move is on cooldown, dont try to use it
+            if (coolDown[1] > 0) numberPool--; // if move is on cooldown, dont try to use it
 
             rnd = Convert.ToByte(r.Next(1, numberPool + 1));    // roll next move
 
-            enemyCoolDown = enemyCoolDown.Select(x => --x).ToArray();   // decrease cooldowns by one
+            if (rnd == 2 && coolDown[0] > 0) rnd = 3;   // if heal is on cd & heal is used -> use ultimate
+
+            coolDown = coolDown.Select(x => --x).ToArray();   // decrease cooldowns by one
 
             switch (rnd) {
                 case 1:
@@ -247,7 +255,7 @@ namespace RpgGame
 
                     Enemy.ChangeCurrentHealth(Convert.ToInt16(damage));
 
-                    enemyCoolDown[0] = HEALCOOLDOWN;    // set ability cooldown
+                    coolDown[0] = HEALCOOLDOWN;    // set ability cooldown
                     break;
                 case 3:
                     if (Enemy.IsDmgUlt) {
@@ -269,12 +277,12 @@ namespace RpgGame
                         Enemy.ChangeCurrentHealth(Convert.ToInt16(damage), true);   // overheal allowed
                     }
 
-                    enemyCoolDown[1] = ULTIMATECOOLDOWN;    // set ability cooldown
+                    coolDown[1] = ULTIMATECOOLDOWN;    // set ability cooldown
                     break;
             }
 
             Console.WriteLine(attackText);
-            ENEMYCOOLDOWN = enemyCoolDown;  // save Enemycooldown for next round
+            ENEMYCOOLDOWN = coolDown;  // save Enemycooldown for next round
             Thread.Sleep(TIMEOUT);
         }
 

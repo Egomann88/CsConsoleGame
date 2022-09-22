@@ -66,7 +66,7 @@ namespace RpgGame
             Random r = new Random();
             byte rnd = 0;
 
-            if (c.Lvl < 10) rnd = Convert.ToByte(r.Next(1, 5)); // only picks the easy enemys
+            if (c.Lvl < 10) rnd = Convert.ToByte(r.Next(1, 5)); // only picks the easy enemys, exept for planetara
             else {
                 double rndDouble = r.NextDouble();
 
