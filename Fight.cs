@@ -52,6 +52,9 @@ namespace RpgGame
             byte playerTurns = GetNumOfTurns(true);
             byte enemyTurns = GetNumOfTurns(false);
 
+            Console.WriteLine("Ein {0} seit auf der Hut", Enemy.Name);
+            Thread.Sleep(TIMEOUT);
+
             do {
                 if (isPlayerFirst) {
                     for (byte i = 0; i < playerTurns; i++) {    // repeat as long as Player still has turns
