@@ -48,12 +48,9 @@ namespace RpgGame
 
         public bool IsDmgUlt { get; set; }
 
-        public bool ChangeCurrentHealth(short health, bool overheal = false) {
+        public void ChangeCurrentHealth(short health, bool overheal = false) {
             Health[0] += health;
             if (Health[0] > Health[1] && !overheal) Health[0] = Health[1];
-
-            if (Health[0] <= 0) return false;
-            else return true;
         }
 
         private void SetEnemyStats(byte pLvl, byte eId, bool ishard) {
