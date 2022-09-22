@@ -104,7 +104,7 @@ namespace RpgGame
                 do {
                     Console.Clear();
                     Console.WriteLine("Hauptmenü\n{0}, bei Ihnen liegt die Wahl.", character.Name);
-                    Console.WriteLine("1) Dungeon\n2) Charakter betrachten\n8) neuen Charakter erstellen\n9) Spiel beenden");
+                    Console.WriteLine("1) Dungeon\n2) Charakter betrachten\n3) Marktplatz\n8) neuen Charakter erstellen\n9) Spiel beenden");
                     input = Console.ReadKey(true).KeyChar;
 
                     switch(input) {
@@ -113,6 +113,7 @@ namespace RpgGame
                             chAlive = IsCharacterAlive(character);
                             break;
                         case '2': character.ShowCharacter(); break;
+                        case '3': break;
                         case '8': chAlive = false; break;
                         case '9': Environment.Exit(0); break;   // stops appligation
                         default: break; // nothing happens
