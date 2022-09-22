@@ -128,6 +128,14 @@ namespace RpgGame
         public void FullHeal() {
             ChangeCurrentHealth(Health[1], false);
         }
+
+        /// <summary>
+        /// de- / increases amout of Gold
+        /// </summary>
+        /// <param name="gold">value with which Gold is increased or not</param>
+        public void ChangeAmoutOfGold(int gold) {
+            Gold += gold;
+        }
         
         /// <summary>
         /// Increases Level and Exp, which is needed for next lvl<br />
