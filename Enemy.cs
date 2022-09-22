@@ -9,19 +9,12 @@ namespace RpgGame
     internal class Enemy
     {
         // Klassenvariabeln
-        private byte MAXENEMYID = 10;
 
         // Membervariablen
 
         // Konstruktoren
-        public Enemy(byte pLvl, byte? eId = null, bool ishard = false) {
-            if(eId == null) {
-                Random r = new Random();
-                eId = Convert.ToByte(r.Next(1, MAXENEMYID + 1));
-                // throw new ArgumentNullException(nameof(eId));
-            }
-
-            SetEnemyStats(pLvl, Convert.ToByte(eId), ishard);
+        public Enemy(byte pLvl, byte eId, bool ishard = false) {
+            SetEnemyStats(pLvl, eId, ishard);
         }
 
         // Methoden
