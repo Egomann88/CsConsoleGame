@@ -217,6 +217,7 @@ namespace RpgGame
             Random r = new Random();
             byte numberPool = 3;    // Attack, Heal, Ultimate
             short[] enemyCoolDown = GetCoolDown(false);  // apply current cooldowns
+            string attackText = "";
             ushort damage = 0;
             byte rnd = 0;
 
@@ -230,13 +231,20 @@ namespace RpgGame
             switch (rnd) {
                 case 1:
                     damage = Enemy.Strength;
+                    attackText = $"{Enemy.Name} greift an.";
 
-                    if (IsCrit(Enemy.CritChance)) damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
+                    if (IsCrit(Enemy.CritChance)) {
+                        damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
+                        attackText += " Kritischer Treffer!";
+                    }
+
+                    attackText += $"\n{damage} Schaden!";
 
                     Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
                     break;
                 case 2:
                     damage = Enemy.Intelligents;
+                    attackText = $"{Enemy.Name} heilt sich.\n{damage} Leben wiederhergestellt.";
 
                     Enemy.ChangeCurrentHealth(Convert.ToInt16(damage));
 
@@ -246,21 +254,29 @@ namespace RpgGame
                     if (Enemy.IsDmgUlt) {
                         // increase dmg with all possible variables
                         damage = Convert.ToUInt16(Math.Round(Enemy.Strength + Enemy.Dexterity + Enemy.Intelligents * 1.5));
+                        attackText = $"{Enemy.Name} nutzt seine Ultimative Fähigkeit.";
 
-                        if (IsCrit(Enemy.CritChance)) damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
+                        if (IsCrit(Enemy.CritChance)) { 
+                            damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
+                            attackText += "Kritischer Treffer!";
+                        }
 
+                        attackText += $"\n{damage} Schaden!";
                         Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
                     } else {
                         // Heals himself with 1.2 of his Intelligents + 20 % of his max Health
                         damage = Convert.ToUInt16(Math.Round(Enemy.Intelligents * 1.2 + Enemy.Health[1] / 5));
-                        Enemy.ChangeCurrentHealth(Convert.ToInt16(damage));
+                        attackText = $"{Enemy.Name} heilt sich enorm.\n{damage} Leben wiederhergestellt.";
+                        Enemy.ChangeCurrentHealth(Convert.ToInt16(damage), true);   // overheal allowed
                     }
 
                     enemyCoolDown[1] = ULTIMATECOOLDOWN;    // set ability cooldown
                     break;
             }
 
+            Console.WriteLine(attackText);
             ENEMYCOOLDOWN = enemyCoolDown;  // save Enemycooldown for next round
+            Thread.Sleep(TIMEOUT);
         }
 
         /// <summary>
