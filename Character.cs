@@ -27,17 +27,17 @@ namespace RpgGame
 
             switch (cl) {
                 case 1: // warrior
-                    Strength = 3;
+                    Strength = 4;
                     Intelligents = 2;
                     Dexterity = 2;
                     CritChance = 2.4F;
                     CritDmg = 1.25F;
                     Health = new short[] { 30, 30 };
-                    Gold = 52;
+                    Gold = 29;
                     break;
                 case 2: // mage
                     Strength = 2;
-                    Intelligents = 3;
+                    Intelligents = 4;
                     Dexterity = 2;
                     CritChance = 4.8F;
                     CritDmg = 1.5F;
@@ -47,11 +47,11 @@ namespace RpgGame
                 case 3: // thief
                     Strength = 2;
                     Intelligents = 2;
-                    Dexterity = 2;
+                    Dexterity = 4;
                     CritChance = 3.2F;
                     CritDmg = 1.75F;
                     Health = new short[] { 26, 26 };
-                    Gold = 72;
+                    Gold = 36;
                     break;
                 default: Environment.Exit(1); break;
             }
@@ -104,21 +104,41 @@ namespace RpgGame
             } while (Console.ReadKey(false).Key != ConsoleKey.Enter);
         }
 
+        /// <summary>
+        /// de- / increases max HP
+        /// </summary>
+        /// <param name="health">value with which max HP is increased or not</param>
         public void ChangeMaximumHealth(short health) {
             Health[1] += health;
-            ChangeCurrentHealth(health, false);
         }
 
+        /// <summary>
+        /// de- / increases HP
+        /// </summary>
+        /// <param name="health">value with which HP is increased or not</param>
+        /// <param name="overheal">allows to heal over max HP</param>
         public void ChangeCurrentHealth(short health, bool overheal = false) {
             Health[0] += health;
             if (Health[0] > Health[1] && !overheal) Health[0] = Health[1];
         }
+
+        /// <summary>
+        /// Sets Characters current HP to max
+        /// </summary>
+        public void FullHeal() {
+            ChangeCurrentHealth(Health[1], false);
+        }
         
+        /// <summary>
+        /// Increases Level and Exp, which is needed for next lvl<br />
+        /// Sets current Exp back to 0
+        /// </summary>
         public void IncreaseLvl() {
             // if lvl 100 is reached, no more leveling
             if (Lvl >= 100) Exp[1] = 0;
             else if (Exp[0] >= Exp[1]) {
-                Lvl++;
+                Console.WriteLine("{0} ist ein Level aufgestiegen.\n{0} ist nun Level {1}.", Name, ++Lvl);
+                Console.ReadKey(true);
                 Exp[0] = 0;
                 Exp[1] += (byte)(40 + Lvl);
 
@@ -128,11 +148,16 @@ namespace RpgGame
             }
         }
 
+        /// <summary>
+        /// Increases all stats by one (exept for class stat - increased by 2)<br />
+        /// Heal the Character to max HP
+        /// </summary>
         private void IncreaseStats() {
             Strength++;
             Intelligents++;
             Dexterity++;
             ChangeMaximumHealth(2);
+            FullHeal();
             if (Lvl % 10 == 0) {
                 CritChance += 0.2F;
                 CritDmg += 0.5F;
