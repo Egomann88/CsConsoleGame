@@ -34,9 +34,9 @@ namespace RpgGame
         }
 
         // Methoden (Funktionen)
-        public Character Character { get; set; }
+        private Character Character { get; set; }
 
-        public Enemy Enemy { get; set; }
+        private Enemy Enemy { get; set; }
 
         private byte RoundCount { get; set; }
 
