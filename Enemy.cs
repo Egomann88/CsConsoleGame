@@ -77,7 +77,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(10 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(10 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(5 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(8 * multiplier));
                     IsDmgUlt = true;
                     break;
                 // assasin
@@ -93,7 +93,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(19 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(19 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(9 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(13 * multiplier));
                     IsDmgUlt = true;
                     break;
                 // paladin
@@ -109,7 +109,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(29 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(38 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(19 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(24 * multiplier));
                     IsDmgUlt = false;
                     break;
                 // plantara
@@ -125,7 +125,7 @@ namespace RpgGame
                         Convert.ToInt16(Math.Round(33 * multiplier))
                     };
                     Gold = Convert.ToInt32(Math.Round(12 * multiplier));
-                    Exp = Convert.ToUInt16(Math.Round(30 * multiplier));
+                    Exp = Convert.ToUInt16(Math.Round(37 * multiplier));
                     IsDmgUlt = false;
                     break;
                 // beserker
