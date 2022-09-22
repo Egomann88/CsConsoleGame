@@ -373,11 +373,11 @@ namespace RpgGame
         /// <returns>true - succeeded / false - failed</returns>
         private bool IsFled() {
             Random r = new Random();
-            int rnd = r.Next(1, 5); // 25 %
+            int rnd = r.Next(1, 5);
 
-            if (rnd > 1) return false;
+            if (rnd > 1) return true;  // 75 %
 
-            return true;
+            return false;
         }
 
         /// <summary>
