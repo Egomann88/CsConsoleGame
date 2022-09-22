@@ -121,7 +121,7 @@ namespace RpgGame
 
             do {
                 Console.Clear();
-                Console.WriteLine("{0}, was wollt ihr machen?", Character.Name);
+                Console.WriteLine("{0}, was wollt ihr machen?\nLeben: {1} / {2}", Character.Name, Character.Health[0], Character.Health[1]);
                 Console.Write("1) Angreifen\n2) Heilen (Abklingzeit: {0} Runden)\n3) {1} (Abklingzeit: {2} Runden)\n4) Fliehen"
                     , coolDown[0], ultimateName, coolDown[1]);
                 input = Console.ReadKey(true).KeyChar; // do not show input in console
@@ -325,7 +325,8 @@ namespace RpgGame
             switch (Character.Class)
             {
                 case 1: // warrior
-                    damage = Convert.ToUInt16(Character.Strength * 2 + (Character.Intelligents / 2) - Math.Round(RoundCount * 1.2));
+                    if(Character.Strength * 2 + (Character.Intelligents / 2) - Math.Round(RoundCount * 1.2) <= 0) damage = 1;
+                    else damage = Convert.ToUInt16(Character.Strength * 2 + (Character.Intelligents / 2) - Math.Round(RoundCount * 1.2));
                     break;
                 case 2: // mage
                     // if number of shot metors is lesser than 1, just use 1
