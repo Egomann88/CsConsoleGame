@@ -22,7 +22,7 @@ namespace RpgGame
         public Character(string name, byte cl) {
             Name = name;
             Class = cl;
-            Exp = new uint[] { 0, 500 };
+            Exp = new uint[] { 0, 300 };
             Lvl = 1;
 
             switch (cl) {
@@ -115,17 +115,15 @@ namespace RpgGame
         }
         
         public void IncreaseLvl() {
-            if(Lvl >= 100) {    // if lvl 100 is reached, no more leveling
-                Exp[1] = 0;
-                return;
-            } else if (Exp[0] >= Exp[1]) {
+            // if lvl 100 is reached, no more leveling
+            if (Lvl >= 100) Exp[1] = 0;
+            else if (Exp[0] >= Exp[1]) {
                 Lvl++;
                 Exp[0] = 0;
-                Exp[1] += 500;
+                Exp[1] += 300;
+                if (Lvl % 10 == 0) Exp[1] += 300;    // increases exp need all 10 lvls by 600
 
                 IncreaseStats();
-
-                if (Lvl % 10 == 0) Exp[1] += 500;    // increases exp need all 10 lvls by 1000
             }
         }
 

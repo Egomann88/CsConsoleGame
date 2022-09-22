@@ -88,7 +88,6 @@ namespace RpgGame
 
             } while (!fightOver);
 
-            // exp berechnen - falls gegner tot
             if (fled) Console.WriteLine("{0} ist geflohen!", Character.Name);
             else if (Character.Health[0] <= 0) Console.WriteLine("{0} ist gestorben...", Character.Name);
             else {  // defeated enemy
@@ -322,8 +321,7 @@ namespace RpgGame
         /// <returns>damage -> uhsort</returns>
         private ushort GetCharacterUltimate() {
             ushort damage = 0;
-            switch (Character.Class)
-            {
+            switch (Character.Class) {
                 case 1: // warrior
                     if(Character.Strength * 2 + (Character.Intelligents / 2) - Math.Round(RoundCount * 1.2) <= 0) damage = 1;
                     else damage = Convert.ToUInt16(Character.Strength * 2 + (Character.Intelligents / 2) - Math.Round(RoundCount * 1.2));
