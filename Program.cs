@@ -40,7 +40,7 @@ namespace RpgGame
         Console.Clear();
         Console.WriteLine("Was ist die Klasse ihres Charakters?\n1) Krieger\n2) Magier\n3) Schurke");
         cl = Convert.ToByte(Console.ReadKey(false).KeyChar - 48);
-      } while (cl < 1 && cl > 4);
+      } while (cl < 1 || cl > 4);
 
       return new Character(name, cl);
     }
