@@ -146,7 +146,7 @@ namespace RpgGame
         Console.Write("Euer Einsatz: ");
         if (!uint.TryParse(Console.ReadLine(), out stake)) continue;
         if (stake > Character.Gold) {
-          Console.WriteLine("Ihr dürft nicht mehr Wetten, als Ihr eigentlich besitzt!");
+          Console.WriteLine("Ihr dürft nicht mehr wetten, als Ihr eigentlich besitzt!");
           Thread.Sleep(SHORTTIMEOUT);
         } else ableToPlay = true;
       } while (!ableToPlay);
@@ -192,58 +192,46 @@ namespace RpgGame
     private void HighLess() {
       Random r = new Random();
       char input = '0';
-      bool playerIsHigher = false, gameIsHigher = false;
-      int lastGameNumber = 0, gameNumber = 0, stake = 0;
-      const int stdPlyValue = 20; // standard Play Value
+      bool playerIsHigher = false, gameIsHigher = false, wonGame = false;
+      int lastGameNumber = 0, gameNumber = 0, stake = 40;
 
       Console.Clear();
-      if (Character.Gold < stdPlyValue) {
+      if (Character.Gold < stake) {
         NotEnoughMoney();
         return;
       }
 
       Console.WriteLine("Eine Zahl zwischen 1 und 10 wird gewürfelt. " +
-          "Ihr müsst sagen, ob die nächste Zahl höher oder tiefer, als die jetzige sein wird.\n" +
-          "Der erste Einsatz ist 20 Gold, dieser wird nächste Runde verdoppelt.");
+          "Ihr müsst sagen, ob die nächste Zahl höher oder tiefer, als die Jetzige sein wird.\n" +
+          "Der Einsatz ist {0} Gold.", stake);
 
       while (true) {
-        int i = 1;
-        stake = stdPlyValue;
         lastGameNumber = r.Next(1, 11);
+        gameNumber = r.Next(1, 11);
 
-        Console.WriteLine("Die {0}. Zahl ist eine {1}", i, lastGameNumber);
+        Console.WriteLine("Die 1. Zahl ist eine {0}", lastGameNumber);
 
         while (true) {
-          Console.WriteLine("1) Höher\n2) Tiefer\n3) Gewinn nehmen & gehen");
+          Console.WriteLine("1) Höher\n2) Tiefer");
           input = Console.ReadKey(true).KeyChar;
 
           if (input == '1') { playerIsHigher = true; break; }
           else if (input == '2') { playerIsHigher = false; break; }
-          else if (input == '3') { PayPlayer(true, stake); return; }    // end func with payout
           else continue;
         }
 
-        stake += 20;
-        if (stake >= Character.Gold) {
-          Console.WriteLine("Wenn Ihr verliert, könnt ihr nicht bezahlen.\nDie Runde wird beendet.");
-          PayPlayer(true, stake - 20);
-          Thread.Sleep(SHORTTIMEOUT);
-          return;
-        }
-
-        gameNumber = r.Next(1, 11);
-
-        Console.WriteLine("Die {0}. Zahl ist eine {1}", i + 1, gameNumber);
+        Console.WriteLine("Die 2. Zahl ist eine {0}", gameNumber);
         if (gameNumber > lastGameNumber) gameIsHigher = true;
         else gameIsHigher = false;
 
         if (playerIsHigher == gameIsHigher) {
           Console.WriteLine("Ihr hattet recht!");
-          PayPlayer(true, stake);
+          wonGame = true;
         } else {
           Console.WriteLine("Ihr lagt falsch...");
-          PayPlayer(true, -stake);
+          wonGame = false;
         }
+        PayPlayer(wonGame, stake);
         break;
       }
     }
@@ -251,7 +239,8 @@ namespace RpgGame
     private void PayPlayer(bool pWon, int stake) {
       string wonMsg = pWon ? "erhaltet" : "bezahlt";
       Console.WriteLine("Ihr {0} {1} Gold.", wonMsg, stake);
-      Character.Gold += stake;
+      if (pWon) Character.Gold += stake;
+      else Character.Gold -= stake;
       Thread.Sleep(TIMEOUT);
     }
 
@@ -305,12 +294,13 @@ namespace RpgGame
 
       while (true) {
         Console.Clear();
-        Console.WriteLine("Der Verstärkungsmagier kann euch, auf eine neue Ebene der Macht bringen," +
+        Console.WriteLine("Der Verstärkungsmagier kann euch, auf eine neue Ebene der Macht bringen, " +
             "für einen kleinen Betrag natürlich.");
         Console.WriteLine("1) +1 Stärke (Preis: {0} Gold)\n2) +1 Inteligents (Preis: {1} Gold)\n3) +1 Geschicklichkeit (Preis: {2} Gold)\n" +
           "4) +5 Max Leben (Preis: {3} Gold)\n5) Krit. Chance + 2 % (Preis: {4} Gold)\n6) Krit. Schaden + 5 % (Preis: {5} Gold)\n" +
           "9) Zurück zum Marktplatzs",
           STRPRICE, INTPRICE, DEXPRICE, HELPRICE, CCHPRICE, CDMPRICE);
+        input = Console.ReadKey().KeyChar;
                   
         switch (input) {
           case '1':
@@ -330,7 +320,7 @@ namespace RpgGame
             else NotEnoughMoney();
             break;
           case '5':
-            if (Character.Gold >= CCHPRICE) Character.CritChance += 0.02F;
+            if (Character.Gold >= CCHPRICE) Character.CritChance += 2;
             else NotEnoughMoney();
             break;
           case '6':
