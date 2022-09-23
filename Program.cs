@@ -71,18 +71,18 @@ namespace RpgGame
       else if (c.Lvl < 10) rnd = Convert.ToByte(r.Next(1, 5)); // only picks the easy enemies
       else if (c.Lvl < 14) rnd = Convert.ToByte(r.Next(1, 6)); // only picks the easy enemies
       else {
-        double rndDouble = r.NextDouble();
+        rnd = Convert.ToByte(r.Next(1, 101));
 
-        if (rndDouble >= 0.26) rnd = 1; // 26 %
-        else if (rndDouble >= 0.2) rnd = 2; // 20 %
-        else if (rndDouble >= 0.16) rnd = 3; // 16 %
-        else if (rndDouble >= 0.12) rnd = 4; // 12 %
-        else if (rndDouble >= 0.10) rnd = 5; // 10 %
-        else if (rndDouble >= 0.075) rnd = 6; // 7.5 %
-        else if (rndDouble >= 0.06) rnd = 7; // 6 %
-        else if (rndDouble >= 0.015) rnd = 8; // 1.5 %
-        else if (rndDouble >= 0.006) rnd = 9; // 0.6 %
-        else if (rndDouble >= 0.004) rnd = 10; // 0.4 %
+        if (rnd <= 20) rnd = 1; // 20 %
+        else if (rnd <= 39) rnd = 2; // 19 %
+        else if (rnd <= 55) rnd = 3; // 16 %
+        else if (rnd <= 67) rnd = 4; // 12 %
+        else if (rnd <= 77) rnd = 5; // 10 %
+        else if (rnd <= 85) rnd = 6; // 8 %
+        else if (rnd <= 91) rnd = 7; // 6 %
+        else if (rnd <= 95) rnd = 8; // 4 %
+        else if (rnd <= 98) rnd = 9; // 3 %
+        else rnd = 10; // 2 %
       }
 
       Enemy e = new Enemy(c.Lvl, rnd, false); // generate enemy
