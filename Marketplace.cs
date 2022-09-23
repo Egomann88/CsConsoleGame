@@ -61,7 +61,7 @@ namespace RpgGame
 
     private void HealerOverView() {
       char input = '0';
-      float healValue = 0;
+      double healValue = 0;
 
       while (true) {
         Console.Clear();
@@ -76,7 +76,7 @@ namespace RpgGame
         switch (input) {
           case '1':
             if (Character.Gold >= WEAKHEALERPRICE) {
-              healValue = Convert.ToSingle(Math.Round(Character.Health[1] * 0.25));
+              healValue = Math.Round(Character.Health[1] * 0.25);
 
               Character.ChangeCurrentHealth((short)healValue);
               Console.WriteLine("{0} HP wurden wiederhergestellt.", healValue);
@@ -86,7 +86,7 @@ namespace RpgGame
             break;
           case '2':
             if (Character.Gold >= NORMALHEALERPRICE) {
-              healValue = Convert.ToSingle(Math.Round(Character.Health[1] * 0.45));
+              healValue = Math.Round(Character.Health[1] * 0.45);
               Character.ChangeCurrentHealth((short)healValue);
               Console.WriteLine("{0} HP wurden wiederhergestellt.", healValue);
               Character.Gold -= NORMALHEALERPRICE;
