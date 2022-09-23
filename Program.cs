@@ -118,7 +118,7 @@ namespace RpgGame
             case '3': character = marketplace.OnMarket(); break;
             case '4': character.Gold += 9999; character.Lvl += 42; break;
             case '8': chAlive = false; break;
-            case '9': Environment.Exit(0); break;   // stops appligation
+            case '9': Environment.Exit(0); break;   // stops appligation -> add button to aggre, before end
             default: break; // nothing happens
           }
         } while (chAlive);  // if char still alive, start new opt

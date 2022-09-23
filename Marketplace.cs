@@ -14,7 +14,7 @@ namespace RpgGame
     private const byte NORMALHEALERPRICE = 45;
     private const byte STRONGHEALERPRICE = 80;
     private const byte LVLFORHIGHUSES = 8;
-    private const int SHORTTIMEOUT = 700;
+    private const int SHORTTIMEOUT = 800;
     private const int TIMEOUT = 1200;
     private const int LONGTIMEOUT = 2000;
     private const ushort STRPRICE = 220;
@@ -96,7 +96,7 @@ namespace RpgGame
           case '3':
             if (Character.Lvl < LVLFORHIGHUSES) {
               Console.WriteLine("Die Heilerin lässt euch nicht hinein. Euer Level ist zu tief.");
-              Thread.Sleep(SHORTTIMEOUT);
+              Thread.Sleep(TIMEOUT);
               continue;
             } else if (Character.Gold >= STRONGHEALERPRICE) {
               Character.FullHeal();
@@ -120,7 +120,7 @@ namespace RpgGame
         Console.Clear();
         Console.WriteLine("Ihr könnt \"Rot oder Schwarz\" oder \"Höher oder Tiefer\" spielen.");
         Console.WriteLine("1) Rot oder Schwarz\n2) Höher oder Tiefer\n3) Zurück zum Marktplatz");
-        input = Console.ReadKey(false).KeyChar;
+        input = Console.ReadKey(true).KeyChar;
 
         switch (input) {
           case '1': RedBlack(); break;
@@ -136,8 +136,7 @@ namespace RpgGame
       string[] moods = { "grimmige", "gelangweilte", "fröhliche" };
       string dealerMood = moods[r.Next(1, moods.Length)];
       string dealer = "Der {0} Spielmeister ";
-      bool gameIsRed = false;
-      bool characterIsRed = false;
+      bool gameIsRed = false, characterIsRed = false, ableToPlay = false;
       uint stake = 0;
       char input = '0';
 
@@ -145,11 +144,16 @@ namespace RpgGame
         Console.Clear();
         Console.WriteLine(dealer + "fragt nach eurem Einsatz.", dealerMood);
         Console.Write("Euer Einsatz: ");
-      } while (!uint.TryParse(Console.ReadLine(), out stake) && stake <= Character.Gold);
+        if (!uint.TryParse(Console.ReadLine(), out stake)) continue;
+        if (stake > Character.Gold) {
+          Console.WriteLine("Ihr dürft nicht mehr Wetten, als Ihr eigentlich besitzt!");
+          Thread.Sleep(SHORTTIMEOUT);
+        } else ableToPlay = true;
+      } while (!ableToPlay);
 
-      Console.WriteLine(dealer + "fragt, für das Ihr wettet.");
+      Console.WriteLine(dealer + "fragt, für das Ihr wettet.", dealerMood);
       while (true) {
-        Console.WriteLine("1) Rot\n 2) Schwarz");
+        Console.WriteLine("\n1) Rot\n2) Schwarz");
         Console.Write("Eure Wahl: ");
         input = Console.ReadKey(false).KeyChar;
 
@@ -160,10 +164,10 @@ namespace RpgGame
         break;
       }
 
-      Console.Write("Das Ergebnis ist");
+      Console.Write("\n\nDas Ergebnis ist");
       for (byte i = 0; i < 4; i++) {
         Console.Write(".");
-        Thread.Sleep(SHORTTIMEOUT - 400);
+        Thread.Sleep(SHORTTIMEOUT - 300); // 0.5s * 4 = 2s
       }
 
       if (r.Next(1, 3) == 1) {
@@ -192,14 +196,15 @@ namespace RpgGame
       int lastGameNumber = 0, gameNumber = 0, stake = 0;
       const int stdPlyValue = 20; // standard Play Value
 
+      Console.Clear();
       if (Character.Gold < stdPlyValue) {
         NotEnoughMoney();
         return;
       }
 
-      Console.WriteLine("Eine Zahl zwischen 1 und 10 wird gewürfelt." +
+      Console.WriteLine("Eine Zahl zwischen 1 und 10 wird gewürfelt. " +
           "Ihr müsst sagen, ob die nächste Zahl höher oder tiefer, als die jetzige sein wird.\n" +
-          "Der erste Einsatz ist 20 Gold, dieser wird jede Runde verdoppelt. Das Spiel geht max. 5 Runden.");
+          "Der erste Einsatz ist 20 Gold, dieser wird nächste Runde verdoppelt.");
 
       while (true) {
         int i = 1;
@@ -294,7 +299,7 @@ namespace RpgGame
       if (Character.Lvl < LVLFORHIGHUSES) {
         Console.Clear();
         Console.WriteLine("Die Verstärkungsmagier lässt euch nicht hinein. Euer Level ist zu tief.");
-        Thread.Sleep(SHORTTIMEOUT);
+        Thread.Sleep(TIMEOUT);
         return;
       }
 
