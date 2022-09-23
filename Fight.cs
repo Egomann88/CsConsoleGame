@@ -12,7 +12,7 @@ namespace RpgGame
     // Klassenvariablen
     private const byte HEALCOOLDOWN = 3;    // Default cooldown of both sides for the healpotion
     private const byte ULTIMATECOOLDOWN = 4; // Default cooldown for both sides on the ultimate
-    private const int SHORTTIMEOUT = 700;
+    private const int SHORTTIMEOUT = 800;
     private const int TIMEOUT = 1200;
     private const int LONGTIMEOUT = 2000;
     private short[] CHARACTERCOOLDOWN = new short[] { HEALCOOLDOWN, ULTIMATECOOLDOWN };    // Heal, Ult
