@@ -44,7 +44,7 @@ namespace RpgGame
         Console.Clear();
         Console.WriteLine("Ihr befindet Euch auf dem Marktplatz.\nWohin wollt Ihr gehen?");
         Console.WriteLine("1) Heiler\n2) Glückspiel\n3) Arena\n4) Verstärkungsmagier\n9) Marktplatz verlassen");
-        input = Console.ReadKey().KeyChar;
+        input = Console.ReadKey(true).KeyChar;
 
         switch (input) {
           case '1': HealerOverView(); break;
@@ -71,7 +71,7 @@ namespace RpgGame
             "3) die Meisterin, sie kann eurere Leben komplett wiederherstellen (Preis: {2})\n" +
             "4) Zurück zum Marktplatz",
             WEAKHEALERPRICE, NORMALHEALERPRICE, STRONGHEALERPRICE);
-        input = Console.ReadKey().KeyChar;
+        input = Console.ReadKey(true).KeyChar;
 
         switch (input) {
           case '1':
@@ -120,7 +120,7 @@ namespace RpgGame
         Console.Clear();
         Console.WriteLine("Ihr könnt \"Rot oder Schwarz\" oder \"Höher oder Tiefer\" spielen.");
         Console.WriteLine("1) Rot oder Schwarz\n2) Höher oder Tiefer\n3) Zurück zum Marktplatz");
-        input = Console.ReadKey().KeyChar;
+        input = Console.ReadKey(false).KeyChar;
 
         switch (input) {
           case '1': RedBlack(); break;
@@ -151,7 +151,7 @@ namespace RpgGame
       while (true) {
         Console.WriteLine("1) Rot\n 2) Schwarz");
         Console.Write("Eure Wahl: ");
-        input = Console.ReadKey().KeyChar;
+        input = Console.ReadKey(false).KeyChar;
 
         if (input == '1') characterIsRed = true;
         else if (input == '2') characterIsRed = false;
@@ -210,10 +210,12 @@ namespace RpgGame
 
         while (true) {
           Console.WriteLine("1) Höher\n2) Tiefer\n3) Gewinn nehmen & gehen");
-          input = Console.ReadKey().KeyChar;
+          input = Console.ReadKey(true).KeyChar;
 
-          if (input == '1') { playerIsHigher = true; break; } else if (input == '2') { playerIsHigher = false; break; } else if (input == '3') { PayPlayer(true, stake); return; }    // end func with payout
-                                                                                                                        else continue;
+          if (input == '1') { playerIsHigher = true; break; }
+          else if (input == '2') { playerIsHigher = false; break; }
+          else if (input == '3') { PayPlayer(true, stake); return; }    // end func with payout
+          else continue;
         }
 
         stake += 20;
@@ -257,7 +259,7 @@ namespace RpgGame
             "habt ihr die Möglichkeit gegen besonders starke Gegner zu kämpfen, mit höheren Belohnungen natürlich\n" +
             "In der Arena gelten nicht dieselben Regeln wie in der Wildnis. Hier könnt ihr nicht sterben.");
         Console.WriteLine("1) Normaler Arenakampf\n2) Kampf gegen starken Gegner\n3) Zurück zum Marktplatz.");
-        input = Console.ReadKey().KeyChar;
+        input = Console.ReadKey(true).KeyChar;
 
         switch (input) {
           case '1': EvalEnemy(false); break;
@@ -307,46 +309,28 @@ namespace RpgGame
                   
         switch (input) {
           case '1':
-            if (Character.Gold < STRPRICE) {
-              NotEnoughMoney();
-              continue;
-            }
-            Character.Strength++;
+            if (Character.Gold >= STRPRICE) Character.Strength++;
+            else NotEnoughMoney();
             break;
           case '2':
-            if (Character.Gold < INTPRICE) {
-              NotEnoughMoney();
-              continue;
-            }
-            Character.Intelligents++;
+            if (Character.Gold >= INTPRICE) Character.Intelligents++;
+            else NotEnoughMoney();
             break;
           case '3':
-            if (Character.Gold < DEXPRICE) {
-              NotEnoughMoney();
-              continue;
-            }
-            Character.Dexterity++;
+            if (Character.Gold >= DEXPRICE) Character.Dexterity++;
+            else NotEnoughMoney();
             break;
           case '4':
-            if (Character.Gold < HELPRICE) {
-              NotEnoughMoney();
-              continue;
-            }
-            Character.Health[1] += 5;
+            if (Character.Gold >= HELPRICE) Character.Health[1] += 5;
+            else NotEnoughMoney();
             break;
           case '5':
-            if (Character.Gold < CCHPRICE) {
-              NotEnoughMoney();
-              continue;
-            }
-            Character.CritChance += 0.02F;
+            if (Character.Gold >= CCHPRICE) Character.CritChance += 0.02F;
+            else NotEnoughMoney();
             break;
           case '6':
-            if (Character.Gold < CDMPRICE) {
-              NotEnoughMoney();
-              continue;
-            }
-            Character.CritDmg += 0.05F;
+            if (Character.Gold >= CDMPRICE) Character.CritDmg += 0.05F;
+            else NotEnoughMoney();
             break;
           case '9': return;
           default: continue;
@@ -357,7 +341,6 @@ namespace RpgGame
 
     private void NotEnoughMoney() {
       Console.WriteLine("Ihr habt nicht genügend Geld.");
-      Thread.Sleep(SHORTTIMEOUT);
     }
   }
 }
