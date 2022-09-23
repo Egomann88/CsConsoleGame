@@ -81,7 +81,7 @@ namespace RpgGame
               Character.ChangeCurrentHealth((short)healValue);
               Console.WriteLine("{0} HP wurden wiederhergestellt.", healValue);
               Character.Gold -= WEAKHEALERPRICE;
-            } else Console.WriteLine("Ihr habt nicht genügend Gold.");
+            } else NotEnoughMoney();
 
             break;
           case '2':
@@ -90,7 +90,7 @@ namespace RpgGame
               Character.ChangeCurrentHealth((short)healValue);
               Console.WriteLine("{0} HP wurden wiederhergestellt.", healValue);
               Character.Gold -= NORMALHEALERPRICE;
-            } else Console.WriteLine("Ihr habt nicht genügend Gold.");
+            } else NotEnoughMoney();
 
             break;
           case '3':
@@ -102,7 +102,7 @@ namespace RpgGame
               Character.FullHeal();
               Console.WriteLine("Komplettes Leben wurde wiederhergestellt.");
               Character.Gold -= STRONGHEALERPRICE;
-            } else Console.WriteLine("Ihr habt nicht genügend Gold.");
+            } else NotEnoughMoney();
 
             break;
           case '4': return;
@@ -193,8 +193,8 @@ namespace RpgGame
       const int stdPlyValue = 20; // standard Play Value
 
       if (Character.Gold < stdPlyValue) {
-        Console.WriteLine("Ihr besitzt nicht genügend Geld, um zu spielen.");
-        Thread.Sleep(SHORTTIMEOUT);
+        NotEnoughMoney();
+        return;
       }
 
       Console.WriteLine("Eine Zahl zwischen 1 und 10 wird gewürfelt." +
@@ -297,39 +297,67 @@ namespace RpgGame
       }
 
       while (true) {
-
         Console.Clear();
         Console.WriteLine("Der Verstärkungsmagier kann euch, auf eine neue Ebene der Macht bringen," +
             "für einen kleinen Betrag natürlich.");
-        Console.WriteLine("1) +1 Stärke ()\n2) +1 Inteligents\n3) +1 Geschicklichkeit\n4) +5 Max Leben\n" +
-          "5) Krit. Chance + 2 %\n6) Krit. Schaden + 5 %\n9) Zurück zum Marktplatzs");
-
+        Console.WriteLine("1) +1 Stärke (Preis: {0} Gold)\n2) +1 Inteligents (Preis: {1} Gold)\n3) +1 Geschicklichkeit (Preis: {2} Gold)\n" +
+          "4) +5 Max Leben (Preis: {3} Gold)\n5) Krit. Chance + 2 % (Preis: {4} Gold)\n6) Krit. Schaden + 5 % (Preis: {5} Gold)\n" +
+          "9) Zurück zum Marktplatzs",
+          STRPRICE, INTPRICE, DEXPRICE, HELPRICE, CCHPRICE, CDMPRICE);
+                  
         switch (input) {
           case '1':
-            Console.Clear();
+            if (Character.Gold < STRPRICE) {
+              NotEnoughMoney();
+              continue;
+            }
+            Character.Strength++;
             break;
           case '2':
-            Console.Clear();
+            if (Character.Gold < INTPRICE) {
+              NotEnoughMoney();
+              continue;
+            }
+            Character.Intelligents++;
             break;
           case '3':
-            Console.Clear();
+            if (Character.Gold < DEXPRICE) {
+              NotEnoughMoney();
+              continue;
+            }
+            Character.Dexterity++;
             break;
           case '4':
-            Console.Clear();
+            if (Character.Gold < HELPRICE) {
+              NotEnoughMoney();
+              continue;
+            }
+            Character.Health[1] += 5;
             break;
           case '5':
-            Console.Clear();
+            if (Character.Gold < CCHPRICE) {
+              NotEnoughMoney();
+              continue;
+            }
+            Character.CritChance += 0.02F;
             break;
           case '6':
-            Console.Clear();
+            if (Character.Gold < CDMPRICE) {
+              NotEnoughMoney();
+              continue;
+            }
+            Character.CritDmg += 0.05F;
             break;
-          case '9':
-            Console.Clear();
-            return;
+          case '9': return;
           default: continue;
         }
 
       }
+    }
+
+    private void NotEnoughMoney() {
+      Console.WriteLine("Ihr habt nicht genügend Geld.");
+      Thread.Sleep(SHORTTIMEOUT);
     }
   }
 }
