@@ -62,8 +62,8 @@ namespace RpgGame
 
         if (isPlayerFirst) {
           for (byte i = 0; i < playerTurns; i++) {    // repeat as long as Player still has turns
-            fightOver = fled = PlayerTurn(); // if player fled, jump direct to end
-            if (Enemy.Health[0] <= 0) {
+            fled = PlayerTurn(); // if player fled, jump direct to end
+            if (Enemy.Health[0] <= 0 || fled) {
               fightOver = true;
               break;
             }
@@ -334,11 +334,13 @@ namespace RpgGame
       // starts with turn 2, cuz turn 1 is already definded
       while (pDex - (eDex + 5) >= 5) {
         pTurns++;
+        if (pTurns == 5) break; // max 5 Turns
         eDex += 5;
       }
 
       while (eDex - (pDex + 5) >= 5) {
         eTurns++;
+        if (eTurns == 5) break; // max 5 Turns
         pDex += 5;
       }
 
@@ -357,12 +359,12 @@ namespace RpgGame
           else damage = Convert.ToUInt16(Character.Strength * 2 + (Character.Intelligents / 2) - Math.Round(RoundCount * 1.2));
           break;
         case 2: // mage
-                // if number of shot metors is lesser than 1, just use 1
+          // if number of shot metors is lesser than 1, just use 1
           int countMetores = Character.Intelligents * 0.2 < 1 ? 1 : Convert.ToInt32(Character.Intelligents * 0.2);
           damage = Convert.ToUInt16(Math.Round(Character.Intelligents * 0.6 * countMetores));
           break;
         case 3: // thief
-                // if hp is overheal, zero dmg, instead of -dmg
+          // if hp is overheal, zero dmg, instead of -dmg
           int hpDmg = Character.Health[1] - Character.Health[0] < 0 ? 0 : Character.Health[1] - Character.Health[0];
           damage = Convert.ToUInt16(hpDmg + Character.Dexterity + RoundCount);
 
