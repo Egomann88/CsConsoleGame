@@ -4,11 +4,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Text.Json; // has to be installed in nuget Package
 
 namespace RpgGame
 {
-  internal class Program
-  {
+  internal class Program {
+
+    /// <summary>
+    /// 
+    /// https://www.nuget.org/packages/System.Text.Json<br />
+    /// </summary>
+    /// <param name="c"></param>
+    private static void SaveCharacter(Character c) {
+      List<Character> _data = new List<Character>();
+      _data.Add(new Character(c.Name, c.Class) {
+        Name = c.Name,
+        Class = c.Class,
+        Strength = c.Strength,
+        Intelligents = c.Intelligents,
+        Dexterity = c.Dexterity,
+        CritChance = c.CritChance,
+        CritDmg = c.CritDmg,
+        Health = c.Health,
+        Gold = c.Gold,
+        Exp = c.Exp,
+        Lvl = c.Lvl,
+      });
+
+      string json = JsonSerializer.Serialize(_data);
+      System.IO.File.WriteAllText(@"C:\path.json", json);
+    }
+
     /// <summary>
     /// Creates an new Character with Name and Class.<br />
     /// </summary>
@@ -121,6 +147,7 @@ namespace RpgGame
             case '9': Environment.Exit(0); break;   // stops appligation -> add button to aggre, before end
             default: break; // nothing happens
           }
+          SaveCharacter(character);
         } while (chAlive);  // if char still alive, start new opt
 
       } while (true);
