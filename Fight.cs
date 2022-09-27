@@ -246,7 +246,7 @@ namespace RpgGame
           if (!IsCritDodge(chance2Hit)) {
             actionText = $"{Character.Name} ist ausgewichen!\n";
             damage = 0;
-          } else actionText += $" {damage} Schaden!";
+          } else actionText += $"{damage} Schaden!";
 
           Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
           break;
@@ -273,7 +273,7 @@ namespace RpgGame
             if (!IsCritDodge(chance2Hit)) {
               actionText = $"{Character.Name} ist ausgewichen!\n";
               damage = 0;
-            } else actionText += $" {damage} Schaden!";
+            } else actionText += $"{damage} Schaden!";
 
             Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
           } else {
