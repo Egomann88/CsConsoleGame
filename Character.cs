@@ -53,7 +53,7 @@ namespace RpgGame
           Health = new short[] { 26, 26 };
           Gold = 36;
           break;
-        default: Environment.Exit(1); break;  // should not get here -> check for wrong input MUST happen before
+        default: break;  // should not get here -> check for wrong input MUST happen before
       }
     }
 

@@ -17,7 +17,7 @@ namespace RpgGame
     /// <param name="c">current character</param>
     private static void SaveCharacter(Character c) {
       List<Character> _characterData = new List<Character>();
-      _characterData.Add(new Character(c.Name, c.Class) {
+      _characterData.Add(new Character(c.Name, 0) {
         Name = c.Name,
         Class = c.Class,
         Strength = c.Strength,
@@ -156,14 +156,14 @@ namespace RpgGame
             case '9':
               do {
                 Console.WriteLine("Wirklich beenden? [j/n]");
-                input = Console.ReadKey().KeyChar;
-              } while (input == 'j' || input == 'n');
+                input = Console.ReadKey(true).KeyChar;
+              } while (input != 'j' && input != 'n');
 
               if (input == 'j') {
                 do {
                   Console.WriteLine("Charakter speichern? [j/n]");
-                  input = Console.ReadKey().KeyChar;
-                } while (input == 'j' || input == 'n');
+                  input = Console.ReadKey(true).KeyChar;
+                } while (input != 'j' && input != 'n');
 
                 if(input == 'j') SaveCharacter(character);
                 Environment.Exit(0); // stops appligation
