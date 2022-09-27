@@ -36,7 +36,11 @@ namespace RpgGame
 
       try {
         System.IO.File.WriteAllText(path + @"\character_saves\" + c.Name + @".json", json);
+        Console.Clear();
+        Console.WriteLine("Speichern erfolgreich.");
       } catch (InvalidCastException e) { }
+      
+      Thread.Sleep(600);
     }
 
     /// <summary>
@@ -153,10 +157,15 @@ namespace RpgGame
               do {
                 Console.WriteLine("Wirklich beenden? [j/n]");
                 input = Console.ReadKey().KeyChar;
-              } while (input != 'j' || input != 'n');
+              } while (input == 'j' || input == 'n');
 
               if (input == 'j') {
-                SaveCharacter(character);
+                do {
+                  Console.WriteLine("Charakter speichern? [j/n]");
+                  input = Console.ReadKey().KeyChar;
+                } while (input == 'j' || input == 'n');
+
+                if(input == 'j') SaveCharacter(character);
                 Environment.Exit(0); // stops appligation
               }
 
