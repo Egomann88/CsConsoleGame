@@ -16,8 +16,8 @@ namespace RpgGame
     /// </summary>
     /// <param name="c"></param>
     private static void SaveCharacter(Character c) {
-      List<Character> _data = new List<Character>();
-      _data.Add(new Character(c.Name, c.Class) {
+      List<Character> _characterData = new List<Character>();
+      _characterData.Add(new Character(c.Name, c.Class) {
         Name = c.Name,
         Class = c.Class,
         Strength = c.Strength,
@@ -31,8 +31,9 @@ namespace RpgGame
         Lvl = c.Lvl,
       });
 
-      string json = JsonSerializer.Serialize(_data);
-      System.IO.File.WriteAllText(@"C:\path.json", json);
+      string path = System.IO.Directory.GetCurrentDirectory();  // current Path
+      string json = JsonSerializer.Serialize(_characterData);
+      System.IO.File.WriteAllText(path + @"\character_saves\" + c.Name + @".json", json);
     }
 
     /// <summary>
