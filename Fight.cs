@@ -234,7 +234,7 @@ namespace RpgGame
       switch (rnd) {
         case 1:
           damage = Enemy.Strength;
-          actionText += $"{Enemy.Name} greift an.";
+          actionText = $"{Enemy.Name} greift an.\n";
 
           if (IsCritDodge(Enemy.CritChance)) {
             damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
@@ -261,7 +261,7 @@ namespace RpgGame
           if (Enemy.IsDmgUlt) {
             // increase dmg with all possible variables
             damage = Convert.ToUInt16(Math.Round(Enemy.Strength + Enemy.Dexterity + Enemy.Intelligents * 1.5));
-            actionText += $"{Enemy.Name} nutzt seine Ultimative Fähigkeit.";
+            actionText += $"{Enemy.Name} nutzt seine Ultimative Fähigkeit.\n";
 
             if (IsCritDodge(Enemy.CritChance)) {
               damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
