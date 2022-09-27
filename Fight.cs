@@ -12,6 +12,7 @@ namespace RpgGame
     // Klassenvariablen
     private const byte HEALCOOLDOWN = 3;    // Default cooldown of both sides for the healpotion
     private const byte ULTIMATECOOLDOWN = 4; // Default cooldown for both sides on the ultimate
+    private const byte ULTHITBONUS = 20;  // 20 % hit bonus for Ultimate
     private const int SHORTTIMEOUT = 800;
     private const int TIMEOUT = 1200;
     private const int LONGTIMEOUT = 2000;
@@ -121,6 +122,7 @@ namespace RpgGame
       string ultimateName = GetUltimateName();
       string actionText = ""; // what player will do
       ushort damage = 0;  // players dmg
+      ushort chance2Hit = (ushort)(75 + Character.Dexterity - Enemy.Dexterity); // 75 % base value + char dex - enemy dex (dodge chance)
       char input = '0';   // player input
       bool flee = false;
 
@@ -137,12 +139,17 @@ namespace RpgGame
 
             actionText = $"{Character.Name} greift an.\n";
 
-            if (IsCrit(Character.CritChance)) {
+            if (IsCritDodge(Character.CritChance)) {
               damage = Convert.ToUInt16(Math.Round(damage * Character.CritDmg));
               actionText += "Kritischer Treffer!\n";
+              chance2Hit = 100; // Crit is always an hit
             }
+            
+            if(IsCritDodge(chance2Hit)) {
+              actionText = $"{Enemy.Name} ist ausgewichen!\n";
+              damage = 0;
+            } else actionText += $"{damage} Schaden!";
 
-            actionText += $"{damage} Schaden!";
 
             Enemy.ChangeCurrentHealth(Convert.ToInt16(-damage));
             break;
@@ -166,12 +173,16 @@ namespace RpgGame
 
             actionText = $"{Character.Name} nutzt seine Ultimatie Fähigkeit \"{GetUltimateName()}\".\n";
 
-            if (IsCrit(Character.CritChance)) {
+            if (IsCritDodge(Character.CritChance)) {
               damage = Convert.ToUInt16(Math.Round(damage * Character.CritDmg));
               actionText += "Kritischer Treffer!\n";
+              chance2Hit = 100; // Crit is always an hit
             }
 
-            actionText += $"{damage} Schaden";
+            if (!IsCritDodge(chance2Hit + ULTHITBONUS)) { // ultimate has extra hit chance
+              actionText = $"{Enemy.Name} ist ausgewichen!\n";
+              damage = 0;
+            } else actionText += $"{damage} Schaden!";
 
             Enemy.ChangeCurrentHealth(Convert.ToInt16(-damage));
             coolDown[1] = ULTIMATECOOLDOWN;    // set ulti cooldown
@@ -206,7 +217,8 @@ namespace RpgGame
       Random r = new Random();
       byte numberPool = 3;    // Attack, Heal, Ultimate
       short[] coolDown = GetCoolDown(false);  // apply current cooldowns
-      string attackText = "";
+      ushort chance2Hit = (ushort)(75 + Enemy.Dexterity - Character.Dexterity); // 75 % base value - char dex (dodge chance)
+      string actionText = "";
       ushort damage = 0;
       byte rnd = 0;
 
@@ -222,20 +234,24 @@ namespace RpgGame
       switch (rnd) {
         case 1:
           damage = Enemy.Strength;
-          attackText = $"{Enemy.Name} greift an.";
+          actionText = $"{Enemy.Name} greift an.";
 
-          if (IsCrit(Enemy.CritChance)) {
+          if (IsCritDodge(Enemy.CritChance)) {
             damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
-            attackText += " Kritischer Treffer!\n";
+            actionText += " Kritischer Treffer!\n";
+            chance2Hit = 100; // Crit is always an hit
           }
 
-          attackText += $"\n{damage} Schaden!";
+          if (IsCritDodge(chance2Hit)) {
+            actionText = $"{Character.Name} ist ausgewichen!\n";
+            damage = 0;
+          } else actionText += $"{damage} Schaden!";
 
           Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
           break;
         case 2:
           damage = Enemy.Intelligents;
-          attackText = $"{Enemy.Name} heilt sich.\n{damage} Leben wiederhergestellt.";
+          actionText = $"{Enemy.Name} heilt sich.\n{damage} Leben wiederhergestellt.";
 
           Enemy.ChangeCurrentHealth(Convert.ToInt16(damage));
 
@@ -245,19 +261,24 @@ namespace RpgGame
           if (Enemy.IsDmgUlt) {
             // increase dmg with all possible variables
             damage = Convert.ToUInt16(Math.Round(Enemy.Strength + Enemy.Dexterity + Enemy.Intelligents * 1.5));
-            attackText = $"{Enemy.Name} nutzt seine Ultimative Fähigkeit.";
+            actionText = $"{Enemy.Name} nutzt seine Ultimative Fähigkeit.";
 
-            if (IsCrit(Enemy.CritChance)) {
+            if (IsCritDodge(Enemy.CritChance)) {
               damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
-              attackText += "Kritischer Treffer!\n";
+              actionText += "Kritischer Treffer!\n";
+              chance2Hit = 100; // Crit is always an hit
             }
 
-            attackText += $"\n{damage} Schaden!";
+            if (IsCritDodge(chance2Hit)) {
+              actionText = $"{Character.Name} ist ausgewichen!\n";
+              damage = 0;
+            } else actionText += $"{damage} Schaden!";
+
             Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
           } else {
             // Heals himself with 1.2 of his Intelligents + 20 % of his max Health
             damage = Convert.ToUInt16(Math.Round(Enemy.Intelligents * 1.2 + Enemy.Health[1] / 5));
-            attackText = $"{Enemy.Name} heilt sich enorm.\n{damage} Leben wiederhergestellt.";
+            actionText = $"{Enemy.Name} heilt sich enorm.\n{damage} Leben wiederhergestellt.";
             Enemy.ChangeCurrentHealth(Convert.ToInt16(damage), true);   // overheal allowed
           }
 
@@ -265,7 +286,7 @@ namespace RpgGame
           break;
       }
 
-      Console.WriteLine(attackText);
+      Console.WriteLine(actionText);
       ENEMYCOOLDOWN = coolDown;  // save Enemycooldown for next round
       Thread.Sleep(TIMEOUT);
     }
@@ -393,17 +414,19 @@ namespace RpgGame
     }
 
     /// <summary>
-    /// Checks if a cirt is rolled
+    /// Checks if attack is an cirt<br />
+    /// OR<br />
+    /// Checks if attack was dodged
     /// </summary>
-    /// <param name="cChance">Crit Chance of Player / Enemy</param>
-    /// <returns>bool -> Cirt or no Crit</returns>
-    private bool IsCrit(float cChance) {
+    /// <param name="chance">Crit / Dodge Chance of Player / Enemy</param>
+    /// <returns>bool -> Cirt / Dodge or no Crit / Dodge</returns>
+    private bool IsCritDodge(float chance) {
       Random r = new Random();
       byte i = Convert.ToByte(r.Next(1, 101));
 
-      if (i > cChance) return false;
+      if (i > chance) return false; // no crit / dodge (enemy dodged)
 
-      return true;
+      return true;  // crit or (no) dodge
     }
   }
 }
