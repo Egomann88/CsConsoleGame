@@ -11,10 +11,10 @@ namespace RpgGame
   internal class Program {
 
     /// <summary>
-    /// 
+    /// Saves Json File with current Character Stats<br />
     /// https://www.nuget.org/packages/System.Text.Json<br />
     /// </summary>
-    /// <param name="c"></param>
+    /// <param name="c">current character</param>
     private static void SaveCharacter(Character c) {
       List<Character> _characterData = new List<Character>();
       _characterData.Add(new Character(c.Name, c.Class) {
@@ -81,8 +81,7 @@ namespace RpgGame
     /// <param name="c">character</param>
     /// <returns>true, if yes - false, if not</returns>
     private static bool IsCharacterAlive(Character c) {
-      if (c.Health[0] <= 0)
-        return false;
+      if (c.Health[0] <= 0) return false;
 
       return true;
     }
@@ -136,7 +135,8 @@ namespace RpgGame
         do {
           Console.Clear();
           Console.WriteLine("Hauptmenü\n{0}, bei Ihnen liegt die Wahl.", character.Name);
-          Console.WriteLine("1) Dungeon\n2) Charakter betrachten\n3) Marktplatz\n8) neuen Charakter erstellen\n9) Spiel beenden");
+          Console.WriteLine("1) Dungeon\n2) Charakter betrachten\n3) Marktplatz\n7) Charakter speichern\n" +
+            "8) neuen Charakter erstellen\n9) Spiel beenden");
           input = Console.ReadKey(true).KeyChar;
 
           switch (input) {
@@ -147,8 +147,20 @@ namespace RpgGame
             case '2': character.ShowCharacter(); break;
             case '3': character = marketplace.OnMarket(); break;
             case '4': character.Gold += 9999; character.Lvl += 42; character.Dexterity += 80; break;
+            case '7': SaveCharacter(character); break;
             case '8': chAlive = false; break;
-            case '9': Environment.Exit(0); break;   // stops appligation -> add button to aggre, before end
+            case '9':
+              do {
+                Console.WriteLine("Wirklich beenden? [j/n]");
+                input = Console.ReadKey().KeyChar;
+              } while (input != 'j' || input != 'n');
+
+              if (input == 'j') {
+                SaveCharacter(character);
+                Environment.Exit(0); // stops appligation
+              }
+
+              continue;
             default: break; // nothing happens
           }
           SaveCharacter(character);
