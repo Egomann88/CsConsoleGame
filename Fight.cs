@@ -95,6 +95,7 @@ namespace RpgGame
 
       } while (!fightOver);
 
+      Console.Clear();
       if (fled) Console.WriteLine("{0} ist geflohen!", Character.Name);
       else if (Character.Health[0] <= 0) Console.WriteLine("{0} ist gestorben...", Character.Name);
       else {  // defeated enemy
@@ -109,7 +110,7 @@ namespace RpgGame
         }
       }
 
-      Thread.Sleep(TIMEOUT);
+      Thread.Sleep(LONGTIMEOUT);
       return Character;
     }
 
