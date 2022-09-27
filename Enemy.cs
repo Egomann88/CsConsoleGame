@@ -82,8 +82,8 @@ namespace RpgGame
           CritChance = 0.12F * multiplier;
           CritDmg = MaxMultiplier(1.25F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(19 * multiplier)),
-                        Convert.ToInt16(Math.Round(19 * multiplier))
+                        Convert.ToInt16(Math.Round(17 * multiplier)),
+                        Convert.ToInt16(Math.Round(17 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(19 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(14 * multiplier));
@@ -98,8 +98,8 @@ namespace RpgGame
           CritChance = 0.09F * multiplier;
           CritDmg = MaxMultiplier(1.25F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(29 * multiplier)),
-                        Convert.ToInt16(Math.Round(29 * multiplier))
+                        Convert.ToInt16(Math.Round(25 * multiplier)),
+                        Convert.ToInt16(Math.Round(25 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(38 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(26 * multiplier));
@@ -114,8 +114,8 @@ namespace RpgGame
           CritChance = 0.03F * multiplier;
           CritDmg = MaxMultiplier(1.2F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(33 * multiplier)),
-                        Convert.ToInt16(Math.Round(33 * multiplier))
+                        Convert.ToInt16(Math.Round(31 * multiplier)),
+                        Convert.ToInt16(Math.Round(31 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(12 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(37 * multiplier));
@@ -130,8 +130,8 @@ namespace RpgGame
           CritChance = 0.03F * multiplier;
           CritDmg = MaxMultiplier(1.8F, multiplier, true);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(48 * multiplier)),
-                        Convert.ToInt16(Math.Round(48 * multiplier))
+                        Convert.ToInt16(Math.Round(45 * multiplier)),
+                        Convert.ToInt16(Math.Round(45 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(68 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(72 * multiplier));
@@ -146,8 +146,8 @@ namespace RpgGame
           CritChance = 0.23F * multiplier;
           CritDmg = MaxMultiplier(1.1F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(39 * multiplier)),
-                        Convert.ToInt16(Math.Round(39 * multiplier))
+                        Convert.ToInt16(Math.Round(36 * multiplier)),
+                        Convert.ToInt16(Math.Round(36 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(70 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(80 * multiplier));
@@ -162,8 +162,8 @@ namespace RpgGame
           CritChance = 0.10F * multiplier;
           CritDmg = MaxMultiplier(1.7F, multiplier, true);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(98 * multiplier)),
-                        Convert.ToInt16(Math.Round(98 * multiplier))
+                        Convert.ToInt16(Math.Round(92 * multiplier)),
+                        Convert.ToInt16(Math.Round(92 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(36 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(190 * multiplier));
@@ -178,8 +178,8 @@ namespace RpgGame
           CritChance = 0.05F * multiplier;
           CritDmg = MaxMultiplier(1.5F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(78 * multiplier)),
-                        Convert.ToInt16(Math.Round(78 * multiplier))
+                        Convert.ToInt16(Math.Round(72 * multiplier)),
+                        Convert.ToInt16(Math.Round(72 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(160 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(150 * multiplier));
@@ -194,8 +194,8 @@ namespace RpgGame
           CritChance = 0.06F * multiplier;
           CritDmg = MaxMultiplier(1.3F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(86 * multiplier)),
-                        Convert.ToInt16(Math.Round(86 * multiplier))
+                        Convert.ToInt16(Math.Round(84 * multiplier)),
+                        Convert.ToInt16(Math.Round(84 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(140 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(180 * multiplier));
@@ -210,8 +210,8 @@ namespace RpgGame
           CritChance = 0.33F * multiplier;
           CritDmg = MaxMultiplier(1.5F, multiplier, true);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(92 * multiplier)),
-                        Convert.ToInt16(Math.Round(92 * multiplier))
+                        Convert.ToInt16(Math.Round(94 * multiplier)),
+                        Convert.ToInt16(Math.Round(94 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(150 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(240 * multiplier));
