@@ -33,7 +33,10 @@ namespace RpgGame
 
       string path = System.IO.Directory.GetCurrentDirectory();  // current Path
       string json = JsonSerializer.Serialize(_characterData);
-      System.IO.File.WriteAllText(path + @"\character_saves\" + c.Name + @".json", json);
+
+      try {
+        System.IO.File.WriteAllText(path + @"\character_saves\" + c.Name + @".json", json);
+      } catch (InvalidCastException e) { }
     }
 
     /// <summary>
