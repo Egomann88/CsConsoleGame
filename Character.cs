@@ -14,6 +14,8 @@ namespace RpgGame
     // Membervariablen
 
     // Konstruktoren
+    public Character() { }
+
     /// <summary>
     /// 
     /// </summary>

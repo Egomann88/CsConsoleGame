@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
+using System.Threading; // for timeout
 using System.Text.Json; // has to be installed in nuget Package
+using System.IO;  // to create and read files
 
 namespace RpgGame
 {
@@ -16,8 +17,7 @@ namespace RpgGame
     /// </summary>
     /// <param name="c">current character</param>
     private static void SaveCharacter(Character c) {
-      List<Character> _characterData = new List<Character>();
-      _characterData.Add(new Character(c.Name, 0) {
+      Character _characterData = new Character(c.Name, 0) {
         Name = c.Name,
         Class = c.Class,
         Strength = c.Strength,
@@ -29,18 +29,39 @@ namespace RpgGame
         Gold = c.Gold,
         Exp = c.Exp,
         Lvl = c.Lvl,
-      });
+      };
 
-      string path = System.IO.Directory.GetCurrentDirectory();  // current Path
+      string path = Directory.GetCurrentDirectory();  // current Path
       string json = JsonSerializer.Serialize(_characterData);
 
       try {
-        System.IO.File.WriteAllText(path + @"\character_saves\" + c.Name + @".json", json);
+        File.WriteAllText(path + @"\character_saves\" + c.Name + @".json", json);
         Console.Clear();
         Console.WriteLine("Speichern erfolgreich.");
       } catch (InvalidCastException e) { }
-      
+
       Thread.Sleep(600);
+    }
+
+    private static void GetCharacters() {
+      // https://www.geeksforgeeks.org/c-sharp-program-for-listing-the-files-in-a-directory/
+      // https://www.tutorialsteacher.com/articles/convert-json-string-to-object-in-csharp
+      string path = Directory.GetCurrentDirectory() + @"\character_saves\";  // current Path
+      DirectoryInfo characterSaves = new DirectoryInfo(path);
+      Character[] characters;
+      FileInfo[] Files = characterSaves.GetFiles();
+      foreach (FileInfo i in Files) {
+        string jsonCharacterData = File.ReadAllText(path + i);
+        var b = JsonSerializer.Deserialize<Character>(jsonCharacterData);
+      }
+
+      Console.ReadKey();
+    }
+
+    private static void LoadCharacter() {
+      string path = Directory.GetCurrentDirectory();
+
+      File.ReadAllText(path + @"\character_saves\");
     }
 
     /// <summary>
@@ -132,6 +153,8 @@ namespace RpgGame
 
       do {
         // create character
+        GetCharacters();
+        
         character = CharCreator();
         chAlive = true;
         marketplace = new Marketplace(character);
