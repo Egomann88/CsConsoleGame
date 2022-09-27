@@ -145,8 +145,8 @@ namespace RpgGame
               chance2Hit = 100; // Crit is always an hit
             }
             
-            if(IsCritDodge(chance2Hit)) {
-              actionText = $"{Enemy.Name} ist ausgewichen!\n";
+            if(!IsCritDodge(chance2Hit)) {
+              actionText += $"{Enemy.Name} ist ausgewichen!\n";
               damage = 0;
             } else actionText += $"{damage} Schaden!";
 
@@ -180,7 +180,7 @@ namespace RpgGame
             }
 
             if (!IsCritDodge(chance2Hit + ULTHITBONUS)) { // ultimate has extra hit chance
-              actionText = $"{Enemy.Name} ist ausgewichen!\n";
+              actionText += $"{Enemy.Name} ist ausgewichen!\n";
               damage = 0;
             } else actionText += $"{damage} Schaden!";
 
@@ -234,7 +234,7 @@ namespace RpgGame
       switch (rnd) {
         case 1:
           damage = Enemy.Strength;
-          actionText = $"{Enemy.Name} greift an.";
+          actionText += $"{Enemy.Name} greift an.";
 
           if (IsCritDodge(Enemy.CritChance)) {
             damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
@@ -242,16 +242,16 @@ namespace RpgGame
             chance2Hit = 100; // Crit is always an hit
           }
 
-          if (IsCritDodge(chance2Hit)) {
+          if (!IsCritDodge(chance2Hit)) {
             actionText = $"{Character.Name} ist ausgewichen!\n";
             damage = 0;
-          } else actionText += $"{damage} Schaden!";
+          } else actionText += $" {damage} Schaden!";
 
           Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
           break;
         case 2:
           damage = Enemy.Intelligents;
-          actionText = $"{Enemy.Name} heilt sich.\n{damage} Leben wiederhergestellt.";
+          actionText += $"{Enemy.Name} heilt sich.\n{damage} Leben wiederhergestellt.";
 
           Enemy.ChangeCurrentHealth(Convert.ToInt16(damage));
 
@@ -261,7 +261,7 @@ namespace RpgGame
           if (Enemy.IsDmgUlt) {
             // increase dmg with all possible variables
             damage = Convert.ToUInt16(Math.Round(Enemy.Strength + Enemy.Dexterity + Enemy.Intelligents * 1.5));
-            actionText = $"{Enemy.Name} nutzt seine Ultimative Fähigkeit.";
+            actionText += $"{Enemy.Name} nutzt seine Ultimative Fähigkeit.";
 
             if (IsCritDodge(Enemy.CritChance)) {
               damage = Convert.ToUInt16(Math.Round(damage * Enemy.CritDmg));
@@ -269,16 +269,16 @@ namespace RpgGame
               chance2Hit = 100; // Crit is always an hit
             }
 
-            if (IsCritDodge(chance2Hit)) {
+            if (!IsCritDodge(chance2Hit)) {
               actionText = $"{Character.Name} ist ausgewichen!\n";
               damage = 0;
-            } else actionText += $"{damage} Schaden!";
+            } else actionText += $" {damage} Schaden!";
 
             Character.ChangeCurrentHealth(Convert.ToInt16(-damage));
           } else {
             // Heals himself with 1.2 of his Intelligents + 20 % of his max Health
             damage = Convert.ToUInt16(Math.Round(Enemy.Intelligents * 1.2 + Enemy.Health[1] / 5));
-            actionText = $"{Enemy.Name} heilt sich enorm.\n{damage} Leben wiederhergestellt.";
+            actionText += $"{Enemy.Name} heilt sich enorm.\n{damage} Leben wiederhergestellt.";
             Enemy.ChangeCurrentHealth(Convert.ToInt16(damage), true);   // overheal allowed
           }
 
