@@ -110,7 +110,9 @@ namespace RpgGame
         }
       }
 
-      Thread.Sleep(LONGTIMEOUT);
+      Console.WriteLine("\n\nDrücken Sie auf eine Taste, um fortzufahren...");
+      Console.ReadKey(true);
+
       return Character;
     }
 
@@ -244,7 +246,7 @@ namespace RpgGame
           }
 
           if (!IsCritDodge(chance2Hit)) {
-            actionText = $"{Character.Name} ist ausgewichen!\n";
+            actionText += $"{Character.Name} ist ausgewichen!\n";
             damage = 0;
           } else actionText += $"{damage} Schaden!";
 
@@ -271,7 +273,7 @@ namespace RpgGame
             }
 
             if (!IsCritDodge(chance2Hit)) {
-              actionText = $"{Character.Name} ist ausgewichen!\n";
+              actionText += $"{Character.Name} ist ausgewichen!\n";
               damage = 0;
             } else actionText += $"{damage} Schaden!";
 
