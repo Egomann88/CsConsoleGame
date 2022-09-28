@@ -137,9 +137,9 @@ namespace RpgGame
           Exp = Convert.ToUInt16(Math.Round(72 * multiplier));
           IsDmgUlt = true;
           break;
-        // wizard
+        // Archmage
         case 6:
-          Name = "Wizard";
+          Name = "Erzmagier";
           Strength = Convert.ToUInt16(Math.Round(3 * multiplier));
           Intelligents = Convert.ToUInt16(Math.Round(20 * multiplier));
           Dexterity = Convert.ToUInt16(Math.Round(4 * multiplier));
@@ -171,7 +171,7 @@ namespace RpgGame
           break;
         // dragon
         case 8:
-          Name = "Dragon";
+          Name = "Drache";
           Strength = Convert.ToUInt16(Math.Round(12 * multiplier));
           Intelligents = Convert.ToUInt16(Math.Round(9 * multiplier));
           Dexterity = Convert.ToUInt16(Math.Round(10 * multiplier));
@@ -187,7 +187,7 @@ namespace RpgGame
           break;
         // demon
         case 9:
-          Name = "Demon";
+          Name = "Dämon";
           Strength = Convert.ToUInt16(Math.Round(14 * multiplier));
           Intelligents = Convert.ToUInt16(Math.Round(9 * multiplier));
           Dexterity = Convert.ToUInt16(Math.Round(12 * multiplier));
