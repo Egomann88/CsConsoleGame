@@ -12,9 +12,23 @@ namespace RpgGame
 {
   internal class Character {
     // Klassenvariabeln
-
+    const ushort MAXSTATSVALUE = 1000;
+    const float MAXCRITCHANCE = 100;
+    const float MAXCRITDAMAGE = 3;
+    const short MAXHEALTH = 600;
+    const int MAXGOLD = 100000;
+    const byte MAXLVL = 100;
 
     // Membervariablen
+    ushort _Strength = 0;
+    ushort _Intelligents = 0;
+    ushort _Dexterity = 0;
+    float _CritChance = 0;
+    float _CritDmg = 0;
+    short[] _Health = new short[2];
+    int _Gold = 0;
+    byte _Lvl = 0;
+
 
     // Konstruktoren
     public Character() { }
@@ -27,7 +41,7 @@ namespace RpgGame
     public Character(string name, byte cl) {
       Name = name;
       Class = cl;
-      Exp = new uint[] { 0, 30 };
+      Exp = new uint[2] { 0, 30 };
       Lvl = 1;
 
       switch (cl) {
@@ -37,7 +51,7 @@ namespace RpgGame
           Dexterity = 2;
           CritChance = 2.4F;
           CritDmg = 1.25F;
-          Health = new short[] { 30, 30 };
+          Health = new short[2] { 30, 30 };
           Gold = 29;
           break;
         case 2: // mage
@@ -46,7 +60,7 @@ namespace RpgGame
           Dexterity = 2;
           CritChance = 4.8F;
           CritDmg = 1.5F;
-          Health = new short[] { 22, 22 };
+          Health = new short[2] { 22, 22 };
           Gold = 21;
           break;
         case 3: // thief
@@ -55,7 +69,7 @@ namespace RpgGame
           Dexterity = 4;
           CritChance = 3.2F;
           CritDmg = 1.75F;
-          Health = new short[] { 26, 26 };
+          Health = new short[2] { 26, 26 };
           Gold = 36;
           break;
         default: break;  // should not get here -> check for wrong input MUST happen before
@@ -68,23 +82,83 @@ namespace RpgGame
 
     public byte Class { get; set; }
 
-    public ushort Strength { get; set; }
+    public ushort Strength {
+      get {
+        return _Strength;
+      } set {
+        if (_Strength + value >= MAXSTATSVALUE) _Strength = MAXSTATSVALUE;
+        else _Strength = value;
+      }
+    }
 
-    public ushort Intelligents { get; set; }
+    public ushort Intelligents {
+      get {
+        return _Intelligents;
+      } set {
+        if (_Intelligents + value >= MAXSTATSVALUE) _Intelligents = MAXSTATSVALUE;
+        else _Intelligents = value;
+      }
+    }
 
-    public ushort Dexterity { get; set; }
+    public ushort Dexterity {
+      get {
+        return _Dexterity;
+      } set {
+        if (_Dexterity + value >= MAXSTATSVALUE) _Dexterity = MAXSTATSVALUE;
+        else _Dexterity = value;
+      }
+    }
 
-    public float CritChance { get; set; }
+    public float CritChance {
+      get {
+        return _CritChance;
+      } set {
+        if (_CritChance + value >= MAXCRITCHANCE) _CritChance = MAXCRITCHANCE;
+        else _CritChance = value;
+      }
+    }
 
-    public float CritDmg { get; set; }
+    public float CritDmg {
+      get {
+        return _CritDmg;
+      } set {
+        if (_CritDmg + value >= MAXCRITDAMAGE) _CritDmg = MAXCRITDAMAGE;
+        else _CritDmg = value;
+      }
+    }
 
-    public short[] Health { get; set; }
+    public short[] Health {
+      get {
+        return _Health;
+      } set {
+        for(byte i = 0; i < _Health.Length; i++) {
+          if (_Health[i] + value[i] >= MAXHEALTH) _Health[i] = MAXHEALTH;
+          else _Health = value;
+        }
+      }
+    }
 
-    public int Gold { get; set; }
+    public int Gold {
+      get {
+        return _Gold;
+      } set {
+        if (_Gold + value >= MAXGOLD) _Gold = MAXGOLD;
+        else _Gold = value;
+      }
+    }
 
     public uint[] Exp { get; set; }
 
-    public byte Lvl { get; set; }
+    public byte Lvl {
+      get {
+        return _Lvl;
+      } set {
+        if(_Lvl >= MAXLVL) {
+          _Lvl = MAXLVL;
+          Exp.Select(x => x = 0);
+        } else _Lvl = value;
+      }
+    }
 
     /// <summary>
     /// Creates an new Character with Name and Class.<br />
@@ -337,10 +411,7 @@ namespace RpgGame
     /// </summary>
     public void IncreaseLvl() {
       // if lvl 100 is reached, no more leveling
-      if (Lvl >= 100) {
-        Exp.Select(x => x = 0);
-        return;
-      }
+      if (Lvl >= MAXLVL) return;
       while(Exp[0] >= Exp[1]) { // allows multiple lvl ups
         Console.WriteLine("{0} ist ein Level aufgestiegen.\n{0} ist nun Level {1}.", Name, ++Lvl);
         Console.ReadKey(true);
@@ -350,7 +421,6 @@ namespace RpgGame
         if (Lvl % 10 == 0) Exp[1] += 50;    // increases exp need every 10 lvls a bit more
 
         IncreaseStats();
-        if (Lvl >= 100) IncreaseLvl(); // when lvl 100 restart func, for if at begining
       }
     }
 
