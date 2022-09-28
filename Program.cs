@@ -60,8 +60,10 @@ namespace RpgGame
       Marketplace marketplace;
 
       do {
-        // create character
-        character = Character.CreateCharacter();
+        // has no character? -> create One
+        if (!Character.HasCharacters()) character = Character.CreateCharacter();
+        else character = Character.GetCharacters();
+
         chAlive = true;
         marketplace = new Marketplace(character);
         
