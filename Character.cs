@@ -354,6 +354,9 @@ namespace RpgGame
 
     public void ShowCharacter() {
       string cl = GetClassName();
+      double critDmg = 0;
+      if (CritDmg > 1.0) critDmg = CritDmg;
+      else critDmg = (CritDmg - 1.0F) * 100;
 
       do {
         Console.Clear();
@@ -367,7 +370,7 @@ namespace RpgGame
         Console.WriteLine("Inteligents:\t\t{0}", Intelligents);
         Console.WriteLine("Geschwindigkeit:\t{0}", Dexterity);
         Console.WriteLine("Krit. Chance:\t\t{0} %", CritChance);
-        Console.WriteLine("Krit. Schaden:\t\t{0} %", (CritDmg - 1.0F) * 100);
+        Console.WriteLine("Krit. Schaden:\t\t{0} %", critDmg);
         Console.WriteLine("\nDrücken Sie <Enter> um zurückzukehren...");
       } while (Console.ReadKey(false).Key != ConsoleKey.Enter);
     }
@@ -411,7 +414,7 @@ namespace RpgGame
     /// </summary>
     public void IncreaseLvl() {
       // if lvl 100 is reached, no more leveling
-      if (Lvl >= MAXLVL) return;
+      if (Lvl >= MAXLVL - 1) return;
       while(Exp[0] >= Exp[1]) { // allows multiple lvl ups
         Console.WriteLine("{0} ist ein Level aufgestiegen.\n{0} ist nun Level {1}.", Name, ++Lvl);
         Console.ReadKey(true);
