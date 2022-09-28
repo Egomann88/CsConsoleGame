@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading; // for timeout
 using System.Text.Json; // has to be installed in nuget Package
 using System.IO;  // to create and read files
+using System.Text.RegularExpressions;
 
 namespace RpgGame
 {
@@ -43,23 +44,112 @@ namespace RpgGame
       Thread.Sleep(600);
     }
 
-    private static void GetCharacters() {
+    private static bool HasCharacters() {
       // https://www.geeksforgeeks.org/c-sharp-program-for-listing-the-files-in-a-directory/
-      // https://www.tutorialsteacher.com/articles/convert-json-string-to-object-in-csharp
       string path = Directory.GetCurrentDirectory() + @"\character_saves\";  // current Path
       DirectoryInfo characterSaves = new DirectoryInfo(path);
-      Character[] characters;
       FileInfo[] Files = characterSaves.GetFiles();
-      foreach (FileInfo i in Files) {
-        string jsonCharacterData = File.ReadAllText(path + i);
-        var b = JsonSerializer.Deserialize<Character>(jsonCharacterData);
-      }
 
-      Console.ReadKey();
+      if(Files == null) return false;
+      return true;
     }
 
-    private static void LoadCharacter() {
-      string path = Directory.GetCurrentDirectory();
+    private static Character GetCharacters() {
+      // https://www.geeksforgeeks.org/c-sharp-program-for-listing-the-files-in-a-directory/
+      string path = Directory.GetCurrentDirectory() + @"\character_saves\";  // current Path
+      DirectoryInfo characterSaves = new DirectoryInfo(path);
+      FileInfo[] Files = characterSaves.GetFiles();
+      List<Character> charactersList = new List<Character>();
+      byte choosenCharacterId = 0;
+
+      // fill character list
+      // https://www.tutorialsteacher.com/articles/convert-json-string-to-object-in-csharp
+      foreach (FileInfo i in Files) {
+        string jsonCharacterData = File.ReadAllText(path + i);
+        charactersList.Add(JsonSerializer.Deserialize<Character>(jsonCharacterData));
+      }
+
+      // list all characters
+      Character[] characters = charactersList.ToArray();  // convert list to array
+      ListCharacters(characters);
+
+      choosenCharacterId = ChooseCharacter(); // player input
+
+      if (choosenCharacterId == 0) return CreateCharacter();  // create new character
+
+      // decrease id by one to be sync with the array
+      if (CanLoadCharacter(--choosenCharacterId, characters)) return LoadCharacter(--choosenCharacterId, characters);
+      else throw new IndexOutOfRangeException("Die geladene Characterdatei ist korrput.");
+    }
+    private static void ListCharacters(Character[] characters) {
+      Console.WriteLine("Welcher Charakter soll geladen werden:");
+      Console.WriteLine("0) keiner (neuen Character erstellen)");
+
+      for (byte i = 0; i < characters.Length; i++) {
+        if (i == 255) break;
+        Console.WriteLine("{0}) {1}, {2} (Level: {3})",
+          i + 1, characters[i].Name, characters[i].GetClassName(), characters[i].Lvl
+        );
+      }
+    }
+
+    private static byte ChooseCharacter() {
+      byte input = 0;
+
+      do {
+        Console.Write("Eingabe: ");
+      } while (!byte.TryParse(Console.ReadLine(), out input));
+
+      return input;
+    }
+
+    /// <summary>
+    /// checks if charactersave if correct and can be loaded
+    /// </summary>
+    /// <param name="characterId">Id of loading Character</param>
+    /// <param name="characters">Array of all Characters</param>
+    /// <returns></returns>
+    private static bool CanLoadCharacter(byte characterId, Character[] characters) {
+      if (IsCharacterValid(characters[characterId])) return true;
+
+      return false;
+    }
+
+    /// <summary>
+    /// Checks if the loaded save wasnt modified.<br />
+    /// If it was modified, it cannot be loaded
+    /// </summary>
+    /// <param name="c">characer object</param>
+    /// <returns>true - if character is valid / flase - if not</returns>
+    private static bool IsCharacterValid(Character c) {
+      bool nameVaild = false, classValid = false;
+
+      if (c.Name == "" || IsInValidSign(c.Name)) nameVaild = true;
+      if (c.Class > 1 && c.Class < 4) classValid = true;
+      c.Strength = c.Strength;
+      c.Intelligents = c.Intelligents;
+      c.Dexterity = c.Dexterity;
+      c.CritChance = c.CritChance;
+      c.CritDmg = c.CritDmg;
+      c.Health = c.Health;
+      c.Gold = c.Gold;
+      c.Exp = c.Exp;
+      c.Lvl = c.Lvl;
+
+      if (nameVaild && classValid) return true;
+      
+      return false;
+    }
+
+    /// <summary>
+    /// Return the character
+    /// </summary>
+    /// <param name="characterId">Id of loading Character</param>
+    /// <param name="characters">Array of all Characters</param>
+    /// <returns></returns>
+    private static Character LoadCharacter(byte characterId, Character[] characters) {
+      return characters[characterId];
+    }
 
     /// <summary>
     /// Checks if in Character Name is an InValid Sign
