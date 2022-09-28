@@ -355,7 +355,7 @@ namespace RpgGame
     public void ShowCharacter() {
       string cl = GetClassName();
       double critDmg = 0;
-      if (CritDmg > 1.0) critDmg = CritDmg;
+      if (CritDmg > 1.0) critDmg = CritDmg * 100;
       else critDmg = (CritDmg - 1.0F) * 100;
 
       do {
