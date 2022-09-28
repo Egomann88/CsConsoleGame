@@ -86,19 +86,12 @@ namespace RpgGame
             case '8': chAlive = false; break;
             case '9':
               do {
-                Console.WriteLine("Wirklich beenden? [j/n]");
+                Console.WriteLine("Charakter speichern? [j/n]");
                 input = Console.ReadKey(true).KeyChar;
               } while (input != 'j' && input != 'n');
 
-              if (input == 'j') {
-                do {
-                  Console.WriteLine("Charakter speichern? [j/n]");
-                  input = Console.ReadKey(true).KeyChar;
-                } while (input != 'j' && input != 'n');
-
-                if(input == 'j') Character.SaveCharacter(character);  // call sensitive methods with classname
-                Environment.Exit(0); // stops appligation
-              }
+              if (input == 'j') Character.SaveCharacter(character);  // call sensitive methods with classname
+              Environment.Exit(0); // stops appligation
 
               continue;
             default: break; // nothing happens
