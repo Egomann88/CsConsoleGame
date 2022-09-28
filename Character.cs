@@ -407,7 +407,7 @@ namespace RpgGame
 
     /// <summary>
     /// Increases Level and Exp, which is needed for next lvl<br />
-    /// Sets current Exp back to 0
+    /// Reduces current Exp with the Exp need for this level
     /// </summary>
     public void IncreaseLvl() {
       // if lvl 100 is reached, no more leveling
