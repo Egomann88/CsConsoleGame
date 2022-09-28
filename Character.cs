@@ -439,7 +439,7 @@ namespace RpgGame
       FullHeal();
       if (Lvl % 10 == 0) {
         CritChance += 0.2F;
-        CritDmg += 0.5F;
+        CritDmg += 0.10F;
       }
 
       switch (Class) {
