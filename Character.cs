@@ -178,11 +178,16 @@ namespace RpgGame
 
       // decrease id by one to be sync with the array
       if (CanLoadCharacter(--choosenCharacterId, characters)) return LoadCharacter(--choosenCharacterId, characters);
-      else throw new IndexOutOfRangeException("Die geladene Charakterdatei ist korrput.");
+      else {
+        string error = "Die geladene Charakterdatei ist korrput.";
+        Console.WriteLine(error);
+        Thread.Sleep(800);
+        throw new IndexOutOfRangeException(error);
+      }
     }
     private static void ListCharacters(Character[] characters) {
       Console.WriteLine("Welcher Charakter soll geladen werden:");
-      Console.WriteLine("0) keiner (neuen Character erstellen)");
+      Console.WriteLine("0) keiner (neuen Charakter erstellen)");
 
       for (byte i = 0; i < characters.Length; i++) {
         if (i == 255) break;
@@ -223,7 +228,7 @@ namespace RpgGame
     private static bool IsCharacterValid(Character c) {
       bool nameVaild = false, classValid = false;
 
-      if (c.Name == "" || IsInValidSign(c.Name)) nameVaild = true;
+      if (c.Name == "" || !IsInValidSign(c.Name)) nameVaild = true;
       if (c.Class > 1 && c.Class < 4) classValid = true;
       c.Strength = c.Strength;
       c.Intelligents = c.Intelligents;
