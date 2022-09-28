@@ -7,7 +7,7 @@ using System.Threading; // for timeout
 
 namespace RpgGame
 {
-  internal class Program :RegexMethods {
+  internal class Program {
     /// <summary>
     /// Check and returns if Character is alive
     /// </summary>
@@ -61,10 +61,10 @@ namespace RpgGame
 
       do {
         // create character
-        character = CreateCharacter();
+        character = Character.CreateCharacter();
         chAlive = true;
         marketplace = new Marketplace(character);
-
+        
         do {
           Console.Clear();
           Console.WriteLine("Hauptmenü\n{0}, bei Ihnen liegt die Wahl.", character.Name);
@@ -80,7 +80,7 @@ namespace RpgGame
             case '2': character.ShowCharacter(); break;
             case '3': character = marketplace.OnMarket(); break;
             case '4': character.Gold += 9999; character.Lvl += 42; character.Dexterity += 80; break;
-            case '7': SaveCharacter(character); break;
+            case '7': Character.SaveCharacter(character); break;  // call sensitive methods with classname
             case '8': chAlive = false; break;
             case '9':
               do {
@@ -94,18 +94,16 @@ namespace RpgGame
                   input = Console.ReadKey(true).KeyChar;
                 } while (input != 'j' && input != 'n');
 
-                if(input == 'j') SaveCharacter(character);
+                if(input == 'j') Character.SaveCharacter(character);  // call sensitive methods with classname
                 Environment.Exit(0); // stops appligation
               }
 
               continue;
             default: break; // nothing happens
           }
-          SaveCharacter(character);
+          Character.SaveCharacter(character); // auto-save
         } while (chAlive);  // if char still alive, start new opt
-
       } while (true);
-
     }
   }
 }

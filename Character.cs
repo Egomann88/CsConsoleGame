@@ -132,27 +132,12 @@ namespace RpgGame
     /// </summary>
     /// <param name="c">current character</param>
     public static void SaveCharacter(Character c) {
-      Character _characterData = new Character(c.Name, 0) {
-        Name = c.Name,
-        Class = c.Class,
-        Strength = c.Strength,
-        Intelligents = c.Intelligents,
-        Dexterity = c.Dexterity,
-        CritChance = c.CritChance,
-        CritDmg = c.CritDmg,
-        Health = c.Health,
-        Gold = c.Gold,
-        Exp = c.Exp,
-        Lvl = c.Lvl,
-      };
-
       string path = Directory.GetCurrentDirectory();  // current Path
-      string json = JsonSerializer.Serialize(_characterData);
+      string json = JsonSerializer.Serialize(c);
 
       try {
         File.WriteAllText(path + @"\character_saves\" + c.Name + @".json", json);
         Console.Clear();
-        Console.WriteLine("Speichern erfolgreich.");
       } catch (InvalidCastException e) { }
 
       Thread.Sleep(600);
@@ -193,7 +178,7 @@ namespace RpgGame
 
       // decrease id by one to be sync with the array
       if (CanLoadCharacter(--choosenCharacterId, characters)) return LoadCharacter(--choosenCharacterId, characters);
-      else throw new IndexOutOfRangeException("Die geladene Characterdatei ist korrput.");
+      else throw new IndexOutOfRangeException("Die geladene Charakterdatei ist korrput.");
     }
     private static void ListCharacters(Character[] characters) {
       Console.WriteLine("Welcher Charakter soll geladen werden:");
