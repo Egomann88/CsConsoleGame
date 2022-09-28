@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -61,7 +61,14 @@ namespace RpgGame
     private static void LoadCharacter() {
       string path = Directory.GetCurrentDirectory();
 
-      File.ReadAllText(path + @"\character_saves\");
+    /// <summary>
+    /// Checks if in Character Name is an InValid Sign
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns>true if wrong sign / false - if all correct</returns>
+    public static bool IsInValidSign(string input) {
+      Regex regex = new Regex("[\\\\/:\\*\\?\"<>\\|]", RegexOptions.IgnoreCase);
+      return regex.IsMatch(input);
     }
 
     /// <summary>
@@ -77,7 +84,11 @@ namespace RpgGame
         Console.WriteLine("Geben Sie den Namen ihres Charakters ein:");
         name = Console.ReadLine();
 
-        if (name == "") {
+        if (IsInValidSign(name)) {
+          Console.WriteLine("\nIm Namen ist ein unerlaubtes Zeichen enthalten!");
+          Thread.Sleep(500);
+          continue;
+        } else if(name == "" || name == " ") {
           Console.WriteLine("\nDer Name darf nicht leer sein!");
           Thread.Sleep(500);
           continue;
