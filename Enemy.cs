@@ -77,13 +77,13 @@ namespace RpgGame
         case 2:
           Name = "Assasine";
           Strength = Convert.ToUInt16(Math.Round(2 * multiplier));
-          Intelligents = Convert.ToUInt16(Math.Round(2 * multiplier));
-          Dexterity = Convert.ToUInt16(Math.Round(4 * multiplier));
+          Intelligents = Convert.ToUInt16(Math.Round(1.4 * multiplier));
+          Dexterity = Convert.ToUInt16(Math.Round(3 * multiplier));
           CritChance = 0.12F * multiplier;
           CritDmg = MaxMultiplier(1.25F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(17 * multiplier)),
-                        Convert.ToInt16(Math.Round(17 * multiplier))
+                        Convert.ToInt16(Math.Round(15 * multiplier)),
+                        Convert.ToInt16(Math.Round(15 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(19 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(14 * multiplier));

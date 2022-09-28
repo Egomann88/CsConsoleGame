@@ -3,56 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
+using System.Threading; // for timeout
 
 namespace RpgGame
 {
-  internal class Program
-  {
-    /// <summary>
-    /// Creates an new Character with Name and Class.<br />
-    /// </summary>
-    /// <returns>Character</returns>
-    private static Character CharCreator() {
-      string name = "";
-      byte cl = 0;
-
-      while (name == "") {
-        Console.Clear();
-        Console.WriteLine("Geben Sie den Namen ihres Charakters ein:");
-        name = Console.ReadLine();
-
-        if (name == "") {
-          Console.WriteLine("\nDer Name darf nicht leer sein!");
-          Thread.Sleep(500);
-          continue;
-        }
-
-        // convert to char array of the string
-        char[] letters = name.ToCharArray();
-        // upper case the first char
-        letters[0] = char.ToUpper(letters[0]);
-        // put array back together
-        name = new string(letters);
-      }
-
-      do {
-        Console.Clear();
-        Console.WriteLine("Was ist die Klasse ihres Charakters?\n1) Krieger\n2) Magier\n3) Schurke");
-        cl = Convert.ToByte(Console.ReadKey(false).KeyChar - 48);
-      } while (cl < 1 || cl > 4);
-
-      return new Character(name, cl);
-    }
-
+  internal class Program {
     /// <summary>
     /// Check and returns if Character is alive
     /// </summary>
     /// <param name="c">character</param>
     /// <returns>true, if yes - false, if not</returns>
     private static bool IsCharacterAlive(Character c) {
-      if (c.Health[0] <= 0)
-        return false;
+      if (c.Health[0] <= 0) return false;
 
       return true;
     }
@@ -98,15 +60,18 @@ namespace RpgGame
       Marketplace marketplace;
 
       do {
-        // create character
-        character = CharCreator();
+        // has no character? -> create One
+        if (!Character.HasCharacters()) character = Character.CreateCharacter();
+        else character = Character.GetCharacters();
+
         chAlive = true;
         marketplace = new Marketplace(character);
-
+        
         do {
           Console.Clear();
           Console.WriteLine("Hauptmenü\n{0}, bei Ihnen liegt die Wahl.", character.Name);
-          Console.WriteLine("1) Dungeon\n2) Charakter betrachten\n3) Marktplatz\n8) neuen Charakter erstellen\n9) Spiel beenden");
+          Console.WriteLine("1) Dungeon\n2) Charakter betrachten\n3) Marktplatz\n7) Charakter speichern\n" +
+            "8) neuen Charakter erstellen\n9) Spiel beenden");
           input = Console.ReadKey(true).KeyChar;
 
           switch (input) {
@@ -117,14 +82,23 @@ namespace RpgGame
             case '2': character.ShowCharacter(); break;
             case '3': character = marketplace.OnMarket(); break;
             case '4': character.Gold += 9999; character.Lvl += 42; character.Dexterity += 80; break;
+            case '7': Character.SaveCharacter(character); break;  // call sensitive methods with classname
             case '8': chAlive = false; break;
-            case '9': Environment.Exit(0); break;   // stops appligation -> add button to aggre, before end
+            case '9':
+              do {
+                Console.WriteLine("Charakter speichern? [j/n]");
+                input = Console.ReadKey(true).KeyChar;
+              } while (input != 'j' && input != 'n');
+
+              if (input == 'j') Character.SaveCharacter(character);  // call sensitive methods with classname
+              Environment.Exit(0); // stops appligation
+
+              continue;
             default: break; // nothing happens
           }
+          Character.SaveCharacter(character); // auto-save
         } while (chAlive);  // if char still alive, start new opt
-
       } while (true);
-
     }
   }
 }
