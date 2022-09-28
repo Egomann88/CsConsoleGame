@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading; // timeout
 using System.Text.Json; // has to be installed in nuget Package
 using System.IO;  // to create and read files
