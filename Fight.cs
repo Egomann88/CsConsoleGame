@@ -105,9 +105,7 @@ namespace RpgGame
         Character.ChangeAmoutOfGold(Enemy.Gold);
 
         // player lvl up
-        while (Character.Exp[0] >= Character.Exp[1]) {
-          Character.IncreaseLvl();
-        }
+        Character.IncreaseLvl();
       }
 
       Console.WriteLine("\n\nDrücken Sie auf eine Taste, um fortzufahren...");
