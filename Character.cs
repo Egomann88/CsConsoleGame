@@ -83,11 +83,21 @@ namespace RpgGame
 
     public byte Lvl { get; set; }
 
-    public void ShowCharacter() {
+    /// <summary>
+    /// Returns Classname
+    /// </summary>
+    /// <returns></returns>
+    public string GetClassName() {
       string cl = "";
       if (Class == 1) cl = "Krieger";
       else if (Class == 2) cl = "Magier";
       else cl = "Schurke";
+
+      return cl;
+    }
+
+    public void ShowCharacter() {
+      string cl = GetClassName();
 
       do {
         Console.Clear();
