@@ -155,7 +155,7 @@ namespace RpgGame
       } set {
         if(_Lvl >= MAXLVL) {
           _Lvl = MAXLVL;
-          Exp.Select(x => x = 0);
+          Exp = Exp.Select(x => x = 0).ToArray();
         } else _Lvl = value;
       }
     }
