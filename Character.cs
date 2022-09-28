@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -177,7 +177,7 @@ namespace RpgGame
       if (choosenCharacterId == 0) return CreateCharacter();  // create new character
 
       // decrease id by one to be sync with the array
-      if (CanLoadCharacter(--choosenCharacterId, characters)) return LoadCharacter(--choosenCharacterId, characters);
+      if (CanLoadCharacter(--choosenCharacterId, characters)) return LoadCharacter(choosenCharacterId, characters);
       else {
         string error = "Die geladene Charakterdatei ist korrput.";
         Console.WriteLine(error);
