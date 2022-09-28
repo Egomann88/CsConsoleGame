@@ -75,7 +75,7 @@ namespace RpgGame
     /// Creates an new Character with Name and Class.<br />
     /// </summary>
     /// <returns>Character</returns>
-    private static Character CharCreator() {
+    private static Character CreateCharacter() {
       string name = "";
       byte cl = 0;
 
@@ -164,9 +164,7 @@ namespace RpgGame
 
       do {
         // create character
-        GetCharacters();
-        
-        character = CharCreator();
+        character = CreateCharacter();
         chAlive = true;
         marketplace = new Marketplace(character);
 
