@@ -427,7 +427,7 @@ namespace RpgGame
     /// <returns>bool -> Cirt / Dodge or no Crit / Dodge</returns>
     private bool IsCritDodge(float chance) {
       Random r = new Random();
-      byte i = Convert.ToByte(r.Next(1, 101));
+      double i = r.NextDouble() * 100;
 
       if (i > chance) return false; // no crit / dodge (enemy dodged)
 
