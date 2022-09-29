@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 
 namespace RpgGame
@@ -130,6 +130,8 @@ namespace RpgGame
       while (true) {
         Console.Clear();
         Console.WriteLine("Ihr könnt \"Rot oder Schwarz\" oder \"Höher oder Tiefer\" spielen.");
+        Console.WriteLine("Bei \"Rot oder Schwarz\" könnte Ihr selbst Euren Einsatz bestimmen.\n" +
+          "Bei \"Höher oder Tiefer\" ist der Einsatz festgelegt.");
         Console.WriteLine("1) Rot oder Schwarz\n2) Höher oder Tiefer\n3) Zurück zum Marktplatz");
         input = Console.ReadKey(true).KeyChar;
 
