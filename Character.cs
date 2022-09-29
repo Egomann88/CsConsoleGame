@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading; // timeout
@@ -354,9 +354,6 @@ namespace RpgGame
 
     public void ShowCharacter() {
       string cl = GetClassName();
-      double critDmg = 0;
-      if (CritDmg > 1.0) critDmg = CritDmg * 100;
-      else critDmg = (CritDmg - 1.0F) * 100;
 
       do {
         Console.Clear();
@@ -370,7 +367,7 @@ namespace RpgGame
         Console.WriteLine("Inteligents:\t\t{0}", Intelligents);
         Console.WriteLine("Geschwindigkeit:\t{0}", Dexterity);
         Console.WriteLine("Krit. Chance:\t\t{0} %", CritChance);
-        Console.WriteLine("Krit. Schaden:\t\t{0} %", critDmg);
+        Console.WriteLine("Krit. Schaden:\t\t{0} %", (CritDmg - 1.0F) * 100);
         Console.WriteLine("\nDrücken Sie <Enter> um zurückzukehren...");
       } while (Console.ReadKey(false).Key != ConsoleKey.Enter);
     }
