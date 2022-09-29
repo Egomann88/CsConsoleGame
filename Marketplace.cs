@@ -372,12 +372,13 @@ namespace RpgGame
       Random r = new Random();
       byte enemyId = Convert.ToByte(r.Next(1, 101));
 
+      // skip demon in arena
       if (enemyId <= 21) enemyId = 5; // 21 %
       else if (enemyId <= 41) enemyId = 6; // 20 %
       else if (enemyId <= 56) enemyId = 7; // 18 %
       else if (enemyId <= 75) enemyId = 8; // 16 %
-      else if (enemyId <= 89) enemyId = 9; // 14 %
-      else enemyId = 10; // 11 %
+      else if (enemyId <= 89) enemyId = 10; // 14 %
+      else enemyId = 11; // 11 %
 
       return new Enemy(Character.Lvl, enemyId, isHard);
     }

@@ -213,6 +213,22 @@ namespace RpgGame
           Exp = Convert.ToUInt16(Math.Round(240 * multiplier));
           IsDmgUlt = true;
           break;
+        // gladiator - arena only
+        case 11:
+          Name = "Gladiator";
+          Strength = Convert.ToUInt16(Math.Round(24 * multiplier));
+          Intelligents = Convert.ToUInt16(Math.Round(12 * multiplier));
+          Dexterity = Convert.ToUInt16(Math.Round(14 * multiplier));
+          CritChance = 0.20F * multiplier;
+          CritDmg = MaxMultiplier(1.1F, multiplier, true);
+          Health = new short[] {
+                        Convert.ToInt16(Math.Round(70 * multiplier)),
+                        Convert.ToInt16(Math.Round(70 * multiplier))
+                    };
+          Gold = Convert.ToInt32(Math.Round(227 * multiplier));
+          Exp = Convert.ToUInt16(Math.Round(334 * multiplier));
+          IsDmgUlt = true;
+          break;
       }
     }
     private float MaxMultiplier(float mutliplicator, float multiplier, bool boss = false) {
