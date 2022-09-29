@@ -81,24 +81,44 @@ namespace RpgGame
 
         switch (input) {
           case '1':
+            if(HasCharacterFullHp()) {
+              Console.WriteLine("Ihr habt bereits volles Leben");
+              break;
+            }
+
             if (Character.Gold >= WEAKHEALERPRICE) {
               HealerPerzent(0.25);
               Character.Gold -= WEAKHEALERPRICE;
             } else NotEnoughMoney();
             break;
           case '2':
+            if (HasCharacterFullHp()) {
+              Console.WriteLine("Ihr habt bereits volles Leben");
+              break;
+            }
+
             if (Character.Gold >= NORMALHEALERPRICE) {
               HealerPerzent(0.45);
               Character.Gold -= NORMALHEALERPRICE;
             } else NotEnoughMoney();
             break;
           case '3':
+            if (HasCharacterFullHp()) {
+              Console.WriteLine("Ihr habt bereits volles Leben");
+              break;
+            }
+
             if (Character.Gold >= JOKERHEALERPRICE) {
-              HealerNumber((short)r.Next(5, Character.Health[1] + 5), true);
+              HealerNumber((short)r.Next(5, Character.Health[1] - 15), true);
               Character.Gold -= JOKERHEALERPRICE;
             } else NotEnoughMoney();
             break;
           case '4':
+            if (HasCharacterFullHp()) {
+              Console.WriteLine("Ihr habt bereits volles Leben");
+              break;
+            }
+
             if (Character.Lvl < LVLFORHIGHUSES) {
               Console.WriteLine("Die Heilerin lässt euch nicht hinein. Euer Level ist zu tief.");
               Thread.Sleep(TIMEOUT);
@@ -116,6 +136,15 @@ namespace RpgGame
         Thread.Sleep(SHORTTIMEOUT);
         return;
       }
+    }
+
+    /// <summary>
+    /// checks if the player hp is full
+    /// </summary>
+    /// <returns>true if hp is full - false if not</returns>
+    private bool HasCharacterFullHp() {
+      if (Character.Health[0] >= Character.Health[1]) return true;
+      return false;
     }
 
     /// <summary>
