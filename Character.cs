@@ -439,10 +439,12 @@ namespace RpgGame
         CritDmg += 0.10F;
       }
 
-      switch (Class) {
-        case 1: Strength++; break;
-        case 2: Intelligents++; break;
-        case 3: Dexterity++; break;
+      if(Lvl % 2 == 0) {
+        switch (Class) {
+          case 1: Strength++; break;
+          case 2: Intelligents++; break;
+          case 3: Dexterity++; break;
+        }
       }
     }
   }
