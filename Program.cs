@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace RpgGame
 {
@@ -53,22 +53,26 @@ namespace RpgGame
     }
 
     static Character MainMenu() {
+      string mainMenuText = "1) Charakter erstellen\n";
+
+      if (Character.HasCharacters()) mainMenuText += "2) Charakter laden\n3) Charakter löschen\n";
       while (true) {
         Console.Clear();
         // has no character? -> create One (maybe first time to start)
-        if (!Character.HasCharacters()) {
-          return Character.CreateCharacter();
-        } else {
-          Console.WriteLine("Hauptmenü\n1) Charakter laden\n2) Charakter löschen\n3) Charakter erstellen\n9) Spiel beenden");
-          char input = Console.ReadKey(true).KeyChar;
-          Console.Clear();
 
-          switch(input) {
-            case '1': return Character.GetCharacters(false);
-            case '2': Character.GetCharacters(true); break;
-            case '3': return Character.CreateCharacter();
-            case '9': Environment.Exit(-1); break;
-          }
+        Console.WriteLine("Hauptmenü\n{0}9) Spiel beenden", mainMenuText);
+        char input = Console.ReadKey(true).KeyChar;
+        Console.Clear();
+
+        switch (input) {
+          case '1': return Character.CreateCharacter();
+          case '2':
+            if (Character.HasCharacters()) return Character.GetCharacters(false);
+            else break;
+          case '3':
+            if (Character.HasCharacters()) Character.GetCharacters(true);
+            break;
+          case '9': Environment.Exit(-1); break;
         }
       }
     }
