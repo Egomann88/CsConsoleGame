@@ -242,15 +242,17 @@ namespace RpgGame
 
       // list all characters
       Character[] characters = charactersList.ToArray();  // convert list to array
-      ListCharacters(characters);
+      ListCharacters(characters); // lists all characters
 
-      choosenCharacterId = ChooseCharacter(); // player input
+      do {
+        choosenCharacterId = ChooseCharacter(); // player input
+      } while (choosenCharacterId > characters.Length); // player can give much higher input than save are
 
       if (choosenCharacterId == 0) return CreateCharacter();  // create new character
 
       // decrease id by one to be sync with the array
       if (CanLoadCharacter(--choosenCharacterId, characters)) return LoadCharacter(choosenCharacterId, characters);
-      else {
+      else {  // save file is edited
         string error = "Die geladene Charakterdatei ist korrput.";
         Console.WriteLine(error);
         Thread.Sleep(800);
