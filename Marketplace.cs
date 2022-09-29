@@ -166,7 +166,7 @@ namespace RpgGame
 
       do {
         Console.Clear();
-        Console.WriteLine(dealer + "fragt nach eurem Einsatz.\nEuer Gold: {1}", dealerMood, Character.Gold);
+        Console.WriteLine(dealer + "fragt nach eurem Einsatz. (Euer Gold: {1})", dealerMood, Character.Gold);
         Console.Write("Euer Einsatz: ");
         if (!uint.TryParse(Console.ReadLine(), out stake)) continue;
         if(stake == 0) {
