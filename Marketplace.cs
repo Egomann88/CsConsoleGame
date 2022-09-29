@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 
 namespace RpgGame
@@ -32,6 +32,11 @@ namespace RpgGame
 
     private Character Character { get; set; }
 
+    /// <summary>
+    /// Overview of the entire market -> mainspot<br />
+    /// The player can go anywhere or leave
+    /// </summary>
+    /// <returns>current Character</returns>
     public Character OnMarket() {
       bool onMarket = true;
       char input = '0';
@@ -55,6 +60,10 @@ namespace RpgGame
       return Character;
     }
 
+    /// <summary>
+    /// Shows all the Healers and gives choice to go to one or to leave<br />
+    /// The best Healer won't heal the player, if his level is to low
+    /// </summary>
     private void HealerOverView() {
       char input = '0';
 
@@ -133,6 +142,11 @@ namespace RpgGame
       }
     }
 
+    /// <summary>
+    /// The player has to give his bet (the game does not allow the p. to give higher bets than he possesses)<br />
+    /// The player has to choose between red and black<br />
+    /// If the player is right, he gets his bet paid out - if not, he has to pay his bet
+    /// </summary>
     private void RedBlack() {
       Random r = new Random();
       string[] moods = { "grimmige", "gelangweilte", "fröhliche" };
@@ -191,6 +205,12 @@ namespace RpgGame
       Thread.Sleep(TIMEOUT);
     }
 
+    /// <summary>
+    /// rnd number between 1 and 10 is rolled<br />
+    /// The player has to guess if the next number is smaller or bigger than the current one<br />
+    /// If the player guest correct, he'll get gold - if not he losses gold<br />
+    /// If the player can't afford to play -> he'll be thrown out
+    /// </summary>
     private void HighLess() {
       Random r = new Random();
       char input = '0';
@@ -239,10 +259,10 @@ namespace RpgGame
     }
 
     /// <summary>
-    /// 
+    /// Checks and says if the player won / lost money and adds / reduces the amout of gold from the player
     /// </summary>
-    /// <param name="pWon"></param>
-    /// <param name="stake"></param>
+    /// <param name="pWon">has player won?</param>
+    /// <param name="stake">sum the player won or lost</param>
     private void PayPlayer(bool pWon, int stake) {
       string wonMsg = pWon ? "erhaltet" : "bezahlt";
       Console.WriteLine("Ihr {0} {1} Gold.", wonMsg, stake);
@@ -251,6 +271,9 @@ namespace RpgGame
       Thread.Sleep(TIMEOUT);
     }
 
+    /// <summary>
+    /// Shows arena and rules -> gives choice to fight or leave
+    /// </summary>
     private void ArenaOverView() {
       char input = '0';
 
@@ -275,14 +298,11 @@ namespace RpgGame
     /// Evaluates and fights against enemy in arena
     /// </summary>
     /// <param name="ishard">Is Enemy strong?</param>
-    /// <returns>current Character</returns>
-    private Character FightArena(bool ishard) {
+    private void FightArena(bool ishard) {
       Enemy e = EvalEnemy(ishard);
       FightArena fa = new FightArena(Character, e);
 
       fa.FightIn();
-
-      return Character;
     }
 
     /// <summary>
@@ -305,7 +325,11 @@ namespace RpgGame
       return new Enemy(Character.Lvl, enemyId, isHard);
     }
 
-    // increase stats
+    /// <summary>
+    /// Gives the opportunity to increase stats permanently.<br />
+    /// The Player can't use these service is its level is too low.<br />
+    /// If the player can't pay, he won't get it
+    /// </summary>
     private void StatPushOverView() {
       char input = '0';
       ushort price = 0;
@@ -364,6 +388,9 @@ namespace RpgGame
       }
     }
 
+    /// <summary>
+    /// Will trigger if the player can't pay for a service 
+    /// </summary>
     private void NotEnoughMoney() {
       Console.WriteLine("Ihr habt nicht genügend Geld.");
     }
