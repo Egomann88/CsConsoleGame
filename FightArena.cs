@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 
@@ -41,7 +41,7 @@ namespace RpgGame
         for (byte i = 0; i < enemyTurns; i++) { // repeat as long as Enemy still has turns
           EnemyTurn();
           if (Character.Health[0] <= 0) {
-            Character.ChangeCurrentHealth(1); // survive with 1 hp
+            Character.Health[0] = 1; // survive with 1 hp
             fightOver = true;
             break;  // break out of for-loop
           }
