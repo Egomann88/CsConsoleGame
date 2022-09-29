@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 
 namespace RpgGame
@@ -57,7 +57,6 @@ namespace RpgGame
 
     private void HealerOverView() {
       char input = '0';
-      double healValue = 0;
 
       while (true) {
         Console.Clear();
@@ -65,26 +64,20 @@ namespace RpgGame
         Console.WriteLine("1) den Anfänger, er kann 25 % eures Lebens wiederherstellen (Preis: {0})\n" +
             "2) den Erfaherenen, er kann 45 % eures Lebens wiederherstellen (Preis: {1})\n" +
             "3) die Meisterin, sie kann eurere Leben komplett wiederherstellen (Preis: {2})\n" +
-            "4) Zurück zum Marktplatz",
-            WEAKHEALERPRICE, NORMALHEALERPRICE, STRONGHEALERPRICE);
+            "4) Zurück zum Marktplatz", WEAKHEALERPRICE, NORMALHEALERPRICE, STRONGHEALERPRICE);
         input = Console.ReadKey(true).KeyChar;
 
         switch (input) {
           case '1':
             if (Character.Gold >= WEAKHEALERPRICE) {
-              healValue = Math.Round(Character.Health[1] * 0.25);
-
-              Character.ChangeCurrentHealth((short)healValue);
-              Console.WriteLine("{0} HP wurden wiederhergestellt.", healValue);
+              Healer(0.25);
               Character.Gold -= WEAKHEALERPRICE;
             } else NotEnoughMoney();
 
             break;
           case '2':
             if (Character.Gold >= NORMALHEALERPRICE) {
-              healValue = Math.Round(Character.Health[1] * 0.45);
-              Character.ChangeCurrentHealth((short)healValue);
-              Console.WriteLine("{0} HP wurden wiederhergestellt.", healValue);
+              Healer(0.45);
               Character.Gold -= NORMALHEALERPRICE;
             } else NotEnoughMoney();
 
@@ -109,6 +102,19 @@ namespace RpgGame
       }
     }
 
+    /// <summary>
+    /// heals the player by %
+    /// </summary>
+    /// <param name="healPerzent">% value the player will be healed by</param>
+    private void Healer(double healPerzent) {
+      double healValue = Math.Round(Character.Health[1] * healPerzent);
+      Character.ChangeCurrentHealth((short)healValue);
+      Console.WriteLine("{0} HP wurden wiederhergestellt.", healValue);
+    }
+
+    /// <summary>
+    /// Shows the games one can play -> gives the choice to play one of them or to leave
+    /// </summary>
     private void GamblingOverView() {
       char input = '0';
 
