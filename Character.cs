@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading; // timeout
@@ -230,7 +230,8 @@ namespace RpgGame
       DirectoryInfo characterSaves = new DirectoryInfo(path);
       FileInfo[] Files = characterSaves.GetFiles();
 
-      if (Files == null) return false;
+      // https://stackoverflow.com/questions/24518299/if-file-directory-is-empty-c-sharp
+      if (Files.Length == 0) return false;
       return true;
     }
 
