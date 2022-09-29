@@ -158,6 +158,12 @@ namespace RpgGame
       uint stake = 0;
       char input = '0';
 
+      if(Character.Gold <= 0) {
+        NotEnoughMoney();
+        Thread.Sleep(TIMEOUT);
+        return;
+      }
+
       do {
         Console.Clear();
         Console.WriteLine(dealer + "fragt nach eurem Einsatz.\nEuer Gold: {1}", dealerMood, Character.Gold);
