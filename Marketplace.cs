@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 
 namespace RpgGame
@@ -158,7 +158,7 @@ namespace RpgGame
 
       do {
         Console.Clear();
-        Console.WriteLine(dealer + "fragt nach eurem Einsatz.", dealerMood);
+        Console.WriteLine(dealer + "fragt nach eurem Einsatz.\nEuer Gold: {1}", dealerMood, Character.Gold);
         Console.Write("Euer Einsatz: ");
         if (!uint.TryParse(Console.ReadLine(), out stake)) continue;
         if (stake > Character.Gold) {
