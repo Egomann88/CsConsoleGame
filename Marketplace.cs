@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 
 namespace RpgGame
@@ -220,6 +220,7 @@ namespace RpgGame
       Console.Clear();
       if (Character.Gold < stake) {
         NotEnoughMoney();
+        Thread.Sleep(TIMEOUT);
         return;
       }
 
