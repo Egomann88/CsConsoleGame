@@ -74,11 +74,11 @@ namespace RpgGame
               character = Dungeon(character);
               chAlive = IsCharacterAlive(character);
               break;
-            case '2': character.ShowCharacter(); break;
+            case '2': character.ShowCharacter(); continue;
             case '3': character = marketplace.OnMarket(); break;
             case '4': character.Gold += 9999; character.Lvl += 42; character.Dexterity += 80; break;
-            case '7': Character.SaveCharacter(character); break;  // call sensitive methods with classname
-            case '8': chAlive = false; break;
+            case '7': Character.SaveCharacter(character); continue;  // call sensitive methods with classname
+            case '8': chAlive = false; continue;
             case '9':
               do {
                 Console.WriteLine("Charakter speichern? [j/n]");
