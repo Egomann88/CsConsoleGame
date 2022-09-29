@@ -10,16 +10,16 @@ namespace RpgGame
     private const byte NORMALHEALERPRICE = 45;
     private const byte JOKERHEALERPRICE = 60;
     private const byte STRONGHEALERPRICE = 80;
-    private const byte LVLFORHIGHUSES = 8;
+    private const byte LVLFORHIGHUSES = 9;
     private const int SHORTTIMEOUT = 800;
     private const int TIMEOUT = 1200;
     private const int LONGTIMEOUT = 2000;
-    private const ushort STRPRICE = 220;
-    private const ushort INTPRICE = 200;
-    private const ushort DEXPRICE = 240;
-    private const ushort HELPRICE = 210;
-    private const ushort CCHPRICE = 460;
-    private const ushort CDMPRICE = 440;
+    private const ushort STRPRICE = 340;
+    private const ushort INTPRICE = 300;
+    private const ushort DEXPRICE = 360;
+    private const ushort HELPRICE = 295;
+    private const ushort CCHPRICE = 500;
+    private const ushort CDMPRICE = 510;
 
     // Membervariabeln
 
