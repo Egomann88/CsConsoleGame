@@ -48,6 +48,27 @@ namespace RpgGame
       return f.FightIn();
     }
 
+    static Character MainMenu() {
+      while (true) {
+        Console.Clear();
+        // has no character? -> create One (maybe first time to start)
+        if (!Character.HasCharacters()) {
+          return Character.CreateCharacter();
+        } else {
+          Console.WriteLine("Hauptmenü\n1) Charakter laden\n2) Charakter löschen\n3) Charakter erstellen\n9) Spiel beenden");
+          char input = Console.ReadKey(true).KeyChar;
+          Console.Clear();
+
+          switch(input) {
+            case '1': return Character.GetCharacters(false);
+            case '2': Character.GetCharacters(true); break;
+            case '3': return Character.CreateCharacter();
+            case '9': Environment.Exit(-1); break;
+          }
+        }
+      }
+    }
+
     static void Main(string[] args) {
       char input = '0';
       bool chAlive = false;
@@ -55,30 +76,7 @@ namespace RpgGame
       Marketplace marketplace;
 
       do {
-        // has no character? -> create One (maybe first time to start)
-        while (true) {
-          Console.Clear();
-          if (!Character.HasCharacters()) {
-            character = Character.CreateCharacter();
-            break;
-          } else {
-            Console.WriteLine("Hauptmenü\n1) Charakter laden\n2) Charakter löschen\n3) Charakter erstellen\n9) Spiel beenden");
-            input = Console.ReadKey(true).KeyChar;
-            Console.Clear();
-
-            if (input == '1') { // load
-              character = Character.GetCharacters(false);
-              break;
-            } else if (input == '2') {  // delete
-              Character.GetCharacters(true);
-            } else if (input == '3') {  // create
-              character = Character.CreateCharacter();
-              break;
-            } else if (input == '9') {  // end
-              Environment.Exit(-1);
-            }
-          }
-        }
+        character = MainMenu();
 
         chAlive = true;
         marketplace = new Marketplace(character);
