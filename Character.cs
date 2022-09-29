@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading; // timeout
@@ -303,7 +303,7 @@ namespace RpgGame
       bool nameVaild = false, classValid = false;
 
       if (c.Name == "" || !IsInValidSign(c.Name)) nameVaild = true;
-      if (c.Class > 1 && c.Class < 4) classValid = true;
+      if (c.Class > 0 && c.Class < 4) classValid = true;
       c.Strength = c.Strength;
       c.Intelligents = c.Intelligents;
       c.Dexterity = c.Dexterity;
