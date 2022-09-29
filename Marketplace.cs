@@ -403,6 +403,7 @@ namespace RpgGame
         Console.Clear();
         Console.WriteLine("Der Verstärkungsmagier kann euch, auf eine neue Ebene der Macht bringen, " +
             "für einen kleinen Betrag natürlich.");
+        Console.WriteLine("Euer Gold: {0}", Character.Gold);
         Console.WriteLine("1) +1 Stärke (Preis: {0} Gold)\n2) +1 Inteligents (Preis: {1} Gold)\n3) +1 Geschicklichkeit (Preis: {2} Gold)\n" +
           "4) +5 Max Leben (Preis: {3} Gold)\n5) Krit. Chance + 2 % (Preis: {4} Gold)\n6) Krit. Schaden + 5 % (Preis: {5} Gold)\n" +
           "9) Zurück zum Marktplatzs", STRPRICE, INTPRICE, DEXPRICE, HELPRICE, CCHPRICE, CDMPRICE);
