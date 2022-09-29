@@ -308,6 +308,7 @@ namespace RpgGame
     // increase stats
     private void StatPushOverView() {
       char input = '0';
+      ushort price = 0;
 
       if (Character.Lvl < LVLFORHIGHUSES) {
         Console.Clear();
@@ -322,39 +323,44 @@ namespace RpgGame
             "für einen kleinen Betrag natürlich.");
         Console.WriteLine("1) +1 Stärke (Preis: {0} Gold)\n2) +1 Inteligents (Preis: {1} Gold)\n3) +1 Geschicklichkeit (Preis: {2} Gold)\n" +
           "4) +5 Max Leben (Preis: {3} Gold)\n5) Krit. Chance + 2 % (Preis: {4} Gold)\n6) Krit. Schaden + 5 % (Preis: {5} Gold)\n" +
-          "9) Zurück zum Marktplatzs",
-          STRPRICE, INTPRICE, DEXPRICE, HELPRICE, CCHPRICE, CDMPRICE);
+          "9) Zurück zum Marktplatzs", STRPRICE, INTPRICE, DEXPRICE, HELPRICE, CCHPRICE, CDMPRICE);
         input = Console.ReadKey().KeyChar;
                   
         switch (input) {
           case '1':
             if (Character.Gold >= STRPRICE) Character.Strength++;
             else NotEnoughMoney();
+            price = STRPRICE;
             break;
           case '2':
             if (Character.Gold >= INTPRICE) Character.Intelligents++;
             else NotEnoughMoney();
+            price = INTPRICE;
             break;
           case '3':
             if (Character.Gold >= DEXPRICE) Character.Dexterity++;
             else NotEnoughMoney();
+            price = DEXPRICE;
             break;
           case '4':
             if (Character.Gold >= HELPRICE) Character.Health[1] += 5;
             else NotEnoughMoney();
+            price = HELPRICE;
             break;
           case '5':
             if (Character.Gold >= CCHPRICE) Character.CritChance += 2;
             else NotEnoughMoney();
+            price = CCHPRICE;
             break;
           case '6':
             if (Character.Gold >= CDMPRICE) Character.CritDmg += 0.05F;
             else NotEnoughMoney();
+            price = CDMPRICE;
             break;
           case '9': return;
           default: continue;
         }
-
+        Character.Gold -= price;
       }
     }
 
