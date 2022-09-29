@@ -72,7 +72,7 @@ namespace RpgGame
         Console.WriteLine("1) den Anfänger, er kann 25 % eures Lebens wiederherstellen (Preis: {0})\n" +
             "2) den Erfaherenen, er kann 45 % eures Lebens wiederherstellen (Preis: {1})\n" +
             "3) die Meisterin, sie kann eurere Leben komplett wiederherstellen (Preis: {2})\n" +
-            "4) Zurück zum Marktplatz\n\nEurer Leben: {3} / {4}", WEAKHEALERPRICE, NORMALHEALERPRICE,
+            "9) Zurück zum Marktplatz\n\nEurer Leben: {3} / {4}", WEAKHEALERPRICE, NORMALHEALERPRICE,
             STRONGHEALERPRICE, Character.Health[0], Character.Health[1]);
         input = Console.ReadKey(true).KeyChar;
 
@@ -103,7 +103,7 @@ namespace RpgGame
             } else NotEnoughMoney();
 
             break;
-          case '4': return;
+          case '9': return;
           default: continue;
         }
         Thread.Sleep(SHORTTIMEOUT);
@@ -132,13 +132,13 @@ namespace RpgGame
         Console.WriteLine("Ihr könnt \"Rot oder Schwarz\" oder \"Höher oder Tiefer\" spielen.");
         Console.WriteLine("Bei \"Rot oder Schwarz\" könnte Ihr selbst Euren Einsatz bestimmen.\n" +
           "Bei \"Höher oder Tiefer\" ist der Einsatz festgelegt.");
-        Console.WriteLine("1) Rot oder Schwarz\n2) Höher oder Tiefer\n3) Zurück zum Marktplatz");
+        Console.WriteLine("1) Rot oder Schwarz\n2) Höher oder Tiefer\n9) Zurück zum Marktplatz");
         input = Console.ReadKey(true).KeyChar;
 
         switch (input) {
           case '1': RedBlack(); break;
           case '2': HighLess(); break;
-          case '3': return;
+          case '9': return;
           default: continue;
         }
       }
@@ -294,13 +294,13 @@ namespace RpgGame
         Console.WriteLine("In der Arena werdet ihr ausschliesslich starke Gegner treffen und wie der Zufall es will, " +
             "habt ihr die Möglichkeit gegen besonders starke Gegner zu kämpfen, mit höheren Belohnungen natürlich\n" +
             "In der Arena gelten nicht dieselben Regeln wie in der Wildnis. Hier könnt ihr nicht sterben.");
-        Console.WriteLine("1) Normaler Arenakampf\n2) Kampf gegen starken Gegner\n3) Zurück zum Marktplatz.");
+        Console.WriteLine("1) Normaler Arenakampf\n2) Kampf gegen starken Gegner\n9) Zurück zum Marktplatz.");
         input = Console.ReadKey(true).KeyChar;
 
         switch (input) {
           case '1': FightArena(false); break;
           case '2': FightArena(true); break;
-          case '3': return;
+          case '9': return;
           default: continue;
         }
       }
