@@ -1,15 +1,19 @@
-﻿using System;
+using System;
 
 namespace RpgGame
 {
   internal class Program {
     /// <summary>
-    /// Check and returns if Character is alive
+    /// Check and returns if Character is alive.<br />
+    /// If not, character save file will be deleted
     /// </summary>
     /// <param name="c">character</param>
     /// <returns>true, if yes - false, if not</returns>
     private static bool IsCharacterAlive(Character c) {
-      if (c.Health[0] <= 0) return false;
+      if (c.Health[0] <= 0) {
+        Character.DeleteCharacer(c);
+        return false;
+      }
 
       return true;
     }
