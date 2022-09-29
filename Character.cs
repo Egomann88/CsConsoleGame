@@ -25,6 +25,7 @@ namespace RpgGame
     float _CritDmg = 0;
     short[] _Health = new short[2];
     int _Gold = 0;
+    uint[] _Exp = new uint[2];
     byte _Lvl = 0;
 
 
@@ -145,7 +146,15 @@ namespace RpgGame
       }
     }
 
-    public uint[] Exp { get; set; }
+    public uint[] Exp { 
+      get {
+        return _Exp;
+      }
+      set {
+        if(Lvl == 100) _Exp = new uint[2] { 0, 0 };
+        _Exp = value;
+      }
+    }
 
     public byte Lvl {
       get {
