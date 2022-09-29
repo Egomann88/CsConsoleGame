@@ -232,6 +232,11 @@ namespace RpgGame
       }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pWon"></param>
+    /// <param name="stake"></param>
     private void PayPlayer(bool pWon, int stake) {
       string wonMsg = pWon ? "erhaltet" : "bezahlt";
       Console.WriteLine("Ihr {0} {1} Gold.", wonMsg, stake);
@@ -252,15 +257,35 @@ namespace RpgGame
         input = Console.ReadKey(true).KeyChar;
 
         switch (input) {
-          case '1': EvalEnemy(false); break;
-          case '2': EvalEnemy(true); break;
+          case '1': FightArena(false); break;
+          case '2': FightArena(true); break;
           case '3': return;
           default: continue;
         }
       }
     }
 
-    private void EvalEnemy(bool isHard) {
+    /// <summary>
+    /// Evaluates and fights against enemy in arena
+    /// </summary>
+    /// <param name="ishard">Is Enemy strong?</param>
+    /// <returns>current Character</returns>
+    private Character FightArena(bool ishard) {
+      Enemy e = EvalEnemy(ishard);
+      FightArena fa = new FightArena(Character, e);
+
+      fa.FightIn();
+
+      return Character;
+    }
+
+    /// <summary>
+    /// generates rnd enemy between 5 and 10<br/>
+    /// enemy can be extra strong
+    /// </summary>
+    /// <param name="isHard">Is Enemy strong?</param>
+    /// <returns>new Enemy</returns>
+    private Enemy EvalEnemy(bool isHard) {
       Random r = new Random();
       byte enemyId = Convert.ToByte(r.Next(1, 101));
 
@@ -271,10 +296,7 @@ namespace RpgGame
       else if (enemyId <= 89) enemyId = 9; // 14 %
       else enemyId = 10; // 11 %
 
-      Enemy e = new Enemy(Character.Lvl, enemyId, isHard);
-
-      // how to start new fight?
-      // new class, with inherits from fight?
+      return new Enemy(Character.Lvl, enemyId, isHard);
     }
 
     // increase stats
