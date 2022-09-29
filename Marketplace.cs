@@ -8,6 +8,7 @@ namespace RpgGame
     // Klassenvariabeln
     private const byte WEAKHEALERPRICE = 25;
     private const byte NORMALHEALERPRICE = 45;
+    private const byte JOKERHEALERPRICE = 60;
     private const byte STRONGHEALERPRICE = 80;
     private const byte LVLFORHIGHUSES = 8;
     private const int SHORTTIMEOUT = 800;
@@ -64,6 +65,7 @@ namespace RpgGame
     /// The best Healer won't heal the player, if his level is to low
     /// </summary>
     private void HealerOverView() {
+      Random r = new Random();
       char input = '0';
 
       while (true) {
@@ -71,37 +73,42 @@ namespace RpgGame
         Console.WriteLine("Es gibt drei Heiler auf dem Markt:");
         Console.WriteLine("1) den Anfänger, er kann 25 % eures Lebens wiederherstellen (Preis: {0})\n" +
             "2) den Erfaherenen, er kann 45 % eures Lebens wiederherstellen (Preis: {1})\n" +
-            "3) die Meisterin, sie kann eurere Leben komplett wiederherstellen (Preis: {2})\n" +
-            "9) Zurück zum Marktplatz\n\nEurer Leben: {3} / {4}", WEAKHEALERPRICE, NORMALHEALERPRICE,
-            STRONGHEALERPRICE, Character.Health[0], Character.Health[1]);
+            "3) die Wilde, wie viel sie heilt, hängt von ihrer Stimmung ab. (Preis: {2})\n" +
+            "4) die Meisterin, sie kann Euch über euer komples Leben heilen (Preis: {3})\n" +
+            "9) Zurück zum Marktplatz\n\nEurer Leben: {4} / {5}", WEAKHEALERPRICE, NORMALHEALERPRICE,
+            JOKERHEALERPRICE, STRONGHEALERPRICE, Character.Health[0], Character.Health[1]);
         input = Console.ReadKey(true).KeyChar;
 
         switch (input) {
           case '1':
             if (Character.Gold >= WEAKHEALERPRICE) {
-              Healer(0.25);
+              HealerPerzent(0.25);
               Character.Gold -= WEAKHEALERPRICE;
             } else NotEnoughMoney();
-
             break;
           case '2':
             if (Character.Gold >= NORMALHEALERPRICE) {
-              Healer(0.45);
+              HealerPerzent(0.45);
               Character.Gold -= NORMALHEALERPRICE;
             } else NotEnoughMoney();
-
             break;
           case '3':
+            if (Character.Gold >= JOKERHEALERPRICE) {
+              HealerNumber((short)r.Next(5, Character.Health[1] + 5), true);
+              Character.Gold -= JOKERHEALERPRICE;
+            } else NotEnoughMoney();
+            break;
+          case '4':
             if (Character.Lvl < LVLFORHIGHUSES) {
               Console.WriteLine("Die Heilerin lässt euch nicht hinein. Euer Level ist zu tief.");
               Thread.Sleep(TIMEOUT);
               continue;
             } else if (Character.Gold >= STRONGHEALERPRICE) {
               Character.FullHeal();
+              HealerNumber(5, true);  // overheal by 5 hp
               Console.WriteLine("Komplettes Leben wurde wiederhergestellt.");
               Character.Gold -= STRONGHEALERPRICE;
             } else NotEnoughMoney();
-
             break;
           case '9': return;
           default: continue;
@@ -115,9 +122,18 @@ namespace RpgGame
     /// heals the player by %
     /// </summary>
     /// <param name="healPerzent">% value the player will be healed by</param>
-    private void Healer(double healPerzent) {
+    private void HealerPerzent(double healPerzent) {
       double healValue = Math.Round(Character.Health[1] * healPerzent);
       Character.ChangeCurrentHealth((short)healValue);
+      Console.WriteLine("{0} HP wurden wiederhergestellt.", healValue);
+    }
+
+    /// <summary>
+    /// heals the player
+    /// </summary>
+    /// <param name="healPerzent">value the player will be healed by</param>
+    private void HealerNumber(short healValue, bool overheal) {
+      Character.ChangeCurrentHealth(healValue, overheal);
       Console.WriteLine("{0} HP wurden wiederhergestellt.", healValue);
     }
 
