@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 
 namespace RpgGame
@@ -26,7 +26,6 @@ namespace RpgGame
     public Marketplace(Character c) {
       Character = c;
     }
-
 
     // Methoden (funktionen)
 
@@ -73,7 +72,8 @@ namespace RpgGame
         Console.WriteLine("1) den Anfänger, er kann 25 % eures Lebens wiederherstellen (Preis: {0})\n" +
             "2) den Erfaherenen, er kann 45 % eures Lebens wiederherstellen (Preis: {1})\n" +
             "3) die Meisterin, sie kann eurere Leben komplett wiederherstellen (Preis: {2})\n" +
-            "4) Zurück zum Marktplatz", WEAKHEALERPRICE, NORMALHEALERPRICE, STRONGHEALERPRICE);
+            "4) Zurück zum Marktplatz\n\nEurer Leben: {3} / {4}", WEAKHEALERPRICE, NORMALHEALERPRICE,
+            STRONGHEALERPRICE, Character.Health[0], Character.Health[1]);
         input = Console.ReadKey(true).KeyChar;
 
         switch (input) {
