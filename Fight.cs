@@ -107,7 +107,6 @@ namespace RpgGame
       Console.WriteLine("\n\nDrücken Sie auf eine Taste, um fortzufahren...");
       Console.ReadKey(true);
       
-      Character.SaveCharacter(Character); // autosave
       return Character;
     }
 
