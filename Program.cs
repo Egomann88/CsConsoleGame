@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading; // for timeout
 
 namespace RpgGame
 {
@@ -28,23 +23,23 @@ namespace RpgGame
       Random r = new Random();
       byte rnd = 0;
 
-      if (c.Lvl < 5) rnd = Convert.ToByte(r.Next(1, 3)); // only picks the easy enemies
-      else if (c.Lvl < 8) rnd = Convert.ToByte(r.Next(1, 4)); // only picks the easy enemies
-      else if (c.Lvl < 10) rnd = Convert.ToByte(r.Next(1, 5)); // only picks the easy enemies
-      else if (c.Lvl < 14) rnd = Convert.ToByte(r.Next(1, 6)); // only picks the easy enemies
+      if (c.Lvl < 3) rnd = Convert.ToByte(r.Next(1, 3)); // only picks the easy enemies
+      else if (c.Lvl < 5) rnd = Convert.ToByte(r.Next(1, 4)); // only picks the easy enemies
+      else if (c.Lvl < 8) rnd = Convert.ToByte(r.Next(1, 5)); // only picks the easy enemies
+      else if (c.Lvl < 10) rnd = Convert.ToByte(r.Next(1, 6)); // only picks the easy enemies
       else {
         rnd = Convert.ToByte(r.Next(1, 101));
 
-        if (rnd <= 20) rnd = 1; // 20 %
-        else if (rnd <= 39) rnd = 2; // 19 %
-        else if (rnd <= 55) rnd = 3; // 16 %
-        else if (rnd <= 67) rnd = 4; // 12 %
-        else if (rnd <= 77) rnd = 5; // 10 %
-        else if (rnd <= 85) rnd = 6; // 8 %
-        else if (rnd <= 91) rnd = 7; // 6 %
-        else if (rnd <= 95) rnd = 8; // 4 %
-        else if (rnd <= 98) rnd = 9; // 3 %
-        else rnd = 10; // 2 %
+        if (rnd <= 6) rnd = 1; // 6 %
+        else if (rnd <= 12) rnd = 2; // 6 %
+        else if (rnd <= 20) rnd = 3; // 8 %
+        else if (rnd <= 34) rnd = 4; // 14 %
+        else if (rnd <= 50) rnd = 5; // 16 %
+        else if (rnd <= 68) rnd = 6; // 18 %
+        else if (rnd <= 86) rnd = 7; // 18 %
+        else if (rnd <= 91) rnd = 8; // 5 %
+        else if (rnd <= 96) rnd = 9; // 5 %
+        else rnd = 10; // 4 %
       }
 
       Enemy e = new Enemy(c.Lvl, rnd, false); // generate enemy
@@ -79,11 +74,11 @@ namespace RpgGame
               character = Dungeon(character);
               chAlive = IsCharacterAlive(character);
               break;
-            case '2': character.ShowCharacter(); break;
+            case '2': character.ShowCharacter(); continue;
             case '3': character = marketplace.OnMarket(); break;
             case '4': character.Gold += 9999; character.Lvl += 42; character.Dexterity += 80; break;
-            case '7': Character.SaveCharacter(character); break;  // call sensitive methods with classname
-            case '8': chAlive = false; break;
+            case '7': Character.SaveCharacter(character); continue;  // call sensitive methods with classname
+            case '8': chAlive = false; continue;
             case '9':
               do {
                 Console.WriteLine("Charakter speichern? [j/n]");

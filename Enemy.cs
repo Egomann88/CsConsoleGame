@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RpgGame
 {
@@ -82,8 +78,8 @@ namespace RpgGame
           CritChance = 0.12F * multiplier;
           CritDmg = MaxMultiplier(1.25F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(15 * multiplier)),
-                        Convert.ToInt16(Math.Round(15 * multiplier))
+                        Convert.ToInt16(Math.Round(16 * multiplier)),
+                        Convert.ToInt16(Math.Round(16 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(19 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(14 * multiplier));
@@ -93,13 +89,13 @@ namespace RpgGame
         case 3:
           Name = "Paladin";
           Strength = Convert.ToUInt16(Math.Round(2 * multiplier));
-          Intelligents = Convert.ToUInt16(Math.Round(4 * multiplier));
+          Intelligents = Convert.ToUInt16(Math.Round(5 * multiplier));
           Dexterity = Convert.ToUInt16(Math.Round(3 * multiplier));
           CritChance = 0.09F * multiplier;
           CritDmg = MaxMultiplier(1.25F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(25 * multiplier)),
-                        Convert.ToInt16(Math.Round(25 * multiplier))
+                        Convert.ToInt16(Math.Round(26 * multiplier)),
+                        Convert.ToInt16(Math.Round(26 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(38 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(26 * multiplier));
@@ -108,14 +104,14 @@ namespace RpgGame
         // plantara
         case 4:
           Name = "Plantara";
-          Strength = Convert.ToUInt16(Math.Round(5 * multiplier));
-          Intelligents = Convert.ToUInt16(Math.Round(1 * multiplier));
+          Strength = Convert.ToUInt16(Math.Round(6 * multiplier));
+          Intelligents = Convert.ToUInt16(Math.Round(2 * multiplier));
           Dexterity = Convert.ToUInt16(Math.Round(2 * multiplier));
           CritChance = 0.03F * multiplier;
-          CritDmg = MaxMultiplier(1.2F, multiplier);
+          CritDmg = MaxMultiplier(1.1F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(31 * multiplier)),
-                        Convert.ToInt16(Math.Round(31 * multiplier))
+                        Convert.ToInt16(Math.Round(32 * multiplier)),
+                        Convert.ToInt16(Math.Round(32 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(12 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(37 * multiplier));
@@ -124,25 +120,25 @@ namespace RpgGame
         // beserker
         case 5:
           Name = "Beserker";
-          Strength = Convert.ToUInt16(Math.Round(14 * multiplier));
+          Strength = Convert.ToUInt16(Math.Round(9 * multiplier));
           Intelligents = Convert.ToUInt16(Math.Round(5 * multiplier));
-          Dexterity = Convert.ToUInt16(Math.Round(6 * multiplier));
+          Dexterity = Convert.ToUInt16(Math.Round(4 * multiplier));
           CritChance = 0.03F * multiplier;
-          CritDmg = MaxMultiplier(1.8F, multiplier, true);
+          CritDmg = MaxMultiplier(1.5F, multiplier, true);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(45 * multiplier)),
-                        Convert.ToInt16(Math.Round(45 * multiplier))
+                        Convert.ToInt16(Math.Round(46 * multiplier)),
+                        Convert.ToInt16(Math.Round(46 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(68 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(72 * multiplier));
           IsDmgUlt = true;
           break;
-        // wizard
+        // Archmage
         case 6:
-          Name = "Wizard";
+          Name = "Erzmagier";
           Strength = Convert.ToUInt16(Math.Round(3 * multiplier));
-          Intelligents = Convert.ToUInt16(Math.Round(20 * multiplier));
-          Dexterity = Convert.ToUInt16(Math.Round(4 * multiplier));
+          Intelligents = Convert.ToUInt16(Math.Round(13 * multiplier));
+          Dexterity = Convert.ToUInt16(Math.Round(6 * multiplier));
           CritChance = 0.23F * multiplier;
           CritDmg = MaxMultiplier(1.1F, multiplier);
           Health = new short[] {
@@ -156,14 +152,14 @@ namespace RpgGame
         // grifin
         case 7:
           Name = "Grifin";
-          Strength = Convert.ToUInt16(Math.Round(15 * multiplier));
-          Intelligents = Convert.ToUInt16(Math.Round(14 * multiplier));
+          Strength = Convert.ToUInt16(Math.Round(12 * multiplier));
+          Intelligents = Convert.ToUInt16(Math.Round(10 * multiplier));
           Dexterity = Convert.ToUInt16(Math.Round(14 * multiplier));
           CritChance = 0.10F * multiplier;
-          CritDmg = MaxMultiplier(1.7F, multiplier, true);
+          CritDmg = MaxMultiplier(1.5F, multiplier, true);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(92 * multiplier)),
-                        Convert.ToInt16(Math.Round(92 * multiplier))
+                        Convert.ToInt16(Math.Round(80 * multiplier)),
+                        Convert.ToInt16(Math.Round(80 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(36 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(190 * multiplier));
@@ -171,15 +167,15 @@ namespace RpgGame
           break;
         // dragon
         case 8:
-          Name = "Dragon";
-          Strength = Convert.ToUInt16(Math.Round(12 * multiplier));
-          Intelligents = Convert.ToUInt16(Math.Round(9 * multiplier));
-          Dexterity = Convert.ToUInt16(Math.Round(10 * multiplier));
+          Name = "Drache";
+          Strength = Convert.ToUInt16(Math.Round(11 * multiplier));
+          Intelligents = Convert.ToUInt16(Math.Round(8 * multiplier));
+          Dexterity = Convert.ToUInt16(Math.Round(8 * multiplier));
           CritChance = 0.05F * multiplier;
-          CritDmg = MaxMultiplier(1.5F, multiplier);
+          CritDmg = MaxMultiplier(1.35F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(72 * multiplier)),
-                        Convert.ToInt16(Math.Round(72 * multiplier))
+                        Convert.ToInt16(Math.Round(68 * multiplier)),
+                        Convert.ToInt16(Math.Round(68 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(160 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(150 * multiplier));
@@ -187,15 +183,15 @@ namespace RpgGame
           break;
         // demon
         case 9:
-          Name = "Demon";
-          Strength = Convert.ToUInt16(Math.Round(14 * multiplier));
+          Name = "Dämon";
+          Strength = Convert.ToUInt16(Math.Round(12 * multiplier));
           Intelligents = Convert.ToUInt16(Math.Round(9 * multiplier));
-          Dexterity = Convert.ToUInt16(Math.Round(12 * multiplier));
+          Dexterity = Convert.ToUInt16(Math.Round(10 * multiplier));
           CritChance = 0.06F * multiplier;
           CritDmg = MaxMultiplier(1.3F, multiplier);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(84 * multiplier)),
-                        Convert.ToInt16(Math.Round(84 * multiplier))
+                        Convert.ToInt16(Math.Round(76 * multiplier)),
+                        Convert.ToInt16(Math.Round(76 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(140 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(180 * multiplier));
@@ -204,17 +200,33 @@ namespace RpgGame
         // ashura
         case 10:
           Name = "Ashura";
-          Strength = Convert.ToUInt16(Math.Round(16 * multiplier));
-          Intelligents = Convert.ToUInt16(Math.Round(14 * multiplier));
-          Dexterity = Convert.ToUInt16(Math.Round(18 * multiplier));
-          CritChance = 0.33F * multiplier;
-          CritDmg = MaxMultiplier(1.5F, multiplier, true);
+          Strength = Convert.ToUInt16(Math.Round(12 * multiplier));
+          Intelligents = Convert.ToUInt16(Math.Round(10 * multiplier));
+          Dexterity = Convert.ToUInt16(Math.Round(22 * multiplier));
+          CritChance = 0.15F * multiplier;
+          CritDmg = MaxMultiplier(1.35F, multiplier, true);
           Health = new short[] {
-                        Convert.ToInt16(Math.Round(94 * multiplier)),
-                        Convert.ToInt16(Math.Round(94 * multiplier))
+                        Convert.ToInt16(Math.Round(60 * multiplier)),
+                        Convert.ToInt16(Math.Round(60 * multiplier))
                     };
           Gold = Convert.ToInt32(Math.Round(150 * multiplier));
           Exp = Convert.ToUInt16(Math.Round(240 * multiplier));
+          IsDmgUlt = true;
+          break;
+        // gladiator - arena only
+        case 11:
+          Name = "Gladiator";
+          Strength = Convert.ToUInt16(Math.Round(12 * multiplier));
+          Intelligents = Convert.ToUInt16(Math.Round(10 * multiplier));
+          Dexterity = Convert.ToUInt16(Math.Round(10 * multiplier));
+          CritChance = 0.10F * multiplier;
+          CritDmg = MaxMultiplier(1.1F, multiplier, true);
+          Health = new short[] {
+                        Convert.ToInt16(Math.Round(60 * multiplier)),
+                        Convert.ToInt16(Math.Round(60 * multiplier))
+                    };
+          Gold = Convert.ToInt32(Math.Round(334 * multiplier));
+          Exp = Convert.ToUInt16(Math.Round(227 * multiplier));
           IsDmgUlt = true;
           break;
       }

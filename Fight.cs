@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 
 namespace RpgGame
@@ -10,14 +7,13 @@ namespace RpgGame
   internal class Fight
   {
     // Klassenvariablen
-    private const byte HEALCOOLDOWN = 3;    // Default cooldown of both sides for the healpotion
-    private const byte ULTIMATECOOLDOWN = 4; // Default cooldown for both sides on the ultimate
-    private const byte ULTHITBONUS = 20;  // 20 % hit bonus for Ultimate
-    private const int SHORTTIMEOUT = 800;
-    private const int TIMEOUT = 1200;
-    private const int LONGTIMEOUT = 2000;
-    private short[] CHARACTERCOOLDOWN = new short[] { HEALCOOLDOWN, ULTIMATECOOLDOWN };    // Heal, Ult
-    private short[] ENEMYCOOLDOWN = new short[] { HEALCOOLDOWN, ULTIMATECOOLDOWN }; // Heal, Ult
+    protected const byte HEALCOOLDOWN = 3;    // Default cooldown of both sides for the healpotion
+    protected const byte ULTIMATECOOLDOWN = 4; // Default cooldown for both sides on the ultimate
+    protected const byte ULTHITBONUS = 20;  // 20 % hit bonus for Ultimate
+    protected const int SHORTTIMEOUT = 800;
+    protected const int TIMEOUT = 1200;
+    protected short[] CHARACTERCOOLDOWN = new short[] { HEALCOOLDOWN, ULTIMATECOOLDOWN };    // Heal, Ult
+    protected short[] ENEMYCOOLDOWN = new short[] { HEALCOOLDOWN, ULTIMATECOOLDOWN }; // Heal, Ult
 
 
     // Membervariablen
@@ -35,18 +31,18 @@ namespace RpgGame
     }
 
     // Methoden (Funktionen)
-    private Character Character { get; set; }
+    protected Character Character { get; set; }
 
-    private Enemy Enemy { get; set; }
+    protected Enemy Enemy { get; set; }
 
-    private byte RoundCount { get; set; }
+    protected byte RoundCount { get; set; }
 
     /// <summary>
     /// Simulates the entire fight, with exp + gold if won<br />
     /// ! Outside must be checked whether the Character is still alive !
     /// </summary>
     /// <returns>Character with new stats</returns>
-    public Character FightIn() {
+    virtual public Character FightIn() {
       bool fightOver = false;
       bool fled = false;
       bool isPlayerFirst = GetFirstMove();
@@ -105,14 +101,12 @@ namespace RpgGame
         Character.ChangeAmoutOfGold(Enemy.Gold);
 
         // player lvl up
-        while (Character.Exp[0] >= Character.Exp[1]) {
-          Character.IncreaseLvl();
-        }
+        Character.IncreaseLvl();
       }
 
       Console.WriteLine("\n\nDrücken Sie auf eine Taste, um fortzufahren...");
       Console.ReadKey(true);
-
+      
       return Character;
     }
 
@@ -120,7 +114,7 @@ namespace RpgGame
     /// Simulates Players turn
     /// </summary>
     /// <returns>true if player fled - false, if not</returns>
-    private bool PlayerTurn() {
+    virtual protected bool PlayerTurn() {
       short[] coolDown = GetCoolDown(true);   // cooldown of abilitys
       string ultimateName = GetUltimateName();
       string actionText = ""; // what player will do
@@ -216,7 +210,7 @@ namespace RpgGame
     /// <summary>
     /// Simulates the round of the enemy
     /// </summary>
-    private void EnemyTurn() {
+    protected void EnemyTurn() {
       Random r = new Random();
       byte numberPool = 3;    // Attack, Heal, Ultimate
       short[] coolDown = GetCoolDown(false);  // apply current cooldowns
@@ -298,7 +292,7 @@ namespace RpgGame
     /// Gives Ultimate diffrent name per class
     /// </summary>
     /// <returns>name -> string</returns>
-    private string GetUltimateName() {
+    protected string GetUltimateName() {
       string name = "";
 
       switch (Character.Class) {
@@ -314,7 +308,7 @@ namespace RpgGame
     /// Checks how dex is higher, the one with the higher one, is first on turn
     /// </summary>
     /// <returns>true, if players first - false, if not</returns>
-    private bool GetFirstMove() {
+    protected bool GetFirstMove() {
       Random r = new Random();
 
       // both are equal -> rnd shall decide
@@ -328,7 +322,7 @@ namespace RpgGame
     /// </summary>
     /// <param name="isPlayer">true if is player - false if enemy</param>
     /// <returns>num of turns</returns>
-    private byte GetNumOfTurns(bool isPlayer) {
+    protected byte GetNumOfTurns(bool isPlayer) {
       byte pTurns = 1, eTurns = 1;
       ushort pDex = Character.Dexterity;
       ushort eDex = Enemy.Dexterity;
@@ -353,7 +347,7 @@ namespace RpgGame
     /// Every Class has a diffrent Ult, damage wil also be diffrenty calculated.
     /// </summary>
     /// <returns>damage -> uhsort</returns>
-    private ushort GetCharacterUltimate() {
+    protected ushort GetCharacterUltimate() {
       ushort damage = 0;
       switch (Character.Class) {
         case 1: // warrior
@@ -384,7 +378,7 @@ namespace RpgGame
     /// </summary>
     /// <param name="isCharacter">true if its the Characters cooldown. If not -> false</param>
     /// <returns>coolodown -> short[]</returns>
-    private short[] GetCoolDown(bool isCharacter) {
+    protected short[] GetCoolDown(bool isCharacter) {
       short[] coolDown = isCharacter ? CHARACTERCOOLDOWN : ENEMYCOOLDOWN;
 
       if (coolDown[0] <= 0) coolDown[0] = 0;  // does not allow the counter to go under 0
@@ -412,7 +406,7 @@ namespace RpgGame
     /// </summary>
     /// <param name="coolDown">cooldown of current abilty</param>
     /// <returns>bool -> true - Cooldown / false - no Cooldown</returns>
-    private bool IsCharacterOnCoolDown(short coolDown) {
+    protected bool IsCharacterOnCoolDown(short coolDown) {
       if (coolDown > 0) return true;
 
       return false;
@@ -425,7 +419,7 @@ namespace RpgGame
     /// </summary>
     /// <param name="chance">Crit / Dodge Chance of Player / Enemy</param>
     /// <returns>bool -> Cirt / Dodge or no Crit / Dodge</returns>
-    private bool IsCritDodge(float chance) {
+    protected bool IsCritDodge(float chance) {
       Random r = new Random();
       double i = r.NextDouble() * 100;
 

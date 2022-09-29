@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading; // timeout
 using System.Text.Json; // has to be installed in nuget Package
 using System.IO;  // to create and read files
@@ -27,6 +25,7 @@ namespace RpgGame
     float _CritDmg = 0;
     short[] _Health = new short[2];
     int _Gold = 0;
+    uint[] _Exp = new uint[2];
     byte _Lvl = 0;
 
 
@@ -147,7 +146,15 @@ namespace RpgGame
       }
     }
 
-    public uint[] Exp { get; set; }
+    public uint[] Exp { 
+      get {
+        return _Exp;
+      }
+      set {
+        if(Lvl == 100) _Exp = new uint[2] { 0, 0 };
+        _Exp = value;
+      }
+    }
 
     public byte Lvl {
       get {
@@ -155,7 +162,7 @@ namespace RpgGame
       } set {
         if(_Lvl >= MAXLVL) {
           _Lvl = MAXLVL;
-          Exp.Select(x => x = 0);
+          Exp = Exp.Select(x => x = 0).ToArray();
         } else _Lvl = value;
       }
     }
@@ -244,15 +251,17 @@ namespace RpgGame
 
       // list all characters
       Character[] characters = charactersList.ToArray();  // convert list to array
-      ListCharacters(characters);
+      ListCharacters(characters); // lists all characters
 
-      choosenCharacterId = ChooseCharacter(); // player input
+      do {
+        choosenCharacterId = ChooseCharacter(); // player input
+      } while (choosenCharacterId > characters.Length); // player can give much higher input than save are
 
       if (choosenCharacterId == 0) return CreateCharacter();  // create new character
 
       // decrease id by one to be sync with the array
       if (CanLoadCharacter(--choosenCharacterId, characters)) return LoadCharacter(choosenCharacterId, characters);
-      else {
+      else {  // save file is edited
         string error = "Die geladene Charakterdatei ist korrput.";
         Console.WriteLine(error);
         Thread.Sleep(800);
@@ -303,7 +312,7 @@ namespace RpgGame
       bool nameVaild = false, classValid = false;
 
       if (c.Name == "" || !IsInValidSign(c.Name)) nameVaild = true;
-      if (c.Class > 1 && c.Class < 4) classValid = true;
+      if (c.Class > 0 && c.Class < 4) classValid = true;
       c.Strength = c.Strength;
       c.Intelligents = c.Intelligents;
       c.Dexterity = c.Dexterity;
@@ -354,9 +363,6 @@ namespace RpgGame
 
     public void ShowCharacter() {
       string cl = GetClassName();
-      double critDmg = 0;
-      if (CritDmg > 1.0) critDmg = CritDmg * 100;
-      else critDmg = (CritDmg - 1.0F) * 100;
 
       do {
         Console.Clear();
@@ -370,7 +376,7 @@ namespace RpgGame
         Console.WriteLine("Inteligents:\t\t{0}", Intelligents);
         Console.WriteLine("Geschwindigkeit:\t{0}", Dexterity);
         Console.WriteLine("Krit. Chance:\t\t{0} %", CritChance);
-        Console.WriteLine("Krit. Schaden:\t\t{0} %", critDmg);
+        Console.WriteLine("Krit. Schaden:\t\t{0} %", (CritDmg - 1.0F) * 100);
         Console.WriteLine("\nDrücken Sie <Enter> um zurückzukehren...");
       } while (Console.ReadKey(false).Key != ConsoleKey.Enter);
     }
@@ -442,10 +448,12 @@ namespace RpgGame
         CritDmg += 0.10F;
       }
 
-      switch (Class) {
-        case 1: Strength++; break;
-        case 2: Intelligents++; break;
-        case 3: Dexterity++; break;
+      if(Lvl % 2 == 0) {
+        switch (Class) {
+          case 1: Strength++; break;
+          case 2: Intelligents++; break;
+          case 3: Dexterity++; break;
+        }
       }
     }
   }
