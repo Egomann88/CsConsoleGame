@@ -55,18 +55,39 @@ namespace RpgGame
       Marketplace marketplace;
 
       do {
-        // has no character? -> create One
-        if (!Character.HasCharacters()) character = Character.CreateCharacter();
-        else character = Character.GetCharacters();
+        // has no character? -> create One (maybe first time to start)
+        while (true) {
+          Console.Clear();
+          if (!Character.HasCharacters()) {
+            character = Character.CreateCharacter();
+            break;
+          } else {
+            Console.WriteLine("Hauptmenü\n1) Charakter laden\n2) Charakter löschen\n3) Charakter erstellen\n9) Spiel beenden");
+            input = Console.ReadKey(true).KeyChar;
+            Console.Clear();
+
+            if (input == '1') { // load
+              character = Character.GetCharacters(false);
+              break;
+            } else if (input == '2') {  // delete
+              Character.GetCharacters(true);
+            } else if (input == '3') {  // create
+              character = Character.CreateCharacter();
+              break;
+            } else if (input == '9') {  // end
+              Environment.Exit(-1);
+            }
+          }
+        }
 
         chAlive = true;
         marketplace = new Marketplace(character);
         
         do {
           Console.Clear();
-          Console.WriteLine("Hauptmenü\n{0}, bei Ihnen liegt die Wahl.", character.Name);
+          Console.WriteLine("{0}, bei Ihnen liegt die Wahl.", character.Name);
           Console.WriteLine("1) Dungeon\n2) Charakter betrachten\n3) Marktplatz\n7) Charakter speichern\n" +
-            "8) neuen Charakter erstellen\n9) Spiel beenden");
+            "8) Zurück zum Hauptmenü\n9) Spiel beenden");
           input = Console.ReadKey(true).KeyChar;
 
           switch (input) {
