@@ -163,7 +163,10 @@ namespace RpgGame
         Console.WriteLine(dealer + "fragt nach eurem Einsatz.\nEuer Gold: {1}", dealerMood, Character.Gold);
         Console.Write("Euer Einsatz: ");
         if (!uint.TryParse(Console.ReadLine(), out stake)) continue;
-        if (stake > Character.Gold) {
+        if(stake == 0) {
+          Console.WriteLine("Ihr müsst eine Wette abschliessen!");
+          Thread.Sleep(SHORTTIMEOUT);
+        } else if (stake > Character.Gold) {
           Console.WriteLine("Ihr dürft nicht mehr wetten, als Ihr eigentlich besitzt!");
           Thread.Sleep(SHORTTIMEOUT);
         } else ableToPlay = true;
