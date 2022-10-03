@@ -89,7 +89,7 @@ namespace RpgGame
       get {
         return _Strength;
       } set {
-        if (_Strength + value >= MAXSTATSVALUE) _Strength = MAXSTATSVALUE;
+        if (_Strength >= MAXSTATSVALUE) _Strength = MAXSTATSVALUE;
         else _Strength = value;
       }
     }
@@ -98,7 +98,7 @@ namespace RpgGame
       get {
         return _Intelligents;
       } set {
-        if (_Intelligents + value >= MAXSTATSVALUE) _Intelligents = MAXSTATSVALUE;
+        if (_Intelligents >= MAXSTATSVALUE) _Intelligents = MAXSTATSVALUE;
         else _Intelligents = value;
       }
     }
@@ -107,7 +107,7 @@ namespace RpgGame
       get {
         return _Dexterity;
       } set {
-        if (_Dexterity + value >= MAXSTATSVALUE) _Dexterity = MAXSTATSVALUE;
+        if (_Dexterity >= MAXSTATSVALUE) _Dexterity = MAXSTATSVALUE;
         else _Dexterity = value;
       }
     }
@@ -116,7 +116,7 @@ namespace RpgGame
       get {
         return _CritChance;
       } set {
-        if (_CritChance + value >= MAXCRITCHANCE) _CritChance = MAXCRITCHANCE;
+        if (_CritChance >= MAXCRITCHANCE) _CritChance = MAXCRITCHANCE;
         else _CritChance = value;
       }
     }
@@ -125,7 +125,7 @@ namespace RpgGame
       get {
         return _CritDmg;
       } set {
-        if (_CritDmg + value >= MAXCRITDAMAGE) _CritDmg = MAXCRITDAMAGE;
+        if (_CritDmg >= MAXCRITDAMAGE) _CritDmg = MAXCRITDAMAGE;
         else _CritDmg = value;
       }
     }
@@ -135,7 +135,7 @@ namespace RpgGame
         return _Health;
       } set {
         for(byte i = 0; i < _Health.Length; i++) {
-          if (_Health[i] + value[i] >= MAXHEALTH) _Health[i] = MAXHEALTH;
+          if (_Health[i] >= MAXHEALTH) _Health[i] = MAXHEALTH;
           else _Health = value;
         }
       }
@@ -145,7 +145,7 @@ namespace RpgGame
       get {
         return _Gold;
       } set {
-        if (_Gold + value >= MAXGOLD) _Gold = MAXGOLD;
+        if (_Gold >= MAXGOLD) _Gold = MAXGOLD;
         else _Gold = value;
       }
     }
