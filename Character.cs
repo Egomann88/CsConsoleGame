@@ -30,7 +30,9 @@ namespace RpgGame
 
 
     // Konstruktoren
-    public Character() { }
+    public Character() {
+      CreateDirectory();  // create saves directory, if not exsists
+    }
 
     /// <summary>
     /// 
@@ -38,6 +40,8 @@ namespace RpgGame
     /// <param name="name">playername</param>
     /// <param name="cl">class of player</param>
     public Character(string name, byte cl) {
+      CreateDirectory();  // create saves directory, if not exsists
+
       Name = name;
       Class = cl;
       Exp = new uint[2] { 0, 30 };
@@ -171,32 +175,11 @@ namespace RpgGame
     /// Creates an new Character with Name and Class.<br />
     /// </summary>
     /// <returns>Character</returns>
-    public static Character CreateCharacter() {
+    public Character CreateCharacter() {
       string name = "";
       byte cl = 0;
 
-      while (name == "") {
-        Console.Clear();
-        Console.WriteLine("Geben Sie den Namen ihres Charakters ein:");
-        name = Console.ReadLine();
-
-        if (IsInValidSign(name)) {
-          Console.WriteLine("\nIm Namen ist ein unerlaubtes Zeichen enthalten!");
-          Thread.Sleep(500);
-          continue;
-        } else if (name == "" || name == " ") {
-          Console.WriteLine("\nDer Name darf nicht leer sein!");
-          Thread.Sleep(500);
-          continue;
-        }
-
-        // convert to char array of the string
-        char[] letters = name.ToCharArray();
-        // upper case the first char
-        letters[0] = char.ToUpper(letters[0]);
-        // put array back together
-        name = new string(letters);
-      }
+      name = ChangeName();
 
       do {
         Console.Clear();
@@ -213,15 +196,18 @@ namespace RpgGame
     /// </summary>
     /// <param name="c">current character</param>
     public static void SaveCharacter(Character c) {
-      string path = Directory.GetCurrentDirectory();  // current Path
+      string path = Directory.GetCurrentDirectory() + @"\character_saves\";  // current Path
       string json = JsonSerializer.Serialize(c);
 
-      try {
-        File.WriteAllText(path + @"\character_saves\" + c.Name + @".json", json);
-        Console.Clear();
-      } catch (InvalidCastException e) { }
+      File.WriteAllText(path + c.Name + @".json", json);
+      Console.Clear();
 
       Thread.Sleep(600);
+    }
+
+    public static void DeleteCharacer(string name) {
+      string path = Directory.GetCurrentDirectory() + @"\character_saves\";  // current Path
+      File.Delete(path + name + ".json");
     }
 
     public static bool HasCharacters() {
@@ -230,17 +216,18 @@ namespace RpgGame
       DirectoryInfo characterSaves = new DirectoryInfo(path);
       FileInfo[] Files = characterSaves.GetFiles();
 
-      if (Files == null) return false;
+      // https://stackoverflow.com/questions/24518299/if-file-directory-is-empty-c-sharp
+      if (Files.Length == 0) return false;
       return true;
     }
 
-    public static Character GetCharacters() {
+    public static List<Character> CharacterList() {
       // https://www.geeksforgeeks.org/c-sharp-program-for-listing-the-files-in-a-directory/
       string path = Directory.GetCurrentDirectory() + @"\character_saves\";  // current Path
       DirectoryInfo characterSaves = new DirectoryInfo(path);
       FileInfo[] Files = characterSaves.GetFiles();
       List<Character> charactersList = new List<Character>();
-      byte choosenCharacterId = 0;
+      
 
       // fill character list
       // https://www.tutorialsteacher.com/articles/convert-json-string-to-object-in-csharp
@@ -249,28 +236,33 @@ namespace RpgGame
         charactersList.Add(JsonSerializer.Deserialize<Character>(jsonCharacterData));
       }
 
+      return charactersList;
+    }
+
+    public static Character GetCharacters(bool delete) {
+      List<Character> charactersList = CharacterList();
+      byte choosenCharacterId = 0;
+
       // list all characters
       Character[] characters = charactersList.ToArray();  // convert list to array
       ListCharacters(characters); // lists all characters
 
       do {
         choosenCharacterId = ChooseCharacter(); // player input
-      } while (choosenCharacterId > characters.Length); // player can give much higher input than save are
+      } while (choosenCharacterId > characters.Length || choosenCharacterId <= 0); // player can give much higher input than save are
 
-      if (choosenCharacterId == 0) return CreateCharacter();  // create new character
+      choosenCharacterId--; // decrease id by one to be sync with the array
 
-      // decrease id by one to be sync with the array
-      if (CanLoadCharacter(--choosenCharacterId, characters)) return LoadCharacter(choosenCharacterId, characters);
-      else {  // save file is edited
-        string error = "Die geladene Charakterdatei ist korrput.";
-        Console.WriteLine(error);
-        Thread.Sleep(800);
-        throw new IndexOutOfRangeException(error);
+      if (delete) {
+        DeleteCharacer(characters[choosenCharacterId].Name);
+        return new Character(); // useless, only for return value
+      } else {
+        return Prepare2Load(choosenCharacterId, characters);
       }
     }
+
     private static void ListCharacters(Character[] characters) {
-      Console.WriteLine("Welcher Charakter soll geladen werden:");
-      Console.WriteLine("0) keiner (neuen Charakter erstellen)");
+      Console.WriteLine("Wählen Sie einen Charakter aus:");
 
       for (byte i = 0; i < characters.Length; i++) {
         if (i == 255) break;
@@ -293,11 +285,10 @@ namespace RpgGame
     /// <summary>
     /// checks if charactersave if correct and can be loaded
     /// </summary>
-    /// <param name="characterId">Id of loading Character</param>
-    /// <param name="characters">Array of all Characters</param>
+    /// <param name="character">Character which should be loaded</param>
     /// <returns></returns>
-    private static bool CanLoadCharacter(byte characterId, Character[] characters) {
-      if (IsCharacterValid(characters[characterId])) return true;
+    private static bool CanLoadCharacter(Character character) {
+      if (IsCharacterValid(character)) return true;
 
       return false;
     }
@@ -327,15 +318,23 @@ namespace RpgGame
 
       return false;
     }
+    private static Character Prepare2Load(byte characterId, Character[] characters) {
+      if (CanLoadCharacter(characters[characterId])) return LoadCharacter(characters[characterId]);
+      else {  // save file is edited
+        string error = "Die geladene Charakterdatei ist korrput.";
+        Console.WriteLine(error);
+        Thread.Sleep(800);
+        throw new IndexOutOfRangeException(error);
+      }
+    }
 
     /// <summary>
     /// Return the character
     /// </summary>
-    /// <param name="characterId">Id of loading Character</param>
-    /// <param name="characters">Array of all Characters</param>
+    /// <param name="characters">loading Character</param>
     /// <returns></returns>
-    private static Character LoadCharacter(byte characterId, Character[] characters) {
-      return characters[characterId];
+    private static Character LoadCharacter(Character character) {
+      return character;
     }
 
     /// <summary>
@@ -346,6 +345,68 @@ namespace RpgGame
     public static bool IsInValidSign(string input) {
       Regex regex = new Regex("[\\\\/:\\*\\?\"<>\\|]", RegexOptions.IgnoreCase);
       return regex.IsMatch(input);
+    }
+
+    public string ChangeName() {
+      string name = "";
+
+      while (name == "") {
+        Console.Clear();
+        Console.WriteLine("Geben Sie den Namen ihres Charakters ein:");
+        name = Console.ReadLine();
+
+        if (IsInValidSign(name)) {
+          Console.WriteLine("\nIm Namen ist ein unerlaubtes Zeichen enthalten!");
+          Thread.Sleep(500);
+          continue;
+        } else if (IsDoubleName(name)) {
+          Console.WriteLine("\nIhr benutzt denselben Namen zweimal. Das ist nicht möglich.");
+          Thread.Sleep(500);
+          continue;
+        } else if (name == "" || name == " ") {
+          Console.WriteLine("\nDer Name darf nicht leer sein!");
+          Thread.Sleep(500);
+          continue;
+        }
+
+        // convert to char array of the string
+        char[] letters = name.ToCharArray();
+        // upper case the first char
+        letters[0] = char.ToUpper(letters[0]);
+        // put array back together
+        name = new string(letters);
+        
+        DeleteCharacer(Name);
+      }
+
+
+      return name;
+    }
+
+    /// <summary>
+    /// creates the character_save directory is it not exsists
+    /// </summary>
+    public static void CreateDirectory() {
+      string path = Directory.GetCurrentDirectory() + @"\character_saves\";
+
+      Directory.CreateDirectory(path);
+    }
+
+    /// <summary>
+    /// Checks if the new characters Name is already existing<br />
+    /// If its the case, than a new name must be choosen for the character
+    /// </summary>
+    /// <param name="characterName">name of current created character</param>
+    /// <returns>true if name is doubled / false if name is unique</returns>
+    public static bool IsDoubleName(string characterName) {
+      List<Character> list = CharacterList();
+      Character[] characters = list.ToArray();  // convert list to array
+
+      for (byte i = 0; i < characters.Length; i++) {
+        if (characterName == characters[i].Name) return true;
+      }
+
+      return false;
     }
 
     /// <summary>
