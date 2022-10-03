@@ -483,7 +483,7 @@ namespace RpgGame
       // if lvl 100 is reached, no more leveling
       if (Lvl >= MAXLVL - 1) return;
       while(Exp[0] >= Exp[1]) { // allows multiple lvl ups
-        Console.WriteLine("{0} ist ein Level aufgestiegen.\n{0} ist nun Level {1}.", Name, ++Lvl);
+        Console.WriteLine("\n{0} ist ein Level aufgestiegen.\n{0} ist nun Level {1}.", Name, ++Lvl);
         Console.ReadKey(true);
         Exp[0] -= Exp[1];
         Exp[1] += (byte)(20 + Lvl);

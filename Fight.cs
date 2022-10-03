@@ -95,7 +95,7 @@ namespace RpgGame
       if (fled) Console.WriteLine("{0} ist geflohen!", Character.Name);
       else if (Character.Health[0] <= 0) Console.WriteLine("{0} ist gestorben...", Character.Name);
       else {  // defeated enemy
-        Console.WriteLine("{0} war siegreich!\n{1} Exp erhalten.\n{2} Gold erhalten", Character.Name, Enemy.Exp, Enemy.Gold);
+        Console.WriteLine("{0} war siegreich!\n{1} Exp erhalten.\n{2} Gold erhalten.", Character.Name, Enemy.Exp, Enemy.Gold);
         // get enemy gold and exp
         Character.Exp[0] += Enemy.Exp;
         Character.ChangeAmoutOfGold(Enemy.Gold);
