@@ -30,7 +30,9 @@ namespace RpgGame
 
 
     // Konstruktoren
-    public Character() { }
+    public Character() {
+      CreateDirectory();  // create saves directory, if not exsists
+    }
 
     /// <summary>
     /// 
@@ -38,6 +40,8 @@ namespace RpgGame
     /// <param name="name">playername</param>
     /// <param name="cl">class of player</param>
     public Character(string name, byte cl) {
+      CreateDirectory();  // create saves directory, if not exsists
+
       Name = name;
       Class = cl;
       Exp = new uint[2] { 0, 30 };
@@ -192,10 +196,10 @@ namespace RpgGame
     /// </summary>
     /// <param name="c">current character</param>
     public static void SaveCharacter(Character c) {
-      string path = Directory.GetCurrentDirectory();  // current Path
+      string path = Directory.GetCurrentDirectory() + @"\character_saves\";  // current Path
       string json = JsonSerializer.Serialize(c);
 
-      File.WriteAllText(path + @"\character_saves\" + c.Name + @".json", json);
+      File.WriteAllText(path + c.Name + @".json", json);
       Console.Clear();
 
       Thread.Sleep(600);
@@ -365,6 +369,15 @@ namespace RpgGame
       DeleteCharacer(Name);
 
       return name;
+    }
+
+    /// <summary>
+    /// creates the character_save directory is it not exsists
+    /// </summary>
+    public static void CreateDirectory() {
+      string path = Directory.GetCurrentDirectory() + @"\character_saves\";
+
+      Directory.CreateDirectory(path);
     }
 
     /// <summary>
