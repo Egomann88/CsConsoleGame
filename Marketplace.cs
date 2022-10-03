@@ -14,12 +14,12 @@ namespace RpgGame
     private const int SHORTTIMEOUT = 800;
     private const int TIMEOUT = 1200;
     private const int LONGTIMEOUT = 2000;
-    private const ushort STRPRICE = 340;
-    private const ushort INTPRICE = 300;
-    private const ushort DEXPRICE = 360;
-    private const ushort HELPRICE = 295;
-    private const ushort CCHPRICE = 500;
-    private const ushort CDMPRICE = 510;
+    private const ushort STRPRICE = 390;
+    private const ushort INTPRICE = 360;
+    private const ushort DEXPRICE = 410;
+    private const ushort HELPRICE = 345;
+    private const ushort CCHPRICE = 550;
+    private const ushort CDMPRICE = 580;
 
     // Membervariabeln
 
