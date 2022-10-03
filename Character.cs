@@ -10,10 +10,10 @@ namespace RpgGame
 {
   internal class Character {
     // Klassenvariabeln
-    const ushort MAXSTATSVALUE = 1000;
-    const float MAXCRITCHANCE = 100;
+    const ushort MAXSTATSVALUE = 300;
+    const float MAXCRITCHANCE = 40;
     const float MAXCRITDAMAGE = 3;
-    const short MAXHEALTH = 600;
+    const short MAXHEALTH = 250;
     const int MAXGOLD = 100000;
     const byte MAXLVL = 100;
 
@@ -481,8 +481,10 @@ namespace RpgGame
     /// </summary>
     public void IncreaseLvl() {
       // if lvl 100 is reached, no more leveling
-      if (Lvl >= MAXLVL - 1) return;
-      while(Exp[0] >= Exp[1]) { // allows multiple lvl ups
+      if (Lvl >= MAXLVL) {
+        Lvl = MAXLVL;
+        return;
+      } else if (Exp[0] >= Exp[1]) { // allows multiple lvl ups
         Console.WriteLine("\n{0} ist ein Level aufgestiegen.\n{0} ist nun Level {1}.", Name, ++Lvl);
         Console.ReadKey(true);
         Exp[0] -= Exp[1];
@@ -491,6 +493,7 @@ namespace RpgGame
         if (Lvl % 10 == 0) Exp[1] += 50;    // increases exp need every 10 lvls a bit more
 
         IncreaseStats();
+        IncreaseLvl();  // repeat func if more level ups
       }
     }
 
@@ -505,11 +508,11 @@ namespace RpgGame
       ChangeMaximumHealth(2);
       FullHeal();
       if (Lvl % 10 == 0) {
-        CritChance += 0.2F;
+        CritChance += 0.3F;
         CritDmg += 0.10F;
       }
 
-      if(Lvl % 2 == 0) {
+      if(Lvl % 3 == 0) {
         switch (Class) {
           case 1: Strength++; break;
           case 2: Intelligents++; break;
