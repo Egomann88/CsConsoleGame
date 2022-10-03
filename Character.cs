@@ -171,32 +171,11 @@ namespace RpgGame
     /// Creates an new Character with Name and Class.<br />
     /// </summary>
     /// <returns>Character</returns>
-    public static Character CreateCharacter() {
+    public Character CreateCharacter() {
       string name = "";
       byte cl = 0;
 
-      while (name == "") {
-        Console.Clear();
-        Console.WriteLine("Geben Sie den Namen ihres Charakters ein:");
-        name = Console.ReadLine();
-
-        if (IsInValidSign(name)) {
-          Console.WriteLine("\nIm Namen ist ein unerlaubtes Zeichen enthalten!");
-          Thread.Sleep(500);
-          continue;
-        } else if (name == "" || name == " ") {
-          Console.WriteLine("\nDer Name darf nicht leer sein!");
-          Thread.Sleep(500);
-          continue;
-        }
-
-        // convert to char array of the string
-        char[] letters = name.ToCharArray();
-        // upper case the first char
-        letters[0] = char.ToUpper(letters[0]);
-        // put array back together
-        name = new string(letters);
-      }
+      name = ChangeName();
 
       do {
         Console.Clear();
@@ -222,9 +201,9 @@ namespace RpgGame
       Thread.Sleep(600);
     }
 
-    public static void DeleteCharacer(Character c) {
+    public static void DeleteCharacer(string name) {
       string path = Directory.GetCurrentDirectory() + @"\character_saves\";  // current Path
-      File.Delete(path + c.Name + ".json");
+      File.Delete(path + name + ".json");
     }
 
     public static bool HasCharacters() {
@@ -264,7 +243,7 @@ namespace RpgGame
       choosenCharacterId--; // decrease id by one to be sync with the array
 
       if (delete) {
-        DeleteCharacer(characters[choosenCharacterId]);
+        DeleteCharacer(characters[choosenCharacterId].Name);
         return new Character(); // useless, only for return value
       } else {
         return Prepare2Load(choosenCharacterId, characters);
@@ -355,6 +334,37 @@ namespace RpgGame
     public static bool IsInValidSign(string input) {
       Regex regex = new Regex("[\\\\/:\\*\\?\"<>\\|]", RegexOptions.IgnoreCase);
       return regex.IsMatch(input);
+    }
+
+    public string ChangeName() {
+      string name = "";
+
+      while (name == "") {
+        Console.Clear();
+        Console.WriteLine("Geben Sie den Namen ihres Charakters ein:");
+        name = Console.ReadLine();
+
+        if (IsInValidSign(name)) {
+          Console.WriteLine("\nIm Namen ist ein unerlaubtes Zeichen enthalten!");
+          Thread.Sleep(500);
+          continue;
+        } else if (name == "" || name == " ") {
+          Console.WriteLine("\nDer Name darf nicht leer sein!");
+          Thread.Sleep(500);
+          continue;
+        }
+
+        // convert to char array of the string
+        char[] letters = name.ToCharArray();
+        // upper case the first char
+        letters[0] = char.ToUpper(letters[0]);
+        // put array back together
+        name = new string(letters);
+      }
+
+      DeleteCharacer(Name);
+
+      return name;
     }
 
     /// <summary>

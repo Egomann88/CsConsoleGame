@@ -2,7 +2,7 @@
 
 namespace RpgGame
 {
-  internal class Program {
+  public class Program {
     /// <summary>
     /// Check and returns if Character is alive.<br />
     /// If not, character save file will be deleted
@@ -11,7 +11,7 @@ namespace RpgGame
     /// <returns>true, if yes - false, if not</returns>
     private static bool IsCharacterAlive(Character c) {
       if (c.Health[0] <= 0) {
-        Character.DeleteCharacer(c);
+        Character.DeleteCharacer(c.Name);
         return false;
       }
 
@@ -53,19 +53,19 @@ namespace RpgGame
     }
 
     static Character MainMenu() {
+      Character instanceCharacter = new Character();  // instans for static method
       string mainMenuText = "1) Charakter erstellen\n";
 
       if (Character.HasCharacters()) mainMenuText += "2) Charakter laden\n3) Charakter löschen\n";
       while (true) {
+        var instans = new Character();
         Console.Clear();
-        // has no character? -> create One (maybe first time to start)
-
         Console.WriteLine("Hauptmenü\n{0}9) Spiel beenden", mainMenuText);
         char input = Console.ReadKey(true).KeyChar;
         Console.Clear();
 
         switch (input) {
-          case '1': return Character.CreateCharacter();
+          case '1': return instanceCharacter.CreateCharacter();
           case '2':
             if (Character.HasCharacters()) return Character.GetCharacters(false);
             else break;
@@ -92,8 +92,8 @@ namespace RpgGame
         do {
           Console.Clear();
           Console.WriteLine("{0}, bei Ihnen liegt die Wahl.", character.Name);
-          Console.WriteLine("1) Dungeon\n2) Charakter betrachten\n3) Marktplatz\n7) Charakter speichern\n" +
-            "8) Zurück zum Hauptmenü\n9) Spiel beenden");
+          Console.WriteLine("1) Dungeon\n2) Charakter betrachten\n3) Marktplatz\n6) Charakter umbenennen\n" +
+            "7) Charakter speichern\n8) Zurück zum Hauptmenü\n9) Spiel beenden");
           input = Console.ReadKey(true).KeyChar;
 
           switch (input) {
@@ -104,6 +104,7 @@ namespace RpgGame
             case '2': character.ShowCharacter(); continue;
             case '3': character = marketplace.OnMarket(); break;
             case '4': character.Gold += 9999; character.Lvl += 42; character.Dexterity += 80; break;
+            case '6': character.Name = character.ChangeName(); break;
             case '7': Character.SaveCharacter(character); continue;  // call sensitive methods with classname
             case '8': chAlive = false; continue;
             case '9':
