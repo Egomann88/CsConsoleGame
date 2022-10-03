@@ -221,13 +221,13 @@ namespace RpgGame
       return true;
     }
 
-    public static Character GetCharacters(bool delete) {
+    public static List<Character> CharacterList() {
       // https://www.geeksforgeeks.org/c-sharp-program-for-listing-the-files-in-a-directory/
       string path = Directory.GetCurrentDirectory() + @"\character_saves\";  // current Path
       DirectoryInfo characterSaves = new DirectoryInfo(path);
       FileInfo[] Files = characterSaves.GetFiles();
       List<Character> charactersList = new List<Character>();
-      byte choosenCharacterId = 0;
+      
 
       // fill character list
       // https://www.tutorialsteacher.com/articles/convert-json-string-to-object-in-csharp
@@ -235,6 +235,13 @@ namespace RpgGame
         string jsonCharacterData = File.ReadAllText(path + i);
         charactersList.Add(JsonSerializer.Deserialize<Character>(jsonCharacterData));
       }
+
+      return charactersList;
+    }
+
+    public static Character GetCharacters(bool delete) {
+      List<Character> charactersList = CharacterList();
+      byte choosenCharacterId = 0;
 
       // list all characters
       Character[] characters = charactersList.ToArray();  // convert list to array
@@ -352,6 +359,10 @@ namespace RpgGame
           Console.WriteLine("\nIm Namen ist ein unerlaubtes Zeichen enthalten!");
           Thread.Sleep(500);
           continue;
+        } else if (IsDoubleName(name)) {
+          Console.WriteLine("\nIhr benutzt denselben Namen zweimal. Das ist nicht möglich.");
+          Thread.Sleep(500);
+          continue;
         } else if (name == "" || name == " ") {
           Console.WriteLine("\nDer Name darf nicht leer sein!");
           Thread.Sleep(500);
@@ -364,9 +375,10 @@ namespace RpgGame
         letters[0] = char.ToUpper(letters[0]);
         // put array back together
         name = new string(letters);
+        
+        DeleteCharacer(Name);
       }
 
-      DeleteCharacer(Name);
 
       return name;
     }
@@ -378,6 +390,23 @@ namespace RpgGame
       string path = Directory.GetCurrentDirectory() + @"\character_saves\";
 
       Directory.CreateDirectory(path);
+    }
+
+    /// <summary>
+    /// Checks if the new characters Name is already existing<br />
+    /// If its the case, than a new name must be choosen for the character
+    /// </summary>
+    /// <param name="characterName">name of current created character</param>
+    /// <returns>true if name is doubled / false if name is unique</returns>
+    public static bool IsDoubleName(string characterName) {
+      List<Character> list = CharacterList();
+      Character[] characters = list.ToArray();  // convert list to array
+
+      for (byte i = 0; i < characters.Length; i++) {
+        if (characterName == characters[i].Name) return true;
+      }
+
+      return false;
     }
 
     /// <summary>
